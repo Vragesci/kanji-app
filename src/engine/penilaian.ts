@@ -35,7 +35,7 @@ export function applyAnswer(data: AppData, k: string, correct: boolean, t: strin
       s.vi = (s.vi || 0) + 1; // pertemuan berikutnya pakai kosakata lain
     }
     if (s.count >= 5) s.readyWrite = true;
-    s.due = addDays(t, NEXT_GAP[Math.min(s.count, 4)]!);
+    s.due = addDays(t, NEXT_GAP[Math.min(Math.max(s.count - 1, 0), 4)]!); // benar ke-1..5 -> 1,1,2,4,7 hari
   } else {
     s.count = 0; // salah sekali: hitungan kembali ke nol
     s.salahTotal = (s.salahTotal || 0) + 1; // dipakai menentukan Difficulty awal

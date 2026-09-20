@@ -11,12 +11,13 @@ export const aktif = (d: Pick<AppData, "tg">) =>
 export const daftarTulis = (data: AppData): string[] =>
   aktif(data).map((x) => x.kanji).filter((k) => data.ks[k]?.readyWrite && !data.ks[k]?.green);
 
-// Jenis soal bergiliran: arti, bacaan, rakit, bacaan, rakit (menurut hitungan benar).
-const GILIRAN: JenisSoal[] = ["meaning", "reading", "rakit", "reading", "rakit"];
+// Jenis soal bergiliran: arti, bacaan, rakit, lalu ulang (menurut hitungan benar).
+// Kanji hijau (review jangka panjang) selalu rakit.
+const GILIRAN: JenisSoal[] = ["meaning", "reading", "rakit"];
 
 function jenisUntuk(k: string, s: KanjiState | undefined): JenisSoal {
   const st = statusOf(s);
-  const jenis: JenisSoal = st === "white" || st === "green" ? "rakit" : GILIRAN[(s?.count || 0) % 5]!;
+  const jenis: JenisSoal = st === "green" ? "rakit" : GILIRAN[(s?.count || 0) % GILIRAN.length]!;
   // Kanji tanpa kosakata yang bisa dirakit (mis. 叔, 綿: hanya bacaan khusus) tetap
   // dilatih lewat soal arti/bacaan, bukan soal rakit yang tidak bisa diselesaikan.
   if (jenis === "rakit" && !bisaRakit(k)) return (s?.count || 0) % 2 === 0 ? "meaning" : "reading";

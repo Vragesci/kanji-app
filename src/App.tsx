@@ -9,7 +9,7 @@ import { Tentang } from "./ui/Tentang";
 import { Btn } from "./ui/komponen";
 
 export default function App() {
-  const { data, ubah, ambil, tersimpan } = useAppData();
+  const { data, ubah, tersimpan } = useAppData();
   const [sesi, setSesi] = useState<{ mode: ModeSesi; nomor: number } | null>(null);
   const [tentang, setTentang] = useState(false);
   // tanggal lokal hari ini; diperbarui saat aplikasi kembali terlihat dan tiap menit, supaya
@@ -49,7 +49,7 @@ export default function App() {
       <main className="max-w-md mx-auto px-5 py-6">
         {sesi ? (
           <Sesi
-            key={sesi.nomor} mode={sesi.mode} data={data} t={t} ubah={ubah} ambil={ambil}
+            key={sesi.nomor} mode={sesi.mode} data={data} t={t} ubah={ubah}
             onKeluar={() => setSesi(null)}
           />
         ) : tentang ? (

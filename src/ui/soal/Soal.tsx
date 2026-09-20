@@ -12,7 +12,7 @@ export function Soal({ item, data, onDijawab, onLanjut }: {
   item: ItemSoal;
   data: AppData;
   onDijawab: (benar: boolean) => void;
-  onLanjut: (benar: boolean) => void;
+  onLanjut: () => void;
 }) {
   // kosakata dan status kanji dikunci saat soal dibuka, supaya tidak berubah di tengah soal
   const [kata] = useState(() => kosakataUntuk(item.k, data.ks[item.k]?.vi || 0, item.type === "rakit"));
@@ -28,7 +28,6 @@ export function Soal({ item, data, onDijawab, onLanjut }: {
 
   return (
     <div className="mt-6">
-      {item.practice && <p className="text-xs mb-1 text-redup">Latihan ulang (tidak dihitung)</p>}
       {item.type === "meaning" && <SoalArti kata={kata} v={v} hasil={hasil} onJawab={jawab} />}
       {item.type === "reading" && <SoalBacaan kata={kata} v={v} hasil={hasil} onJawab={jawab} />}
       {item.type === "rakit" && <SoalRakit target={item.k} v={v} data={snap} hasil={hasil} onJawab={jawab} />}
@@ -37,7 +36,7 @@ export function Soal({ item, data, onDijawab, onLanjut }: {
         <div className="mt-5" aria-live="polite">
           <p className={`font-bold ${hasil ? "text-hijau" : "text-merah"}`}>{hasil ? "Benar" : "Belum tepat"}</p>
           <KartuKata kata={kata} v={v} ringkas />
-          <Btn className="mt-4" onClick={() => onLanjut(hasil)}>Lanjut</Btn>
+          <Btn className="mt-4" onClick={onLanjut}>Lanjut</Btn>
         </div>
       )}
     </div>

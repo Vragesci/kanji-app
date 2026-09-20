@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { KAMUS, kosakataUntuk } from "../data/katalog";
 import { applyAnswer, applyWrite } from "../engine/penilaian";
-import { buildSession, daftarTulis } from "../engine/sesi";
+import { buildSession } from "../engine/sesi";
 import type { AppData, ItemSoal, ModeSesi } from "../types";
 import { Btn, Jp, KotakKanji } from "./komponen";
 import { Soal } from "./soal/Soal";
@@ -14,15 +14,15 @@ interface Props {
   data: AppData;
   t: string;
   ubah: (fn: (d: AppData) => AppData) => void;
-  ambil: () => AppData;
   onKeluar: () => void;
 }
 
-export function Sesi({ mode, data, t: tHariIni, ubah, ambil, onKeluar }: Props) {
+export function Sesi({ mode, data, t: tHariIni, ubah, onKeluar }: Props) {
   // tanggal dikunci saat sesi dimulai: sesi yang melewati tengah malam tetap satu tanggal
   const [t] = useState(tHariIni);
   const [rencana] = useState(() => buildSession(data, t, mode));
-  const [quiz, setQuiz] = useState<ItemSoal[]>(rencana.quiz);
+  // tepat sesuai rencana (maksimum 10 soal); soal yang salah tidak diulang di sesi yang sama, jadwalnya maju ke sesi berikutnya
+  const quiz: ItemSoal[] = rencana.quiz;
   const [tulis, setTulis] = useState<string[]>(rencana.write);
   const [fase, setFase] = useState<Fase>(rencana.quiz.length ? "quiz" : rencana.write.length ? "write" : "done");
   const [idx, setIdx] = useState(0);
@@ -38,7 +38,8 @@ export function Sesi({ mode, data, t: tHariIni, ubah, ambil, onKeluar }: Props) 
     const entri = { d: t, n: hasil.length, acc: a };
     // hanya sesi belajar yang menggeser beban sesi berikutnya (lastAcc)
     ubah((d) => (mode === "learn" ? { ...d, lastAcc: a, log: [...d.log, entri] } : { ...d, log: [...d.log, entri] }));
-    const daftar = mode === "learn" ? daftarTulis(ambil()) : [];
+    // menulis hanya untuk kanji yang sudah menunggu sebelum sesi ini dimulai; yang baru mencapai benar ke-5 menulis di sesi berikutnya
+    const daftar = mode === "learn" ? rencana.write : [];
     setAcc(a);
     setTulis(daftar);
     setWIdx(0);
@@ -47,17 +48,13 @@ export function Sesi({ mode, data, t: tHariIni, ubah, ambil, onKeluar }: Props) 
 
   const dijawab = (benar: boolean) => {
     const it = quiz[idx]!;
-    if (it.practice || it.k in pertama.current) return;
+    if (it.k in pertama.current) return;
     pertama.current[it.k] = benar;
     ubah((d) => applyAnswer(d, it.k, benar, t));
   };
 
-  const lanjutQuiz = (benar: boolean) => {
-    const it = quiz[idx]!;
-    // yang salah diulang di akhir sesi sebagai latihan, tidak dihitung
-    const q = !benar && !it.practice ? [...quiz, { ...it, practice: true }] : quiz;
-    if (idx + 1 >= q.length) return selesaiQuiz();
-    setQuiz(q);
+  const lanjutQuiz = () => {
+    if (idx + 1 >= quiz.length) return selesaiQuiz();
     setIdx(idx + 1);
   };
 
@@ -83,7 +80,7 @@ export function Sesi({ mode, data, t: tHariIni, ubah, ambil, onKeluar }: Props) 
 
       {fase === "quiz" && (
         <Soal
-          key={`${idx}${quiz[idx]!.k}${quiz[idx]!.type}${quiz[idx]!.practice ? "p" : ""}`}
+          key={`${idx}${quiz[idx]!.k}${quiz[idx]!.type}`}
           item={quiz[idx]!} data={data} onDijawab={dijawab} onLanjut={lanjutQuiz}
         />
       )}

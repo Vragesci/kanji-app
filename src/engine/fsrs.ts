@@ -17,7 +17,7 @@ export const RETENSI = 0.9;
 // tersisa menuju ujian, supaya tidak ada kanji yang jadwalnya melewati hari ujian.
 export const MAX_DEFAULT = 180;
 
-/** Jarak fase belajar (sebelum hijau), menurut jumlah jawaban benar di hari berbeda */
+/** Jarak fase belajar (sebelum hijau) setelah jawaban benar ke-1, 2, 3, 4, 5 (di hari berbeda) */
 export const NEXT_GAP = [1, 1, 2, 4, 7];
 
 export const UJIAN = [
@@ -32,7 +32,7 @@ export const ingat = (lewat: number, S: number): number =>
   Math.pow(1 + FACTOR * (lewat / Math.max(S, 0.1)), DECAY);
 export const D0 = (g: number): number => clampD(W[4] - (g - 3) * W[5]);
 export const nextD = (D: number, g: number): number =>
-  clampD(W[7] * D0(4) + (1 - W[7]) * (D - W[6] * (g - 3)));
+  clampD(W[7] * D0(3) + (1 - W[7]) * (D - W[6] * (g - 3))); // FSRS v4.5: D0(3); D0(4) baru di FSRS-5
 export const S_benar = (D: number, S: number, R: number): number =>
   S * (1 + Math.exp(W[8]) * (11 - D) * Math.pow(S, -W[9]) * (Math.exp(W[10] * (1 - R)) - 1));
 export const S_salah = (D: number, S: number, R: number): number =>
@@ -42,11 +42,14 @@ export const S_salah = (D: number, S: number, R: number): number =>
 export const jarakHari = (S: number, batas: number = MAX_DEFAULT): number =>
   Math.min(batas, Math.max(1, Math.round((S / FACTOR) * (Math.pow(RETENSI, 1 / DECAY) - 1))));
 
-/** batas jarak = sisa hari menuju ujian yang dipilih (minimal 1 hari) */
+/**
+ * batas jarak = sisa hari menuju ujian yang dipilih; 180 hari hanya kalau tanpa target
+ * (atau tanggal ujian yang tersimpan sudah lewat).
+ */
 export function batasHari(data: Pick<AppData, "ujian">, t: string): number {
   if (!data.ujian) return MAX_DEFAULT;
   const sisa = diff(t, data.ujian);
-  return sisa > 0 ? Math.min(MAX_DEFAULT, sisa) : MAX_DEFAULT;
+  return sisa > 0 ? sisa : MAX_DEFAULT;
 }
 
 export function fsrsState(s: KanjiState): { S: number; D: number } {

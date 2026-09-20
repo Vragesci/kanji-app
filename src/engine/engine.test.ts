@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { KAMUS, KANJI, KMAP, bisaDipelajari, bisaRakit, kosakataUntuk } from "../data/katalog";
 import { KOSONG } from "../db/penyimpanan";
 import type { AppData } from "../types";
-import { W, greenStrength, jarakHari, statusOf } from "./fsrs";
+import { D0, W, batasHari, greenStrength, jarakHari, nextD, statusOf } from "./fsrs";
 import { applyAnswer, applyWrite } from "./penilaian";
 import { aktif, buildSession } from "./sesi";
 import { addDays } from "./tanggal";
@@ -83,7 +83,7 @@ describe("penjadwalan (FSRS v4.5)", () => {
       d = applyAnswer(d, K, true, hari(i));
       jarak.push((new Date(d.ks[K]!.due!).getTime() - new Date(hari(i)).getTime()) / 86400000);
     }
-    expect(jarak).toEqual([1, 2, 4, 7, 7]);
+    expect(jarak).toEqual([1, 1, 2, 4, 7]);
   });
 
   it("lulus menulis: stabilitas awal W[3] dan jarak ≈ 14 hari", () => {
@@ -154,12 +154,12 @@ describe("penyusun sesi (metode 1, 5–7)", () => {
     expect(p.quiz.at(-1)!.k).toBe(b);
   });
 
-  it("jenis soal bergiliran mengikuti hitungan: arti, bacaan, rakit, bacaan, rakit", () => {
+  it("jenis soal bergiliran mengikuti hitungan: arti, bacaan, rakit, lalu ulang", () => {
     const jenis = [0, 1, 2, 3, 4, 5].map((count) => {
       const ks = { [K]: { seen: true, vi: 0, count, wrongStreak: 0, everCorrect: true, lastSeen: hari(-1), due: HARI0 } };
       return buildSession(baru({ ks, lastAcc: 0.6 }), HARI0, "learn").quiz[0]!.type;
     });
-    expect(jenis).toEqual(["meaning", "reading", "rakit", "reading", "rakit", "meaning"]);
+    expect(jenis).toEqual(["meaning", "reading", "rakit", "meaning", "reading", "rakit"]);
   });
 });
 
@@ -218,5 +218,35 @@ describe("kekuatan hijau (pudarnya warna = retrievability)", () => {
   it("data lama tanpa lastReview tidak membuat perhitungan gagal", () => {
     const s = { seen: true, vi: 0, count: 0, wrongStreak: 0, green: true, S: 10 };
     expect(Number.isFinite(greenStrength(s, hari(3)))).toBe(true);
+  });
+});
+
+describe("FSRS v4.5: rumus dan batas jarak", () => {
+  it("kesulitan bergerak ke D0(3), bukan D0(4) (D0(4) baru di FSRS-5)", () => {
+    // rating Good (3) pada D = D0(3): reversi ke rata-rata tidak menggeser kesulitan
+    expect(nextD(D0(3), 3)).toBeCloseTo(D0(3), 10);
+    // D lebih tinggi ditarik turun menuju D0(3)
+    expect(nextD(8, 3)).toBeCloseTo(W[7] * D0(3) + (1 - W[7]) * 8, 10);
+  });
+
+  it("target ujian lebih dari 180 hari: batas = seluruh sisa hari, bukan 180", () => {
+    expect(batasHari({ ujian: hari(280) }, HARI0)).toBe(280);
+    expect(batasHari({ ujian: hari(30) }, HARI0)).toBe(30);
+    expect(batasHari({ ujian: null }, HARI0)).toBe(180);
+    expect(batasHari({ ujian: hari(-3) }, HARI0)).toBe(180); // ujian sudah lewat
+  });
+});
+
+describe("sesi (metode 1 dan 7)", () => {
+  it("kanji yang baru mencapai benar ke-5 tidak langsung masuk daftar menulis sesi yang sama", () => {
+    // sebelum sesi: hitungan 4, belum siap menulis
+    let d = baru();
+    for (let i = 0; i < 4; i++) d = applyAnswer(d, K, true, hari(i));
+    const rencana = buildSession(d, hari(4), "learn");
+    expect(rencana.write).not.toContain(K);
+    // dijawab benar di sesi itu: siap menulis, tetapi baru masuk daftar tulis sesi berikutnya
+    d = applyAnswer(d, K, true, hari(4));
+    expect(d.ks[K]!.readyWrite).toBe(true);
+    expect(buildSession(d, hari(5), "learn").write).toContain(K);
   });
 });

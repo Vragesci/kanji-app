@@ -83,8 +83,6 @@ export type ModeSesi = "learn" | "review";
 export interface ItemSoal {
   k: string;
   type: JenisSoal;
-  /** ulangan di akhir sesi setelah salah; tidak dihitung */
-  practice?: boolean;
 }
 
 export interface RencanaSesi {
