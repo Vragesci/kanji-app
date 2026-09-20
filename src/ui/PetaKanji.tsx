@@ -18,9 +18,9 @@ const KELOMPOK: { kunci: string; judul: string; romaji?: string }[] = [
 
 const LEGENDA = [
   { kelas: "bg-white border border-garis", teks: "Belum dilihat" },
-  { kelas: "bg-merah", teks: "Belum hafal" },
-  { kelas: "bg-oranye", teks: "Sedang proses" },
-  { kelas: "bg-hijau", teks: "Hafal (pudar = perlu diulang)" },
+  { kelas: "bg-merah", teks: "Belum hafal (huruf kecil)" },
+  { kelas: "bg-oranye", teks: "Sedang proses (huruf sedang)" },
+  { kelas: "bg-hijau", teks: "Hafal (huruf besar; pudar = perlu diulang)" },
 ];
 
 /** Membagi kanji ke kelompok peta; kanji yang tidak cocok dengan kelompok mana pun akan hilang dari peta. */

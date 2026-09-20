@@ -21,8 +21,9 @@ export function Pilihan<T>({ opsi, benar, hasil, onPilih, tampil }: {
           <button
             key={i}
             type="button"
+            disabled={hasil !== null}
             onClick={() => { if (hasil === null) { setDipilih(o); onPilih(o === benar); } }}
-            className={`w-full min-h-12 py-3 px-4 rounded-xl text-left border-2 ${gaya}`}
+            className={`w-full min-h-12 py-3 px-4 rounded-xl text-left border-2 text-tinta disabled:text-tinta ${gaya}`}
           >
             {tampil(o)}
           </button>

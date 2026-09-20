@@ -38,9 +38,13 @@ export function KotakKanji({ k, s, t, ukuran }: { k: string; s: KanjiState | und
     green: "bg-hijau text-white border border-hijau",
   };
   const opacity = st === "green" ? 0.35 + Math.max(0.35, greenStrength(s!, t)) * 0.65 : undefined;
+  // Untuk murid buta warna: semakin hafal, semakin besar hurufnya (merah kecil, oranye sedang, hijau besar).
+  const hurufPeta: Record<Status, string> = {
+    white: "text-xl", red: "text-sm", orange: "text-xl", green: "text-3xl font-bold",
+  };
   return (
     <Jp as="div" role="img" aria-label={`${k}, ${NAMA_STATUS[st]}`}
-      className={`flex items-center justify-center rounded-lg ${gaya[st]} ${ukuran ? "" : "w-full aspect-square text-xl"}`}
+      className={`flex items-center justify-center rounded-lg ${gaya[st]} ${ukuran ? "" : `w-full aspect-square ${hurufPeta[st]}`}`}
       style={ukuran ? { width: ukuran, height: ukuran, fontSize: ukuran * 0.55, opacity } : { opacity }}>
       {k}
     </Jp>

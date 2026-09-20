@@ -23,7 +23,7 @@ export function SoalBacaan({ kata, v, hasil, onJawab }: { kata: string; v: Kosak
       <Pilihan
         opsi={opsi} benar={v} hasil={hasil} onPilih={onJawab}
         tampil={(o) => (
-          <span className="flex justify-between items-baseline gap-3">
+          <span className="flex flex-wrap justify-between items-baseline gap-x-3">
             <Jp className="text-xl">{o.kana}</Jp>
             <span className="text-sm text-redup">{o.romaji}</span>
           </span>

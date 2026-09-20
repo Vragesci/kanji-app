@@ -81,6 +81,11 @@ menulis, kalimat contoh (Tatoeba), dan audio.
   tambahan, ambil dari JMdict lalu tandai `perlu_terjemahan`.
 - Antarmuka berbahasa Indonesia. Setiap frasa Jepang selalu disertai romaji.
 - Mobile-first. Sebagian besar murid memakai HP Android kelas menengah.
+- Pengecualian yang disetujui (2026-09-20): (1) di soal bacaan, kosakata target tampil tanpa romaji
+  (romaji langsung membocorkan jawaban); romaji baru tampil setelah murid menjawab. (2) PWA dikunci
+  orientasi portrait.
+- Bagi murid buta warna, status peta juga dibedakan lewat ukuran huruf: merah kecil, oranye sedang,
+  hijau besar (semakin hafal semakin besar).
 - Atribusi wajib di halaman "Tentang": materi tingkat JFT dari IRODORI
   (The Japan Foundation); bacaan, komponen kanji, dan sebagian kosakata dari
   JMdict/KANJIDIC2/KRADFILE (EDRDG, CC BY-SA 4.0).
