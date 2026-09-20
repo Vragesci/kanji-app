@@ -143,7 +143,14 @@
    "是非",
    "脅迫",
    "穴熊",
-   "棋聖"
+   "棋聖",
+   "定価",
+   "早速",
+   "温暖",
+   "除く",
+   "伺う",
+   "昇る",
+   "度"
   ],
   "kanji_tambahan_2026-09-20": [
    "賓",
@@ -42019,7 +42026,7 @@
   "早速": {
    "kana": "さっそく",
    "romaji": "sassoku",
-   "arti": "Bergegas",
+   "arti": "Segera; langsung",
    "seg": [
     [
      "早",
@@ -42032,7 +42039,8 @@
    ],
    "seg_valid": true,
    "tingkat": "N2",
-   "no": 56
+   "no": 56,
+   "arti_sumber": "Bergegas"
   },
   "支度": {
    "kana": "したく",
@@ -42091,7 +42099,7 @@
   "度": {
    "kana": "たび",
    "romaji": "tabi",
-   "arti": "Setiap",
+   "arti": "Kali; setiap kali",
    "seg": [
     [
      "度",
@@ -42100,7 +42108,8 @@
    ],
    "seg_valid": true,
    "tingkat": "N2",
-   "no": 60
+   "no": 60,
+   "arti_sumber": "Setiap"
   },
   "水着": {
    "kana": "みずぎ",
@@ -42304,7 +42313,7 @@
   "不通": {
    "kana": "ふつう",
    "romaji": "futsuu",
-   "arti": "Terputus; tidak tersambung; tidak beroperasi",
+   "arti": "Terputus; tidak tersambung",
    "seg": [
     [
      "不",
@@ -43993,7 +44002,7 @@
   "温暖": {
    "kana": "おんだん",
    "romaji": "ondan",
-   "arti": "Hangat,panas",
+   "arti": "Hangat; beriklim sedang",
    "seg": [
     [
      "温",
@@ -44006,7 +44015,8 @@
    ],
    "seg_valid": true,
    "tingkat": "N2",
-   "no": 170
+   "no": 170,
+   "arti_sumber": "Hangat,panas"
   },
   "対立": {
    "kana": "たいりつ",
@@ -45440,7 +45450,7 @@
   "定価": {
    "kana": "ていか",
    "romaji": "teika",
-   "arti": "Daftar harga",
+   "arti": "Harga tetap; harga resmi",
    "seg": [
     [
      "定",
@@ -45453,7 +45463,8 @@
    ],
    "seg_valid": true,
    "tingkat": "N2",
-   "no": 252
+   "no": 252,
+   "arti_sumber": "Daftar harga"
   },
   "印象": {
    "kana": "いんしょう",
@@ -47284,7 +47295,7 @@
   "伺う": {
    "kana": "うかがう",
    "romaji": "ukagau",
-   "arti": "Bertanya",
+   "arti": "Bertanya; berkunjung (rendah hati)",
    "seg": [
     [
      "伺",
@@ -47297,7 +47308,8 @@
    ],
    "seg_valid": true,
    "tingkat": "N2",
-   "no": 360
+   "no": 360,
+   "arti_sumber": "Bertanya"
   },
   "財産": {
    "kana": "ざいさん",
@@ -47527,7 +47539,7 @@
   "参る": {
    "kana": "まいる",
    "romaji": "mairu",
-   "arti": "Pergi; datang (bentuk merendahkan diri/kenjōgo)",
+   "arti": "Pergi; datang (rendah hati)",
    "seg": [
     [
      "参",
@@ -47763,7 +47775,7 @@
   "除く": {
    "kana": "のぞく",
    "romaji": "nozoku",
-   "arti": "Kecuali",
+   "arti": "Menghilangkan; mengecualikan",
    "seg": [
     [
      "除",
@@ -47776,7 +47788,8 @@
    ],
    "seg_valid": true,
    "tingkat": "N2",
-   "no": 389
+   "no": 389,
+   "arti_sumber": "Kecuali"
   },
   "現象": {
    "kana": "げんしょう",
@@ -47916,7 +47929,7 @@
   "昇る": {
    "kana": "のぼる",
    "romaji": "noboru",
-   "arti": "Bangkit",
+   "arti": "Naik; terbit",
    "seg": [
     [
      "昇",
@@ -47929,7 +47942,8 @@
    ],
    "seg_valid": true,
    "tingkat": "N2",
-   "no": 398
+   "no": 398,
+   "arti_sumber": "Bangkit"
   },
   "城": {
    "kana": "しろ",
@@ -48081,7 +48095,7 @@
   "大勢": {
    "kana": "たいせい",
    "romaji": "taisei",
-   "arti": "Keadaan umum; kecenderungan umum; situasi keseluruhan",
+   "arti": "Situasi umum; kecenderungan",
    "seg": [
     [
      "大",
@@ -52905,7 +52919,7 @@
   "整備": {
    "kana": "せいび",
    "romaji": "seibi",
-   "arti": "Pemeliharaan; penataan; persiapan; perbaikan",
+   "arti": "Pemeliharaan; penataan",
    "seg": [
     [
      "整",
@@ -55571,7 +55585,7 @@
   "喪主": {
    "kana": "もしゅ",
    "romaji": "moshu",
-   "arti": "Penanggung jawab utama pemakaman; kepala keluarga penyelenggara pemakaman",
+   "arti": "Penanggung jawab pemakaman",
    "arti_en": "chief mourner",
    "seg": [
     [
@@ -57141,7 +57155,7 @@
   "是非": {
    "kana": "ぜひ",
    "romaji": "zehi",
-   "arti": "Tentu; bagaimanapun juga; mohon sekali; benar-salah (sesuai konteks)",
+   "arti": "Tentu; benar-salah",
    "arti_en": "certainly; without fail",
    "seg": [
     [
@@ -66850,7 +66864,7 @@
   "充実": {
    "kana": "じゅうじつ",
    "romaji": "juujitsu",
-   "arti": "Kelengkapan/kecukupan; keadaan yang penuh/berisi dan memadai",
+   "arti": "Kelengkapan/kecukupan",
    "arti_en": "fullness; completion",
    "seg": [
     [
@@ -66973,7 +66987,7 @@
   "吹かす": {
    "kana": "ふかす",
    "romaji": "fukasu",
-   "arti": "Merokok/mengembuskan asap; menggeber mesin; (ungkapan) bergaya/bertindak sebagai ...",
+   "arti": "Merokok/mengembuskan asap; menggeber mesin",
    "arti_en": "to smoke (a cigarette); to behave as ...",
    "seg": [
     [
@@ -68032,7 +68046,7 @@
   "珍重": {
    "kana": "ちんちょう",
    "romaji": "chinchou",
-   "arti": "Sangat menghargai; menganggap/menjaga sebagai sesuatu yang berharga",
+   "arti": "Sangat menghargai",
    "arti_en": "prizing; valuing highly",
    "seg": [
     [
@@ -68795,7 +68809,7 @@
   "駄目": {
    "kana": "だめ",
    "romaji": "dame",
-   "arti": "Tidak baik/tidak berguna; sia-sia; tidak boleh/tidak bisa",
+   "arti": "Tidak baik/tidak berguna; sia-sia",
    "arti_en": "no good; not serving its purpose",
    "seg": [
     [
