@@ -174,6 +174,39 @@
    "棋",
    "虚",
    "膜"
+  ],
+  "koreksi_chatgpt_2026-09-20": [
+   "濃い",
+   "連れる",
+   "翻訳",
+   "疑問",
+   "許す",
+   "腰",
+   "性格",
+   "厳しい",
+   "流れる",
+   "対する",
+   "弱い",
+   "塩辛い",
+   "抜ける",
+   "現場",
+   "部長",
+   "花火",
+   "過ごす",
+   "屋上",
+   "一昨日",
+   "彼女",
+   "棚",
+   "浴衣",
+   "お礼",
+   "温かい",
+   "荷物",
+   "信号",
+   "夏",
+   "温泉",
+   "通過",
+   "真ん中",
+   "コピー機"
   ]
  },
  "kanji": [
@@ -25196,7 +25229,7 @@
   "温泉": {
    "kana": "おんせん",
    "romaji": "onsen",
-   "arti": "air panas",
+   "arti": "pemandian air panas (onsen)",
    "seg": [
     [
      "温",
@@ -25210,7 +25243,9 @@
    "seg_valid": true,
    "tingkat": "JFT",
    "level": "入門",
-   "bab": 18
+   "bab": 18,
+   "arti_sumber": "air panas",
+   "sumber": "diperbaiki 2026-09-20 (temuan ChatGPT, dicek Claude)"
   },
   "温度": {
    "kana": "おんど",
@@ -26360,7 +26395,7 @@
   "夏": {
    "kana": "なつ",
    "romaji": "natsu",
-   "arti": "panas",
+   "arti": "musim panas",
    "seg": [
     [
      "夏",
@@ -26373,7 +26408,9 @@
    "bab": 3,
    "juga_di": [
     "N3"
-   ]
+   ],
+   "arti_sumber": "panas",
+   "sumber": "diperbaiki 2026-09-20 (temuan ChatGPT, dicek Claude)"
   },
   "秋": {
    "kana": "あき",
@@ -28996,7 +29033,7 @@
   },
   "コピー機": {
    "kana": "コピーき",
-   "romaji": "コピki",
+   "romaji": "kopiiki",
    "arti": "mesin foto kopi",
    "seg": [
     [
@@ -32973,7 +33010,7 @@
   "一昨日": {
    "kana": "おととい",
    "romaji": "ototoi",
-   "arti": "Hari yang lalu",
+   "arti": "Kemarin lusa",
    "seg": [
     [
      "一昨日",
@@ -32983,7 +33020,9 @@
    "seg_valid": false,
    "tingkat": "N3",
    "no": 20,
-   "catatan": "bacaan khusus / belum bisa dipecah otomatis"
+   "catatan": "bacaan khusus / belum bisa dipecah otomatis",
+   "arti_sumber": "Hari yang lalu",
+   "sumber": "diperbaiki 2026-09-20 (temuan ChatGPT, dicek Claude)"
   },
   "合う": {
    "kana": "あう",
@@ -33418,7 +33457,7 @@
   "塩辛い": {
    "kana": "しおからい",
    "romaji": "shiokarai",
-   "arti": "Kuat",
+   "arti": "Asin",
    "seg": [
     [
      "塩",
@@ -33435,7 +33474,9 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "no": 59
+   "no": 59,
+   "arti_sumber": "Kuat",
+   "sumber": "diperbaiki 2026-09-20 (temuan ChatGPT, dicek Claude)"
   },
   "出る": {
    "kana": "でる",
@@ -33775,7 +33816,7 @@
   "濃い": {
    "kana": "こい",
    "romaji": "koi",
-   "arti": "Na)",
+   "arti": "Pekat; kental",
    "seg": [
     [
      "濃",
@@ -33788,7 +33829,9 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "no": 99
+   "no": 99,
+   "arti_sumber": "Na)",
+   "sumber": "diperbaiki 2026-09-20 (temuan ChatGPT, dicek Claude)"
   },
   "定規": {
    "kana": "じょうぎ",
@@ -33861,7 +33904,7 @@
   "彼女": {
    "kana": "かのじょ",
    "romaji": "kanojo",
-   "arti": "Wanita",
+   "arti": "Dia (perempuan); pacar",
    "seg": [
     [
      "彼",
@@ -33874,7 +33917,9 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "no": 108
+   "no": 108,
+   "arti_sumber": "Wanita",
+   "sumber": "diperbaiki 2026-09-20 (temuan ChatGPT, dicek Claude)"
   },
   "丸い": {
    "kana": "まるい",
@@ -33897,7 +33942,7 @@
   "温かい": {
    "kana": "あたたかい",
    "romaji": "atatakai",
-   "arti": "Hangat (suhu cuaca)",
+   "arti": "Hangat (benda/perasaan)",
    "seg": [
     [
      "温",
@@ -33914,7 +33959,9 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "no": 110
+   "no": 110,
+   "arti_sumber": "Hangat (suhu cuaca)",
+   "sumber": "diperbaiki 2026-09-20 (temuan ChatGPT, dicek Claude)"
   },
   "冷たい": {
    "kana": "つめたい",
@@ -34306,7 +34353,7 @@
   "厳しい": {
    "kana": "きびしい",
    "romaji": "kibishii",
-   "arti": "Kesepian",
+   "arti": "Ketat; keras",
    "seg": [
     [
      "厳",
@@ -34323,7 +34370,9 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "no": 145
+   "no": 145,
+   "arti_sumber": "Kesepian",
+   "sumber": "diperbaiki 2026-09-20 (temuan ChatGPT, dicek Claude)"
   },
   "封筒": {
    "kana": "ふうとう",
@@ -34609,7 +34658,7 @@
   "抜ける": {
    "kana": "ぬける",
    "romaji": "nukeru",
-   "arti": "Basah",
+   "arti": "Lepas; keluar",
    "seg": [
     [
      "抜",
@@ -34626,7 +34675,9 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "no": 163
+   "no": 163,
+   "arti_sumber": "Basah",
+   "sumber": "diperbaiki 2026-09-20 (temuan ChatGPT, dicek Claude)"
   },
   "見学": {
    "kana": "けんがく",
@@ -34885,7 +34936,7 @@
   "部長": {
    "kana": "ぶちょう",
    "romaji": "buchou",
-   "arti": "Buku saku",
+   "arti": "Kepala departemen",
    "seg": [
     [
      "部",
@@ -34898,7 +34949,9 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "no": 182
+   "no": 182,
+   "arti_sumber": "Buku saku",
+   "sumber": "diperbaiki 2026-09-20 (temuan ChatGPT, dicek Claude)"
   },
   "課長": {
    "kana": "かちょう",
@@ -35058,7 +35111,7 @@
   "信号": {
    "kana": "しんごう",
    "romaji": "shingou",
-   "arti": "Lampu lalu tintas",
+   "arti": "Lampu lalu lintas",
    "seg": [
     [
      "信",
@@ -35071,7 +35124,9 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "no": 195
+   "no": 195,
+   "arti_sumber": "Lampu lalu tintas",
+   "sumber": "diperbaiki 2026-09-20 (temuan ChatGPT, dicek Claude)"
   },
   "渡す": {
    "kana": "わたす",
@@ -35506,7 +35561,7 @@
   "浴衣": {
    "kana": "ゆかた",
    "romaji": "yukata",
-   "arti": "Pakaian mandi",
+   "arti": "Yukata (kimono musim panas)",
    "seg": [
     [
      "浴衣",
@@ -35516,7 +35571,9 @@
    "seg_valid": false,
    "tingkat": "N3",
    "no": 220,
-   "catatan": "bacaan khusus / belum bisa dipecah otomatis"
+   "catatan": "bacaan khusus / belum bisa dipecah otomatis",
+   "arti_sumber": "Pakaian mandi",
+   "sumber": "diperbaiki 2026-09-20 (temuan ChatGPT, dicek Claude)"
   },
   "冷蔵庫": {
    "kana": "れいぞうこ",
@@ -35561,7 +35618,7 @@
   "連れる": {
    "kana": "つれる",
    "romaji": "tsureru",
-   "arti": "Hidup)",
+   "arti": "Membawa; mengajak",
    "seg": [
     [
      "連",
@@ -35578,7 +35635,9 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "no": 226
+   "no": 226,
+   "arti_sumber": "Hidup)",
+   "sumber": "diperbaiki 2026-09-20 (temuan ChatGPT, dicek Claude)"
   },
   "濡れる": {
    "kana": "ぬれる",
@@ -35731,7 +35790,7 @@
   "現場": {
    "kana": "げんば",
    "romaji": "genba",
-   "arti": "Langsung",
+   "arti": "Lokasi; tempat kerja",
    "seg": [
     [
      "現",
@@ -35744,7 +35803,9 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "no": 238
+   "no": 238,
+   "arti_sumber": "Langsung",
+   "sumber": "diperbaiki 2026-09-20 (temuan ChatGPT, dicek Claude)"
   },
   "眼鏡": {
    "kana": "めがね",
@@ -35804,7 +35865,7 @@
   "翻訳": {
    "kana": "ほんやく",
    "romaji": "hon'yaku",
-   "arti": "Ulis)",
+   "arti": "Terjemahan",
    "seg": [
     [
      "翻",
@@ -35817,7 +35878,9 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "no": 243
+   "no": 243,
+   "arti_sumber": "Ulis)",
+   "sumber": "diperbaiki 2026-09-20 (temuan ChatGPT, dicek Claude)"
   },
   "親": {
    "kana": "おや",
@@ -36487,7 +36550,7 @@
   "過ごす": {
    "kana": "すごす",
    "romaji": "sugosu",
-   "arti": "(waktu)",
+   "arti": "Menghabiskan waktu; menjalani",
    "seg": [
     [
      "過",
@@ -36504,7 +36567,9 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "no": 285
+   "no": 285,
+   "arti_sumber": "(waktu)",
+   "sumber": "diperbaiki 2026-09-20 (temuan ChatGPT, dicek Claude)"
   },
   "怪我": {
    "kana": "けが",
@@ -37238,7 +37303,7 @@
   "荷物": {
    "kana": "にもつ",
    "romaji": "nimotsu",
-   "arti": "Barag bawaan",
+   "arti": "Barang bawaan",
    "seg": [
     [
      "荷",
@@ -37251,7 +37316,9 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "no": 338
+   "no": 338,
+   "arti_sumber": "Barag bawaan",
+   "sumber": "diperbaiki 2026-09-20 (temuan ChatGPT, dicek Claude)"
   },
   "お腹": {
    "kana": "おなか",
@@ -37352,7 +37419,7 @@
   "腰": {
    "kana": "こし",
    "romaji": "koshi",
-   "arti": "Pinggang'",
+   "arti": "Pinggang",
    "seg": [
     [
      "腰",
@@ -37367,7 +37434,9 @@
    ],
    "arti_lain": [
     "N2: Pinggang"
-   ]
+   ],
+   "arti_sumber": "Pinggang'",
+   "sumber": "diperbaiki 2026-09-20 (temuan ChatGPT, dicek Claude)"
   },
   "金額": {
    "kana": "きんがく",
@@ -37404,7 +37473,7 @@
   "性格": {
    "kana": "せいかく",
    "romaji": "seikaku",
-   "arti": "Seikaku",
+   "arti": "Watak; kepribadian",
    "seg": [
     [
      "性",
@@ -37417,7 +37486,9 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "no": 324
+   "no": 324,
+   "arti_sumber": "Seikaku",
+   "sumber": "diperbaiki 2026-09-20 (temuan ChatGPT, dicek Claude)"
   },
   "応募": {
    "kana": "おうぼ",
@@ -37642,7 +37713,7 @@
   "疑問": {
    "kana": "ぎもん",
    "romaji": "gimon",
-   "arti": "N",
+   "arti": "Pertanyaan; keraguan",
    "seg": [
     [
      "疑",
@@ -37655,7 +37726,9 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "no": 364
+   "no": 364,
+   "arti_sumber": "N",
+   "sumber": "diperbaiki 2026-09-20 (temuan ChatGPT, dicek Claude)"
   },
   "咲く": {
    "kana": "さく",
@@ -38026,7 +38099,7 @@
   "お礼": {
    "kana": "おれい",
    "romaji": "orei",
-   "arti": "Ucapan salam",
+   "arti": "Ucapan terima kasih",
    "seg": [
     [
      "お",
@@ -38039,7 +38112,9 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "no": 387
+   "no": 387,
+   "arti_sumber": "Ucapan salam",
+   "sumber": "diperbaiki 2026-09-20 (temuan ChatGPT, dicek Claude)"
   },
   "会議": {
    "kana": "かいぎ",
@@ -38139,7 +38214,7 @@
   "対する": {
    "kana": "たいする",
    "romaji": "taisuru",
-   "arti": "Berharap",
+   "arti": "Terhadap; menghadapi",
    "seg": [
     [
      "対",
@@ -38156,7 +38231,9 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "no": 393
+   "no": 393,
+   "arti_sumber": "Berharap",
+   "sumber": "diperbaiki 2026-09-20 (temuan ChatGPT, dicek Claude)"
   },
   "握手": {
    "kana": "あくしゅ",
@@ -38495,7 +38572,7 @@
   "流れる": {
    "kana": "ながれる",
    "romaji": "nagareru",
-   "arti": "Mengikat",
+   "arti": "Mengalir",
    "seg": [
     [
      "流",
@@ -38512,7 +38589,9 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "no": 414
+   "no": 414,
+   "arti_sumber": "Mengikat",
+   "sumber": "diperbaiki 2026-09-20 (temuan ChatGPT, dicek Claude)"
   },
   "結ぶ": {
    "kana": "むすぶ",
@@ -39148,7 +39227,7 @@
   "許す": {
    "kana": "ゆるす",
    "romaji": "yurusu",
-   "arti": "Kan",
+   "arti": "Mengizinkan; memaafkan",
    "seg": [
     [
      "許",
@@ -39161,7 +39240,9 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "no": 455
+   "no": 455,
+   "arti_sumber": "Kan",
+   "sumber": "diperbaiki 2026-09-20 (temuan ChatGPT, dicek Claude)"
   },
   "戻す": {
    "kana": "もどす",
@@ -39245,7 +39326,7 @@
   "通過": {
    "kana": "つうか",
    "romaji": "tsuuka",
-   "arti": "",
+   "arti": "Melewati; melintasi",
    "seg": [
     [
      "通",
@@ -39258,7 +39339,9 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "no": 463
+   "no": 463,
+   "perlu_terjemahan": true,
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude, dicek ChatGPT 2026-09-20 — perlu_terjemahan"
   },
   "結果": {
    "kana": "けっか",
@@ -39405,7 +39488,7 @@
   "花火": {
    "kana": "はなび",
    "romaji": "hanabi",
-   "arti": "Melihat kembang api",
+   "arti": "Kembang api",
    "seg": [
     [
      "花",
@@ -39418,12 +39501,14 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "no": 473
+   "no": 473,
+   "arti_sumber": "Melihat kembang api",
+   "sumber": "diperbaiki 2026-09-20 (temuan ChatGPT, dicek Claude)"
   },
   "弱い": {
    "kana": "よわい",
    "romaji": "yowai",
-   "arti": "Lambat",
+   "arti": "Lemah",
    "seg": [
     [
      "弱",
@@ -39436,7 +39521,9 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "no": 449
+   "no": 449,
+   "arti_sumber": "Lambat",
+   "sumber": "diperbaiki 2026-09-20 (temuan ChatGPT, dicek Claude)"
   },
   "厚い": {
    "kana": "あつい",
@@ -39517,7 +39604,7 @@
   "真ん中": {
    "kana": "まんなか",
    "romaji": "mannaka",
-   "arti": "",
+   "arti": "Tengah; pusat",
    "seg": [
     [
      "真",
@@ -39534,7 +39621,9 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "no": 485
+   "no": 485,
+   "perlu_terjemahan": true,
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude, dicek ChatGPT 2026-09-20 — perlu_terjemahan"
   },
   "西": {
    "kana": "にし",
@@ -39783,7 +39872,7 @@
   "屋上": {
    "kana": "おくじょう",
    "romaji": "okujou",
-   "arti": "(rooptop)",
+   "arti": "Atap gedung",
    "seg": [
     [
      "屋",
@@ -39796,7 +39885,9 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "no": 509
+   "no": 509,
+   "arti_sumber": "(rooptop)",
+   "sumber": "diperbaiki 2026-09-20 (temuan ChatGPT, dicek Claude)"
   },
   "邪魔": {
    "kana": "じゃま",
@@ -40115,7 +40206,7 @@
   "棚": {
    "kana": "たな",
    "romaji": "tana",
-   "arti": "Lemari",
+   "arti": "Rak",
    "seg": [
     [
      "棚",
@@ -40124,7 +40215,9 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "no": 542
+   "no": 542,
+   "arti_sumber": "Lemari",
+   "sumber": "diperbaiki 2026-09-20 (temuan ChatGPT, dicek Claude)"
   },
   "社長": {
    "kana": "しゃちょう",
