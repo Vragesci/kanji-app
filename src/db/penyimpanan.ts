@@ -1,7 +1,7 @@
 import { openDB, type DBSchema, type IDBPDatabase } from "idb";
 import type { AppData, KanjiState } from "../types";
 
-// IndexedDB, bukan localStorage: datanya besar (satu rekaman per kanji, 1.356 kanji).
+// IndexedDB, bukan localStorage: datanya besar (satu rekaman per kanji, 1.377 kanji).
 // `kanji`: kunci = huruf kanji, nilai = KanjiState. `meta`: satu rekaman "app".
 type Meta = Omit<AppData, "ks">;
 

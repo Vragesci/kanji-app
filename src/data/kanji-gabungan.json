@@ -16,7 +16,7 @@
    "N2",
    "N1"
   ],
-  "jumlah_kanji": 1356,
+  "jumlah_kanji": 1377,
   "jumlah_kosakata": 2260,
   "diolah": "2026-09-18",
   "catatan": "seg = [karakter, bacaan] untuk soal rakit kosakata; seg_valid=false berarti bacaan khusus/belum terverifikasi. distraktor dipilih dari kesamaan komponen kanji (KRADFILE, EDRDG, CC BY-SA). arti_sumber = arti asli sebelum dikoreksi.",
@@ -144,6 +144,29 @@
    "脅迫",
    "穴熊",
    "棋聖"
+  ],
+  "kanji_tambahan_2026-09-20": [
+   "賓",
+   "牲",
+   "葛",
+   "繊",
+   "堀",
+   "后",
+   "賠",
+   "披",
+   "奇",
+   "拐",
+   "糾",
+   "謹",
+   "亀",
+   "懲",
+   "穴",
+   "句",
+   "銘",
+   "秩",
+   "棋",
+   "虚",
+   "膜"
   ]
  },
  "kanji": [
@@ -24762,6 +24785,323 @@
     "討",
     "封",
     "寺"
+   ]
+  },
+  {
+   "kanji": "賓",
+   "tingkat": "N1",
+   "kosakata": [
+    "迎賓館"
+   ],
+   "bacaan": [
+    "ひん"
+   ],
+   "distraktor": [
+    "貧",
+    "賞",
+    "債"
+   ]
+  },
+  {
+   "kanji": "牲",
+   "tingkat": "N1",
+   "kosakata": [
+    "犠牲者",
+    "犠牲"
+   ],
+   "bacaan": [
+    "せい"
+   ],
+   "distraktor": [
+    "性",
+    "生",
+    "犠"
+   ]
+  },
+  {
+   "kanji": "葛",
+   "tingkat": "N1",
+   "kosakata": [
+    "葛藤"
+   ],
+   "bacaan": [
+    "かっ"
+   ],
+   "distraktor": [
+    "掲",
+    "暮",
+    "募"
+   ]
+  },
+  {
+   "kanji": "繊",
+   "tingkat": "N1",
+   "kosakata": [
+    "繊維"
+   ],
+   "bacaan": [
+    "せん"
+   ],
+   "distraktor": [
+    "織",
+    "識",
+    "微"
+   ]
+  },
+  {
+   "kanji": "堀",
+   "tingkat": "N1",
+   "kosakata": [
+    "堀江"
+   ],
+   "bacaan": [
+    "ほり"
+   ],
+   "distraktor": [
+    "堅",
+    "場",
+    "塩"
+   ]
+  },
+  {
+   "kanji": "后",
+   "tingkat": "N1",
+   "kosakata": [
+    "皇后"
+   ],
+   "bacaan": [
+    "ごう"
+   ],
+   "distraktor": [
+    "右",
+    "石",
+    "台"
+   ]
+  },
+  {
+   "kanji": "賠",
+   "tingkat": "N1",
+   "kosakata": [
+    "賠償"
+   ],
+   "bacaan": [
+    "ばい"
+   ],
+   "distraktor": [
+    "倍",
+    "賛",
+    "貯"
+   ]
+  },
+  {
+   "kanji": "披",
+   "tingkat": "N1",
+   "kosakata": [
+    "披露"
+   ],
+   "bacaan": [
+    "ひ"
+   ],
+   "distraktor": [
+    "彼",
+    "被",
+    "波"
+   ]
+  },
+  {
+   "kanji": "奇",
+   "tingkat": "N1",
+   "kosakata": [
+    "奇跡",
+    "奇妙"
+   ],
+   "bacaan": [
+    "き"
+   ],
+   "distraktor": [
+    "寄",
+    "崎",
+    "椅"
+   ]
+  },
+  {
+   "kanji": "拐",
+   "tingkat": "N1",
+   "kosakata": [
+    "誘拐"
+   ],
+   "bacaan": [
+    "かい"
+   ],
+   "distraktor": [
+    "招",
+    "抱",
+    "括"
+   ]
+  },
+  {
+   "kanji": "糾",
+   "tingkat": "N1",
+   "kosakata": [
+    "紛糾"
+   ],
+   "bacaan": [
+    "きゅう"
+   ],
+   "distraktor": [
+    "紅",
+    "紛",
+    "収"
+   ]
+  },
+  {
+   "kanji": "謹",
+   "tingkat": "N1",
+   "kosakata": [
+    "謹慎"
+   ],
+   "bacaan": [
+    "きん"
+   ],
+   "distraktor": [
+    "勤",
+    "漢",
+    "権"
+   ]
+  },
+  {
+   "kanji": "亀",
+   "tingkat": "N1",
+   "kosakata": [
+    "亀裂"
+   ],
+   "bacaan": [
+    "き"
+   ],
+   "distraktor": [
+    "竜",
+    "電",
+    "魚"
+   ]
+  },
+  {
+   "kanji": "懲",
+   "tingkat": "N1",
+   "kosakata": [
+    "懲戒"
+   ],
+   "bacaan": [
+    "ちょう"
+   ],
+   "distraktor": [
+    "徴",
+    "微",
+    "徳"
+   ]
+  },
+  {
+   "kanji": "穴",
+   "tingkat": "N1",
+   "kosakata": [
+    "穴熊"
+   ],
+   "bacaan": [
+    "あな"
+   ],
+   "distraktor": [
+    "究",
+    "空",
+    "突"
+   ]
+  },
+  {
+   "kanji": "句",
+   "tingkat": "N1",
+   "kosakata": [
+    "俳句"
+   ],
+   "bacaan": [
+    "く"
+   ],
+   "distraktor": [
+    "旬",
+    "何",
+    "包"
+   ]
+  },
+  {
+   "kanji": "銘",
+   "tingkat": "N1",
+   "kosakata": [
+    "銘柄"
+   ],
+   "bacaan": [
+    "めい"
+   ],
+   "distraktor": [
+    "鈍",
+    "銅",
+    "鋭"
+   ]
+  },
+  {
+   "kanji": "秩",
+   "tingkat": "N1",
+   "kosakata": [
+    "秩序"
+   ],
+   "bacaan": [
+    "ちつ"
+   ],
+   "distraktor": [
+    "秋",
+    "秘",
+    "移"
+   ]
+  },
+  {
+   "kanji": "棋",
+   "tingkat": "N1",
+   "kosakata": [
+    "棋聖"
+   ],
+   "bacaan": [
+    "き"
+   ],
+   "distraktor": [
+    "基",
+    "期",
+    "旗"
+   ]
+  },
+  {
+   "kanji": "虚",
+   "tingkat": "N1",
+   "kosakata": [
+    "虚偽"
+   ],
+   "bacaan": [
+    "きょ"
+   ],
+   "distraktor": [
+    "慮",
+    "処",
+    "席"
+   ]
+  },
+  {
+   "kanji": "膜",
+   "tingkat": "N1",
+   "kosakata": [
+    "網膜"
+   ],
+   "bacaan": [
+    "まく"
+   ],
+   "distraktor": [
+    "幕",
+    "模",
+    "漠"
    ]
   }
  ],

@@ -18,7 +18,7 @@ function Chip({ aktifnya, onClick, children }: { aktifnya: boolean; onClick: () 
   );
 }
 
-/** Beranda: pengaturan dasar, tombol mulai, dan peta kanji. Tombol mulai di atas peta karena petanya panjang (hingga 1.356 kotak). */
+/** Beranda: pengaturan dasar, tombol mulai, dan peta kanji. Tombol mulai di atas peta karena petanya panjang (hingga 1.377 kotak). */
 export function Beranda({ data, t, ubah, onMulai, onTentang }: {
   data: AppData; t: string; ubah: (fn: (d: AppData) => AppData) => void; onMulai: (m: ModeSesi) => void; onTentang: () => void;
 }) {
