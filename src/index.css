@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+@theme {
+  --color-latar: #F5F7F9;
+  --color-tinta: #1D2330;
+  --color-redup: #5F6878;
+  --color-garis: #DCE1E8;
+  --color-aksen: #1F4E79;
+  --color-merah: #C0392B;
+  --color-oranye: #D9822B;
+  --color-hijau: #23874F;
+  --color-benar: #E6F3EC;
+  --color-salah: #F8E5E3;
+  --color-kotak: #EEF1F5;
+  --color-panduan: #D5DBE3;
+  /* Font sistem: tanpa unduhan, jalan luring. Teks Jepang diberi lang="ja" supaya
+     Android memilih bentuk glif Jepang, bukan Tionghoa. */
+  --font-jp: "Hiragino Sans", "Noto Sans CJK JP", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+}
+
+html, body, #root { min-height: 100dvh; }
+body {
+  background: var(--color-latar);
+  color: var(--color-tinta);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+button:focus-visible { outline: 2px solid var(--color-aksen); outline-offset: 2px; }
