@@ -8,7 +8,7 @@ const bacaTutup = () => { try { return localStorage.getItem(KUNCI_TUTUP) === "1"
 const simpanTutup = () => { try { localStorage.setItem(KUNCI_TUTUP, "1"); } catch { /* abaikan */ } };
 
 const ALASAN_IOS =
-  "iPhone dapat menghapus kemajuan belajar yang tersimpan di browser kalau tidak dibuka sekitar seminggu. Aplikasi yang dipasang di layar utama tidak terkena aturan itu.";
+  "iPhone dapat menghapus kemajuan belajar yang tersimpan di Safari kalau tidak dibuka sekitar seminggu. Aplikasi yang dipasang di layar utama tidak terkena aturan itu. Penting: pasang aplikasinya sebelum mulai belajar. Kemajuan yang sudah ada di Safari tidak ikut pindah ke aplikasi yang baru dipasang, karena keduanya menyimpan data secara terpisah.";
 const LANGKAH_IOS =
   "Ketuk tombol Bagikan (kotak dengan panah ke atas), lalu pilih “Tambah ke Layar Utama”. Kalau tombol itu tidak ada, buka tautan ini di Safari.";
 const LANGKAH_ANDROID =
@@ -35,8 +35,8 @@ export function BannerPasang() {
         </p>
       )}
       <div className="flex items-center gap-3 mt-3">
-        {bisaLangsung && <Btn className="!w-auto !min-h-10 !py-2" onClick={() => void pasang()}>Pasang aplikasi</Btn>}
-        <button type="button" onClick={() => { simpanTutup(); setDitutup(true); }} className="text-sm underline text-redup min-h-10">
+        {bisaLangsung && <Btn className="!w-auto !min-h-11 !py-2" onClick={() => void pasang()}>Pasang aplikasi</Btn>}
+        <button type="button" onClick={() => { simpanTutup(); setDitutup(true); }} className="text-sm underline text-redup min-h-11">
           Nanti saja
         </button>
       </div>

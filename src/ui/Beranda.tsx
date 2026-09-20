@@ -12,7 +12,7 @@ import { BannerPasang } from "./PetunjukPasang";
 function Chip({ aktifnya, onClick, children }: { aktifnya: boolean; onClick: () => void; children: string }) {
   return (
     <button type="button" onClick={onClick} aria-pressed={aktifnya}
-      className={`px-3 min-h-9 rounded-full text-xs border ${aktifnya ? "border-aksen bg-aksen text-white" : "border-garis bg-white text-redup"}`}>
+      className={`px-3 min-h-11 rounded-full text-xs border ${aktifnya ? "border-aksen bg-aksen text-white" : "border-garis bg-white text-redup"}`}>
       {children}
     </button>
   );
@@ -66,7 +66,7 @@ export function Beranda({ data, t, ubah, onMulai, onTentang }: {
 
       <div className="space-y-3 mt-6">
         <Btn onClick={() => onMulai("learn")} disabled={adaBelajar === 0}>Lanjutkan belajar</Btn>
-        <Btn kind="ghost" onClick={() => onMulai("review")} disabled={tersedia === 0}>Review kanji yang sudah hafal</Btn>
+        <Btn kind="ghost" onClick={() => onMulai("review")} disabled={tersedia === 0}>Ulangi kanji yang sudah hafal</Btn>
         {adaBelajar === 0 && (
           <p className="text-sm text-center text-redup">Sesi hari ini sudah selesai. Kanji berikutnya muncul besok.</p>
         )}
@@ -80,7 +80,7 @@ export function Beranda({ data, t, ubah, onMulai, onTentang }: {
         <p className="font-bold text-sm">Data uji coba</p>
         <p className="text-sm mt-2">Hari latihan: {hariLatihan}</p>
         <p className="text-sm">Akurasi rata-rata 5 sesi terakhir: {rata === null ? "belum ada" : `${rata}%`}</p>
-        <button type="button" onClick={() => setAlat(!alat)} className="text-xs mt-3 underline text-redup min-h-9">
+        <button type="button" onClick={() => setAlat(!alat)} className="text-xs mt-3 underline text-redup min-h-11">
           {alat ? "Sembunyikan alat uji" : "Alat uji (khusus guru)"}
         </button>
         {alat && (

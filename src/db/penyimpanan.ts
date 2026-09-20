@@ -18,9 +18,12 @@ export const KOSONG: AppData = { ks: {}, offset: 0, lastAcc: null, log: [], tg: 
 let dbPromise: Promise<IDBPDatabase<Skema>> | null = null;
 const buka = () =>
   (dbPromise ??= openDB<Skema>(NAMA_DB, VERSI, {
-    upgrade(db) {
-      db.createObjectStore("kanji");
-      db.createObjectStore("meta");
+    upgrade(db, versiLama) {
+      // bersyarat menurut versi lama: menaikkan VERSI kelak tidak boleh membuat ulang store yang sudah ada
+      if (versiLama < 1) {
+        db.createObjectStore("kanji");
+        db.createObjectStore("meta");
+      }
     },
   }));
 

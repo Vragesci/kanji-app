@@ -37,7 +37,7 @@ export function KotakKanji({ k, s, t, ukuran }: { k: string; s: KanjiState | und
     orange: "bg-oranye text-white border border-oranye",
     green: "bg-hijau text-white border border-hijau",
   };
-  const opacity = st === "green" ? 0.35 + greenStrength(s!, t) * 0.65 : undefined;
+  const opacity = st === "green" ? 0.35 + Math.max(0.35, greenStrength(s!, t)) * 0.65 : undefined;
   return (
     <Jp as="div" role="img" aria-label={`${k}, ${NAMA_STATUS[st]}`}
       className={`flex items-center justify-center rounded-lg ${gaya[st]} ${ukuran ? "" : "w-full aspect-square text-xl"}`}

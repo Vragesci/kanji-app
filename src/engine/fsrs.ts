@@ -62,11 +62,11 @@ export function statusOf(s: KanjiState | undefined): Status {
   return "red";
 }
 
-/** kekuatan hijau = peluang murid masih ingat hari ini (retrievability FSRS) */
+/** kekuatan hijau = peluang murid masih ingat hari ini (retrievability FSRS asli, 0..1; batas visual ada di UI) */
 export function greenStrength(s: KanjiState, t: string): number {
   const { S } = fsrsState(s);
-  const R = ingat(Math.max(0, diff(s.lastReview!, t)), S);
-  return Math.max(0.35, Math.min(1, R));
+  const R = ingat(Math.max(0, diff(s.lastReview ?? t, t)), S);
+  return Math.min(1, R);
 }
 
 export const isDue = (s: KanjiState, t: string): boolean => s.due! <= t && s.lastSeen !== t;

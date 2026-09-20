@@ -34,6 +34,13 @@ export function PetaKanji({ data, t }: { data: AppData; t: string }) {
 
   return (
     <section aria-label="Peta kanji">
+      <div className="flex flex-wrap gap-x-4 gap-y-1 mt-3 text-xs text-redup">
+        {LEGENDA.map((l) => (
+          <span key={l.teks} className="flex items-center gap-1">
+            <i className={`inline-block size-3 rounded ${l.kelas}`} />{l.teks}
+          </span>
+        ))}
+      </div>
       {grup.map((g) => {
         const hafal = g.isi.filter((x) => statusOf(data.ks[x.kanji]) === "green").length;
         return (
@@ -47,13 +54,6 @@ export function PetaKanji({ data, t }: { data: AppData; t: string }) {
           </div>
         );
       })}
-      <div className="flex flex-wrap gap-x-4 gap-y-1 mt-3 text-xs text-redup">
-        {LEGENDA.map((l) => (
-          <span key={l.teks} className="flex items-center gap-1">
-            <i className={`inline-block size-3 rounded ${l.kelas}`} />{l.teks}
-          </span>
-        ))}
-      </div>
     </section>
   );
 }

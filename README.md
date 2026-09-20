@@ -39,7 +39,7 @@ Data belajar ada di IndexedDB dan tidak terpengaruh pembaruan.
 
 Beranda menampilkan kartu "Pasang di layar utama" selama aplikasi dibuka dari tab browser dan belum ditutup murid.
 Isinya menyesuaikan perangkat: iPhone/iPad mendapat langkah manual (Safari tidak punya tombol pasang) beserta alasannya, yaitu
-iOS dapat menghapus data situs yang tidak dibuka sekitar seminggu kecuali aplikasinya dipasang; Android/Chrome mendapat tombol
+iOS dapat menghapus data situs yang tidak dibuka sekitar seminggu kecuali aplikasinya dipasang, dan data di Safari tidak ikut pindah ke aplikasi yang baru dipasang (jadi murid diminta memasang sebelum mulai belajar); Android/Chrome mendapat tombol
 "Pasang aplikasi" bila browser menawarkannya, atau petunjuk menu bila tidak. Panduan lengkap selalu ada di halaman Tentang.
 Kode: `src/pasang.ts` dan `src/ui/PetunjukPasang.tsx`.
 

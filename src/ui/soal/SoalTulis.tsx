@@ -60,7 +60,7 @@ export function SoalTulis({ k, v, onSelesai }: { k: string; v: Kosakata; onSeles
         )}
         <canvas
           ref={kanvas} width={PIKSEL} height={PIKSEL}
-          className="absolute inset-0 w-full h-full touch-none"
+          role="img" aria-label="Area menulis kanji: gambar dengan jari atau pena" className="absolute inset-0 w-full h-full touch-none"
           onPointerDown={turun} onPointerMove={gerak} onPointerUp={angkat} onPointerLeave={angkat}
         />
       </div>

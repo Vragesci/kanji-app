@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRegisterSW } from "virtual:pwa-register/react";
-import { hariIni } from "./engine/tanggal";
+import { addDays, fmt } from "./engine/tanggal";
 import type { ModeSesi } from "./types";
 import { useAppData } from "./useAppData";
 import { Beranda } from "./ui/Beranda";
@@ -12,6 +12,15 @@ export default function App() {
   const { data, ubah, ambil, tersimpan } = useAppData();
   const [sesi, setSesi] = useState<{ mode: ModeSesi; nomor: number } | null>(null);
   const [tentang, setTentang] = useState(false);
+  // tanggal lokal hari ini; diperbarui saat aplikasi kembali terlihat dan tiap menit, supaya
+  // beranda yang dibiarkan terbuka melewati tengah malam tidak tetap memakai tanggal kemarin
+  const [hari, setHari] = useState(() => fmt(new Date()));
+  useEffect(() => {
+    const cek = () => setHari(fmt(new Date()));
+    const timer = window.setInterval(cek, 60_000);
+    document.addEventListener("visibilitychange", cek);
+    return () => { window.clearInterval(timer); document.removeEventListener("visibilitychange", cek); };
+  }, []);
   // versi baru diunduh di latar belakang; dipasang hanya atas permintaan murid, di luar sesi
   const { needRefresh: [adaVersiBaru], updateServiceWorker } = useRegisterSW();
   // vite-plugin-pwa hanya memuat ulang untuk pembaruan yang ditemukan saat halaman dibuka; kalau
@@ -22,7 +31,7 @@ export default function App() {
   };
 
   if (!data) return <div className="p-6 text-sm text-redup">Memuat…</div>;
-  const t = hariIni(data.offset);
+  const t = addDays(hari, data.offset);
 
   return (
     <div className="min-h-dvh pb-[env(safe-area-inset-bottom)]">
@@ -34,7 +43,7 @@ export default function App() {
       {adaVersiBaru && !sesi && (
         <div role="status" className="max-w-md mx-auto px-5 pt-4 flex items-center gap-3">
           <p className="flex-1 text-sm">Versi baru aplikasi tersedia.</p>
-          <Btn className="!w-auto !min-h-10 !py-2" onClick={perbarui}>Perbarui</Btn>
+          <Btn className="!w-auto !min-h-11 !py-2" onClick={perbarui}>Perbarui</Btn>
         </div>
       )}
       <main className="max-w-md mx-auto px-5 py-6">

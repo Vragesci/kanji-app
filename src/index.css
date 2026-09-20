@@ -7,12 +7,12 @@
   --color-garis: #DCE1E8;
   --color-aksen: #1F4E79;
   --color-merah: #C0392B;
-  --color-oranye: #D9822B;
-  --color-hijau: #23874F;
+  --color-oranye: #B85C00;
+  --color-hijau: #1F7A46;
   --color-benar: #E6F3EC;
   --color-salah: #F8E5E3;
   --color-kotak: #EEF1F5;
-  --color-panduan: #D5DBE3;
+  --color-panduan: #B4BDCA;
   /* Font sistem: tanpa unduhan, jalan luring. Teks Jepang diberi lang="ja" supaya
      Android memilih bentuk glif Jepang, bukan Tionghoa. */
   --font-jp: "Hiragino Sans", "Noto Sans CJK JP", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;

@@ -18,7 +18,9 @@ interface Props {
   onKeluar: () => void;
 }
 
-export function Sesi({ mode, data, t, ubah, ambil, onKeluar }: Props) {
+export function Sesi({ mode, data, t: tHariIni, ubah, ambil, onKeluar }: Props) {
+  // tanggal dikunci saat sesi dimulai: sesi yang melewati tengah malam tetap satu tanggal
+  const [t] = useState(tHariIni);
   const [rencana] = useState(() => buildSession(data, t, mode));
   const [quiz, setQuiz] = useState<ItemSoal[]>(rencana.quiz);
   const [tulis, setTulis] = useState<string[]>(rencana.write);
@@ -74,7 +76,7 @@ export function Sesi({ mode, data, t, ubah, ambil, onKeluar }: Props) {
       <div className="flex items-center gap-3">
         <button type="button" onClick={onKeluar} aria-label="Keluar dari sesi"
           className="text-2xl size-11 shrink-0 rounded-full bg-white border border-garis">×</button>
-        <div className="flex-1 h-2 rounded-full bg-garis" role="progressbar" aria-valuenow={Math.round(progres * 100)} aria-valuemin={0} aria-valuemax={100}>
+        <div className="flex-1 h-2 rounded-full bg-garis" role="progressbar" aria-label="Kemajuan sesi" aria-valuenow={Math.round(progres * 100)} aria-valuemin={0} aria-valuemax={100}>
           <div className="h-2 rounded-full bg-aksen transition-[width] duration-300" style={{ width: `${progres * 100}%` }} />
         </div>
       </div>

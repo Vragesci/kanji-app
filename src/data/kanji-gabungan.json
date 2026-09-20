@@ -206,7 +206,19 @@
    "温泉",
    "通過",
    "真ん中",
-   "コピー機"
+   "コピー機",
+   "電話番号",
+   "近所",
+   "苦手（な）",
+   "お祝い",
+   "専門",
+   "技術",
+   "吹く",
+   "労働",
+   "触れる",
+   "国家",
+   "引く",
+   "早い"
   ]
  },
  "kanji": [
@@ -26325,7 +26337,7 @@
   "電話番号": {
    "kana": "でんわばんごう",
    "romaji": "denwabangou",
-   "arti": "nomor hp",
+   "arti": "nomor telepon",
    "seg": [
     [
      "電",
@@ -26347,7 +26359,9 @@
    "seg_valid": true,
    "tingkat": "JFT",
    "level": "初級2",
-   "bab": 3
+   "bab": 3,
+   "arti_sumber": "nomor hp",
+   "sumber": "diperbaiki 2026-09-20 (cek silang ChatGPT, dicek Claude)"
   },
   "季節": {
    "kana": "きせつ",
@@ -27369,7 +27383,7 @@
   "近所": {
    "kana": "きんじょ",
    "romaji": "kinjo",
-   "arti": "tetangga",
+   "arti": "lingkungan sekitar",
    "seg": [
     [
      "近",
@@ -27383,7 +27397,9 @@
    "seg_valid": true,
    "tingkat": "JFT",
    "level": "初級2",
-   "bab": 14
+   "bab": 14,
+   "arti_sumber": "tetangga",
+   "sumber": "diperbaiki 2026-09-20 (cek silang ChatGPT, dicek Claude)"
   },
   "最近": {
    "kana": "さいきん",
@@ -28907,7 +28923,7 @@
   "苦手（な）": {
    "kana": "にがて（な）",
    "romaji": "nigate（na）",
-   "arti": "menghindari / tidak suka",
+   "arti": "kurang mahir; tidak suka",
    "seg": [
     [
      "苦",
@@ -28933,7 +28949,9 @@
    "seg_valid": true,
    "tingkat": "JFT",
    "level": "初級1",
-   "bab": 12
+   "bab": 12,
+   "arti_sumber": "menghindari / tidak suka",
+   "sumber": "diperbaiki 2026-09-20 (cek silang ChatGPT, dicek Claude)"
   },
   "苦労する": {
    "kana": "くろうする",
@@ -30205,7 +30223,7 @@
   "お祝い": {
    "kana": "おいわい",
    "romaji": "oiwai",
-   "arti": "acara",
+   "arti": "perayaan",
    "seg": [
     [
      "お",
@@ -30223,7 +30241,9 @@
    "seg_valid": true,
    "tingkat": "JFT",
    "level": "初級1",
-   "bab": 18
+   "bab": 18,
+   "arti_sumber": "acara",
+   "sumber": "diperbaiki 2026-09-20 (cek silang ChatGPT, dicek Claude)"
   },
   "結婚": {
    "kana": "けっこん",
@@ -34992,7 +35012,7 @@
   "吹く": {
    "kana": "ふく",
    "romaji": "fuku",
-   "arti": "Tertiup",
+   "arti": "Meniup; berembus",
    "seg": [
     [
      "吹",
@@ -35005,7 +35025,9 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "no": 186
+   "no": 186,
+   "arti_sumber": "Tertiup",
+   "sumber": "diperbaiki 2026-09-20 (cek silang ChatGPT, dicek Claude)"
   },
   "拭く": {
    "kana": "ふく",
@@ -36778,7 +36800,7 @@
   "専門": {
    "kana": "せんもん",
    "romaji": "senmon",
-   "arti": "Jurusan",
+   "arti": "Bidang keahlian",
    "seg": [
     [
      "専",
@@ -36791,7 +36813,9 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "no": 304
+   "no": 304,
+   "arti_sumber": "Jurusan",
+   "sumber": "diperbaiki 2026-09-20 (cek silang ChatGPT, dicek Claude)"
   },
   "嫌": {
    "kana": "いや",
@@ -38060,7 +38084,7 @@
   "技術": {
    "kana": "ぎじゅつ",
    "romaji": "gijutsu",
-   "arti": "Teknologi",
+   "arti": "Teknik; teknologi",
    "seg": [
     [
      "技",
@@ -38076,7 +38100,9 @@
    "no": 385,
    "juga_di": [
     "N2"
-   ]
+   ],
+   "arti_sumber": "Teknologi",
+   "sumber": "diperbaiki 2026-09-20 (cek silang ChatGPT, dicek Claude)"
   },
   "関係": {
    "kana": "かんけい",
@@ -39093,7 +39119,7 @@
   "早い": {
    "kana": "はやい",
    "romaji": "hayai",
-   "arti": "Cepat",
+   "arti": "Lebih awal; cepat",
    "seg": [
     [
      "早",
@@ -39106,7 +39132,9 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "no": 448
+   "no": 448,
+   "arti_sumber": "Cepat",
+   "sumber": "diperbaiki 2026-09-20 (cek silang ChatGPT, dicek Claude)"
   },
   "案内": {
    "kana": "あんない",
@@ -40122,7 +40150,7 @@
   "引く": {
    "kana": "ひく",
    "romaji": "hiku",
-   "arti": "Memetik",
+   "arti": "Menarik",
    "seg": [
     [
      "引",
@@ -40135,7 +40163,9 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "no": 536
+   "no": 536,
+   "arti_sumber": "Memetik",
+   "sumber": "diperbaiki 2026-09-20 (cek silang ChatGPT, dicek Claude)"
   },
   "無くす": {
    "kana": "なくす",
@@ -41877,7 +41907,7 @@
   "国家": {
    "kana": "こっか",
    "romaji": "kokka",
-   "arti": "Bangsa",
+   "arti": "Negara; kenegaraan",
    "seg": [
     [
      "国",
@@ -41890,7 +41920,9 @@
    ],
    "seg_valid": true,
    "tingkat": "N2",
-   "no": 43
+   "no": 43,
+   "arti_sumber": "Bangsa",
+   "sumber": "diperbaiki 2026-09-20 (cek silang ChatGPT, dicek Claude)"
   },
   "私立": {
    "kana": "しりつ",
@@ -42243,7 +42275,7 @@
   "労働": {
    "kana": "ろうどう",
    "romaji": "roudou",
-   "arti": "Buruh",
+   "arti": "Kerja; tenaga kerja",
    "seg": [
     [
      "労",
@@ -42256,7 +42288,9 @@
    ],
    "seg_valid": true,
    "tingkat": "N2",
-   "no": 587
+   "no": 587,
+   "arti_sumber": "Buruh",
+   "sumber": "diperbaiki 2026-09-20 (cek silang ChatGPT, dicek Claude)"
   },
   "生地": {
    "kana": "きじ",
@@ -48166,7 +48200,7 @@
   "触れる": {
    "kana": "ふれる",
    "romaji": "fureru",
-   "arti": "Tersentuh",
+   "arti": "Menyentuh; bersentuhan",
    "seg": [
     [
      "触",
@@ -48183,7 +48217,9 @@
    ],
    "seg_valid": true,
    "tingkat": "N2",
-   "no": 406
+   "no": 406,
+   "arti_sumber": "Tersentuh",
+   "sumber": "diperbaiki 2026-09-20 (cek silang ChatGPT, dicek Claude)"
   },
   "大勢": {
    "kana": "たいせい",

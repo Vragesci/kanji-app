@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { KAMUS, KANJI, KMAP, bisaDipelajari, bisaRakit, kosakataUntuk } from "../data/katalog";
 import { KOSONG } from "../db/penyimpanan";
 import type { AppData } from "../types";
-import { W, jarakHari, statusOf } from "./fsrs";
+import { W, greenStrength, jarakHari, statusOf } from "./fsrs";
 import { applyAnswer, applyWrite } from "./penilaian";
 import { aktif, buildSession } from "./sesi";
 import { addDays } from "./tanggal";
@@ -203,5 +203,20 @@ describe("penjaga data (kanji-gabungan.json)", () => {
       expect(x.distraktor).not.toContain(x.kanji);
       expect(KMAP[x.kanji]).toBe(x);
     }
+  });
+});
+
+describe("kekuatan hijau (pudarnya warna = retrievability)", () => {
+  it("mengembalikan retrievability asli, tanpa batas bawah visual", () => {
+    let d = baru();
+    for (let i = 0; i < 5; i++) d = applyAnswer(d, K, true, hari(i));
+    d = applyWrite(d, K, true, hari(5));
+    const s = d.ks[K]!;
+    expect(greenStrength(s, hari(5))).toBeCloseTo(1, 5);
+    expect(greenStrength(s, hari(2000))).toBeLessThan(0.35);
+  });
+  it("data lama tanpa lastReview tidak membuat perhitungan gagal", () => {
+    const s = { seen: true, vi: 0, count: 0, wrongStreak: 0, green: true, S: 10 };
+    expect(Number.isFinite(greenStrength(s, hari(3)))).toBe(true);
   });
 });
