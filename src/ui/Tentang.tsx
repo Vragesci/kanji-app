@@ -50,8 +50,8 @@ export function Tentang({ onKembali }: { onKembali: () => void }) {
         <section>
           <h2 className="font-bold text-base">Tentang arti bahasa Indonesia</h2>
           <p className="mt-2">
-            Sebagian arti, yaitu seluruh kosakata N1 serta sebagian kosakata N3 dan N5, diterjemahkan dari JMdict dengan bantuan AI
-            dan belum diperiksa pengajar. Kalau menemukan arti yang janggal, sampaikan ke pengajarmu.
+            Sebagian arti diterjemahkan dari JMdict dengan bantuan AI. Arti kosakata N5 dan N3 sudah dicocokkan dengan kamus daring;
+            arti seluruh kosakata N1 belum diperiksa. Kalau menemukan arti yang janggal, sampaikan ke pengajarmu.
           </p>
         </section>
       </div>

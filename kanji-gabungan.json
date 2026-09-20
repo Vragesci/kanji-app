@@ -38,7 +38,24 @@
    "領収",
    "黄色"
   ],
-  "atribusi": "Data kanji/kosakata tingkat JFT bersumber dari materi IRODORI (The Japan Foundation) — wajib dicantumkan bila aplikasi dipublikasikan. Bacaan & komponen kanji dari JMdict/KANJIDIC2/KRADFILE (EDRDG, CC BY-SA 4.0)."
+  "atribusi": "Data kanji/kosakata tingkat JFT bersumber dari materi IRODORI (The Japan Foundation) — wajib dicantumkan bila aplikasi dipublikasikan. Bacaan & komponen kanji dari JMdict/KANJIDIC2/KRADFILE (EDRDG, CC BY-SA 4.0).",
+  "koreksi_audit_2026-09-20": [
+   "金魚",
+   "生息",
+   "書房",
+   "駄目",
+   "円筒",
+   "近隣",
+   "眼科",
+   "珍重",
+   "情緒",
+   "涙声",
+   "似顔",
+   "充実",
+   "吹かす",
+   "懐疑",
+   "抜き"
+  ]
  },
  "kanji": [
   {
@@ -52939,7 +52956,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20"
   },
   "百円": {
    "kana": "ひゃくえん",
@@ -52957,7 +52974,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20"
   },
   "何": {
    "kana": "なに",
@@ -52971,7 +52988,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20"
   },
   "何人": {
    "kana": "なんにん",
@@ -52989,7 +53006,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20"
   },
   "魚": {
    "kana": "さかな",
@@ -53003,12 +53020,12 @@
    ],
    "seg_valid": true,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20"
   },
   "金魚": {
    "kana": "きんぎょ",
    "romaji": "kingyo",
-   "arti": "Ikan mas",
+   "arti": "Ikan mas koki (goldfish)",
    "seg": [
     [
      "金",
@@ -53021,7 +53038,8 @@
    ],
    "seg_valid": true,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20",
+   "arti_sumber": "Ikan mas"
   },
   "九": {
    "kana": "きゅう",
@@ -53035,7 +53053,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20"
   },
   "九月": {
    "kana": "くがつ",
@@ -53053,7 +53071,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20"
   },
   "五": {
    "kana": "ご",
@@ -53067,7 +53085,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20"
   },
   "五日": {
    "kana": "いつか",
@@ -53085,7 +53103,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20"
   },
   "日本語": {
    "kana": "にほんご",
@@ -53107,7 +53125,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20"
   },
   "今": {
    "kana": "いま",
@@ -53121,7 +53139,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20"
   },
   "今日": {
    "kana": "きょう",
@@ -53135,7 +53153,7 @@
    ],
    "seg_valid": false,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20"
   },
   "今月": {
    "kana": "こんげつ",
@@ -53153,7 +53171,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20"
   },
   "三": {
    "kana": "さん",
@@ -53167,7 +53185,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20"
   },
   "三月": {
    "kana": "さんがつ",
@@ -53185,7 +53203,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20"
   },
   "三つ": {
    "kana": "みっつ",
@@ -53203,7 +53221,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20"
   },
   "四": {
    "kana": "よん",
@@ -53217,7 +53235,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20"
   },
   "四月": {
    "kana": "しがつ",
@@ -53235,7 +53253,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20"
   },
   "四つ": {
    "kana": "よっつ",
@@ -53253,7 +53271,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20"
   },
   "七": {
    "kana": "なな",
@@ -53267,7 +53285,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20"
   },
   "七月": {
    "kana": "しちがつ",
@@ -53285,7 +53303,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20"
   },
   "七つ": {
    "kana": "ななつ",
@@ -53303,7 +53321,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20"
   },
   "十": {
    "kana": "じゅう",
@@ -53317,7 +53335,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20"
   },
   "十月": {
    "kana": "じゅうがつ",
@@ -53335,7 +53353,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20"
   },
   "千": {
    "kana": "せん",
@@ -53349,7 +53367,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20"
   },
   "千円": {
    "kana": "せんえん",
@@ -53367,7 +53385,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20"
   },
   "二": {
    "kana": "に",
@@ -53381,7 +53399,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20"
   },
   "二月": {
    "kana": "にがつ",
@@ -53399,7 +53417,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20"
   },
   "二つ": {
    "kana": "ふたつ",
@@ -53417,7 +53435,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20"
   },
   "八": {
    "kana": "はち",
@@ -53431,7 +53449,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20"
   },
   "八月": {
    "kana": "はちがつ",
@@ -53449,7 +53467,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20"
   },
   "八つ": {
    "kana": "やっつ",
@@ -53467,7 +53485,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20"
   },
   "百": {
    "kana": "ひゃく",
@@ -53481,7 +53499,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20"
   },
   "三百": {
    "kana": "さんびゃく",
@@ -53499,7 +53517,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20"
   },
   "父": {
    "kana": "ちち",
@@ -53513,7 +53531,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20"
   },
   "父母": {
    "kana": "ふぼ",
@@ -53531,7 +53549,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20"
   },
   "万": {
    "kana": "まん",
@@ -53545,7 +53563,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20"
   },
   "一万円": {
    "kana": "いちまんえん",
@@ -53567,7 +53585,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20"
   },
   "六": {
    "kana": "ろく",
@@ -53581,7 +53599,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20"
   },
   "六月": {
    "kana": "ろくがつ",
@@ -53599,7 +53617,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20"
   },
   "六つ": {
    "kana": "むっつ",
@@ -53617,7 +53635,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N5",
-   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, perlu dicek"
+   "sumber": "JMdict/KANJIDIC2 (EDRDG) + terjemahan Claude, diperiksa terhadap kamus daring 2026-09-20"
   },
   "名前": {
    "kana": "なまえ",
@@ -66112,7 +66130,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "砂丘": {
    "kana": "さきゅう",
@@ -66131,7 +66149,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "日の丸": {
    "kana": "ひのまる",
@@ -66154,7 +66172,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "終了後": {
    "kana": "しゅうりょうご",
@@ -66177,7 +66195,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "介入": {
    "kana": "かいにゅう",
@@ -66196,7 +66214,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "他人": {
    "kana": "たにん",
@@ -66215,7 +66233,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "仲介": {
    "kana": "ちゅうかい",
@@ -66234,7 +66252,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "伸び": {
    "kana": "のび",
@@ -66253,12 +66271,12 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "似顔": {
    "kana": "にがお",
    "romaji": "nigao",
-   "arti": "Sketsa wajah",
+   "arti": "Potret wajah; kemiripan wajah (singkatan dari 似顔絵)",
    "arti_en": "portrait; likeness",
    "seg": [
     [
@@ -66272,7 +66290,8 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20",
+   "arti_sumber": "Sketsa wajah"
   },
   "修正": {
    "kana": "しゅうせい",
@@ -66291,7 +66310,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "傘下": {
    "kana": "さんか",
@@ -66310,12 +66329,12 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "充実": {
    "kana": "じゅうじつ",
    "romaji": "juujitsu",
-   "arti": "Kelengkapan, kepenuhan",
+   "arti": "Kelengkapan/kecukupan; keadaan yang penuh/berisi dan memadai",
    "arti_en": "fullness; completion",
    "seg": [
     [
@@ -66329,7 +66348,8 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20",
+   "arti_sumber": "Kelengkapan, kepenuhan"
   },
   "免除": {
    "kana": "めんじょ",
@@ -66348,7 +66368,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "処分": {
    "kana": "しょぶん",
@@ -66367,7 +66387,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "功労": {
    "kana": "こうろう",
@@ -66386,7 +66406,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "努める": {
    "kana": "つとめる",
@@ -66409,7 +66429,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "厳しさ": {
    "kana": "きびしさ",
@@ -66432,12 +66452,12 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "吹かす": {
    "kana": "ふかす",
    "romaji": "fukasu",
-   "arti": "Mengisap rokok",
+   "arti": "Merokok/mengembuskan asap; menggeber mesin; (ungkapan) bergaya/bertindak sebagai ...",
    "arti_en": "to smoke (a cigarette); to behave as ...",
    "seg": [
     [
@@ -66455,7 +66475,8 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20",
+   "arti_sumber": "Mengisap rokok"
   },
   "風呂": {
    "kana": "ふろ",
@@ -66474,7 +66495,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "返り咲き": {
    "kana": "かえりざき",
@@ -66501,7 +66522,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "お喋り": {
    "kana": "おしゃべり",
@@ -66524,7 +66545,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "障壁": {
    "kana": "しょうへき",
@@ -66543,7 +66564,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "一人娘": {
    "kana": "ひとりむすめ",
@@ -66566,7 +66587,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "守備": {
    "kana": "しゅび",
@@ -66585,7 +66606,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "静寂": {
    "kana": "せいじゃく",
@@ -66604,7 +66625,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "寧ろ": {
    "kana": "むしろ",
@@ -66623,7 +66644,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "寮生": {
    "kana": "りょうせい",
@@ -66642,7 +66663,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "専務": {
    "kana": "せんむ",
@@ -66661,7 +66682,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "将校": {
    "kana": "しょうこう",
@@ -66680,7 +66701,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "届け出": {
    "kana": "とどけで",
@@ -66703,7 +66724,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "差別": {
    "kana": "さべつ",
@@ -66722,7 +66743,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "幹事": {
    "kana": "かんじ",
@@ -66741,7 +66762,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "銀座": {
    "kana": "ぎんざ",
@@ -66760,7 +66781,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "家庭": {
    "kana": "かてい",
@@ -66779,7 +66800,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "健康食品": {
    "kana": "けんこうしょくひん",
@@ -66806,7 +66827,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "忘年会": {
    "kana": "ぼうねんかい",
@@ -66829,7 +66850,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "怖がる": {
    "kana": "こわがる",
@@ -66852,12 +66873,12 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "生息": {
    "kana": "せいそく",
    "romaji": "seisoku",
-   "arti": "Hidup dan berkembang biak",
+   "arti": "Hidup; mendiami/berhabitat (di suatu tempat)",
    "arti_en": "inhabiting; living",
    "seg": [
     [
@@ -66871,12 +66892,13 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20",
+   "arti_sumber": "Hidup dan berkembang biak"
   },
   "懐疑": {
    "kana": "かいぎ",
    "romaji": "kaigi",
-   "arti": "Keraguan, skeptis",
+   "arti": "Keraguan; skeptisisme",
    "arti_en": "doubt; skepticism",
    "seg": [
     [
@@ -66890,7 +66912,8 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20",
+   "arti_sumber": "Keraguan, skeptis"
   },
   "我が国": {
    "kana": "わがくに",
@@ -66913,7 +66936,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "戻し": {
    "kana": "もどし",
@@ -66932,12 +66955,12 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "書房": {
    "kana": "しょぼう",
    "romaji": "shobou",
-   "arti": "Ruang baca; penerbit",
+   "arti": "Ruang belajar/perpustakaan; toko buku/penerbit",
    "arti_en": "study; library",
    "seg": [
     [
@@ -66951,7 +66974,8 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20",
+   "arti_sumber": "Ruang baca; penerbit"
   },
   "利払い": {
    "kana": "りばらい",
@@ -66974,12 +66998,12 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "抜き": {
    "kana": "ぬき",
    "romaji": "nuki",
-   "arti": "Tanpa, menghilangkan",
+   "arti": "Tanpa; tidak menyertakan/menghilangkan sesuatu",
    "arti_en": "leaving out; omitting",
    "seg": [
     [
@@ -66993,7 +67017,8 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20",
+   "arti_sumber": "Tanpa, menghilangkan"
   },
   "払拭": {
    "kana": "ふっしょく",
@@ -67012,7 +67037,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "拾い物": {
    "kana": "ひろいもの",
@@ -67035,7 +67060,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "探検": {
    "kana": "たんけん",
@@ -67054,7 +67079,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "高揚": {
    "kana": "こうよう",
@@ -67073,7 +67098,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "木星": {
    "kana": "もくせい",
@@ -67092,7 +67117,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "曇り空": {
    "kana": "くもりぞら",
@@ -67115,7 +67140,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "結束": {
    "kana": "けっそく",
@@ -67134,7 +67159,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "桜花": {
    "kana": "おうか",
@@ -67153,7 +67178,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "棚上げ": {
    "kana": "たなあげ",
@@ -67176,7 +67201,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "車椅子": {
    "kana": "くるまいす",
@@ -67199,7 +67224,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "新橋": {
    "kana": "しんばし",
@@ -67218,7 +67243,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "歯止め": {
    "kana": "はどめ",
@@ -67241,7 +67266,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "冷や汗": {
    "kana": "ひやあせ",
@@ -67264,12 +67289,12 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "涙声": {
    "kana": "なみだごえ",
    "romaji": "namidagoe",
-   "arti": "Suara terisak",
+   "arti": "Suara penuh air mata; suara seperti sedang menangis",
    "arti_en": "tearful voice",
    "seg": [
     [
@@ -67283,7 +67308,8 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20",
+   "arti_sumber": "Suara terisak"
   },
   "涼風": {
    "kana": "りょうふう",
@@ -67302,7 +67328,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "苦渋": {
    "kana": "くじゅう",
@@ -67321,7 +67347,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "減税": {
    "kana": "げんぜい",
@@ -67340,7 +67366,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "湖水": {
    "kana": "こすい",
@@ -67359,7 +67385,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "溶かす": {
    "kana": "とかす",
@@ -67382,7 +67408,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "停滞": {
    "kana": "ていたい",
@@ -67401,7 +67427,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "濃厚": {
    "kana": "のうこう",
@@ -67420,7 +67446,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "濡らす": {
    "kana": "ぬらす",
@@ -67443,7 +67469,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "煮物": {
    "kana": "にもの",
@@ -67462,7 +67488,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "爪切り": {
    "kana": "つめきり",
@@ -67485,12 +67511,12 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "珍重": {
    "kana": "ちんちょう",
    "romaji": "chinchou",
-   "arti": "Menghargai tinggi",
+   "arti": "Sangat menghargai; menganggap/menjaga sebagai sesuatu yang berharga",
    "arti_en": "prizing; valuing highly",
    "seg": [
     [
@@ -67504,7 +67530,8 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20",
+   "arti_sumber": "Menghargai tinggi"
   },
   "焼き畑": {
    "kana": "やきばた",
@@ -67527,7 +67554,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "疲れ": {
    "kana": "つかれ",
@@ -67546,12 +67573,12 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "眼科": {
    "kana": "がんか",
    "romaji": "ganka",
-   "arti": "Poliklinik mata",
+   "arti": "Oftalmologi; bagian/poliklinik mata",
    "arti_en": "ophthalmology",
    "seg": [
     [
@@ -67565,7 +67592,8 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20",
+   "arti_sumber": "Poliklinik mata"
   },
   "磨き": {
    "kana": "みがき",
@@ -67584,7 +67612,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "謝礼": {
    "kana": "しゃれい",
@@ -67603,7 +67631,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "終止符": {
    "kana": "しゅうしふ",
@@ -67626,12 +67654,12 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "円筒": {
    "kana": "えんとう",
    "romaji": "entou",
-   "arti": "Tabung silinder",
+   "arti": "Silinder; tabung berbentuk silinder",
    "arti_en": "cylinder",
    "seg": [
     [
@@ -67645,7 +67673,8 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20",
+   "arti_sumber": "Tabung silinder"
   },
   "本箱": {
    "kana": "ほんばこ",
@@ -67664,7 +67693,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "割り箸": {
    "kana": "わりばし",
@@ -67687,7 +67716,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "書簡": {
    "kana": "しょかん",
@@ -67706,7 +67735,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "紅白": {
    "kana": "こうはく",
@@ -67725,7 +67754,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "紫外線": {
    "kana": "しがいせん",
@@ -67748,7 +67777,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "紹介文": {
    "kana": "しょうかいぶん",
@@ -67771,7 +67800,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "緑地": {
    "kana": "りょくち",
@@ -67790,12 +67819,12 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "情緒": {
    "kana": "じょうちょ",
    "romaji": "joucho",
-   "arti": "Suasana hati, nuansa rasa",
+   "arti": "Emosi/perasaan; suasana/nuansa",
    "arti_en": "emotion; feeling",
    "seg": [
     [
@@ -67809,7 +67838,8 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20",
+   "arti_sumber": "Suasana hati, nuansa rasa"
   },
   "山肌": {
    "kana": "やまはだ",
@@ -67828,7 +67858,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "背景": {
    "kana": "はいけい",
@@ -67847,7 +67877,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "脱税": {
    "kana": "だつぜい",
@@ -67866,7 +67896,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "腰痛": {
    "kana": "ようつう",
@@ -67885,7 +67915,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "腹部": {
    "kana": "ふくぶ",
@@ -67904,7 +67934,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "出荷": {
    "kana": "しゅっか",
@@ -67923,7 +67953,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "希薄": {
    "kana": "きはく",
@@ -67942,7 +67972,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "衣料": {
    "kana": "いりょう",
@@ -67961,7 +67991,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "内訳": {
    "kana": "うちわけ",
@@ -67980,7 +68010,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "課題": {
    "kana": "かだい",
@@ -67999,7 +68029,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "感謝": {
    "kana": "かんしゃ",
@@ -68018,7 +68048,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "貧困": {
    "kana": "ひんこん",
@@ -68037,7 +68067,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "市販": {
    "kana": "しはん",
@@ -68056,7 +68086,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "貯金": {
    "kana": "ちょきん",
@@ -68075,7 +68105,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "貼付": {
    "kana": "ちょうふ",
@@ -68094,7 +68124,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "路線": {
    "kana": "ろせん",
@@ -68113,7 +68143,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "踊り子": {
    "kana": "おどりこ",
@@ -68136,7 +68166,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "後輩": {
    "kana": "こうはい",
@@ -68155,7 +68185,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "一本釣り": {
    "kana": "いっぽんづり",
@@ -68182,7 +68212,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "もつ鍋": {
    "kana": "もつなべ",
@@ -68205,12 +68235,12 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "近隣": {
    "kana": "きんりん",
    "romaji": "kinrin",
-   "arti": "Sekitar, tetangga",
+   "arti": "Lingkungan/daerah sekitar; sekitar/dekat",
    "arti_en": "neighbourhood; neighborhood",
    "seg": [
     [
@@ -68224,7 +68254,8 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20",
+   "arti_sumber": "Sekitar, tetangga"
   },
   "靴下": {
    "kana": "くつした",
@@ -68243,12 +68274,12 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "駄目": {
    "kana": "だめ",
    "romaji": "dame",
-   "arti": "Tidak boleh, percuma",
+   "arti": "Tidak baik/tidak berguna; sia-sia; tidak boleh/tidak bisa",
    "arti_en": "no good; not serving its purpose",
    "seg": [
     [
@@ -68262,7 +68293,8 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20",
+   "arti_sumber": "Tidak boleh, percuma"
   },
   "理髪": {
    "kana": "りはつ",
@@ -68281,7 +68313,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "悪魔": {
    "kana": "あくま",
@@ -68300,7 +68332,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "黄金": {
    "kana": "おうごん",
@@ -68319,7 +68351,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "低下": {
    "kana": "ていか",
@@ -68338,7 +68370,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   },
   "押し": {
    "kana": "おし",
@@ -68357,7 +68389,7 @@
    ],
    "seg_valid": true,
    "tingkat": "N3",
-   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — perlu dicek"
+   "sumber": "JMdict (EDRDG, CC BY-SA 4.0); arti Indonesia oleh Claude — diperiksa terhadap kamus daring 2026-09-20"
   }
  }
 }
