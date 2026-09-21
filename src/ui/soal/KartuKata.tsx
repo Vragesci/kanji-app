@@ -1,4 +1,5 @@
 import type { Kosakata } from "../../types";
+import { kapital } from "../../data/pengecoh";
 import { Jp } from "../komponen";
 
 export function KartuKata({ kata, v, ringkas }: { kata: string; v: Kosakata; ringkas?: boolean }) {
@@ -7,7 +8,7 @@ export function KartuKata({ kata, v, ringkas }: { kata: string; v: Kosakata; rin
       <Jp as="p" className={ringkas ? "text-3xl" : "text-5xl"}>{kata}</Jp>
       <Jp as="p" className="text-lg mt-1 text-aksen">{v.kana}</Jp>
       <p className="text-sm text-redup">{v.romaji}</p>
-      <p className="mt-2 font-medium">{v.arti}</p>
+      <p className="mt-2 font-medium">{kapital(v.arti)}</p>
     </div>
   );
 }

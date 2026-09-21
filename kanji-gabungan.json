@@ -218,7 +218,8 @@
    "触れる",
    "国家",
    "引く",
-   "早い"
+   "早い",
+   "春"
   ]
  },
  "kanji": [
@@ -26388,7 +26389,7 @@
   "春": {
    "kana": "はる",
    "romaji": "haru",
-   "arti": "semi",
+   "arti": "musim semi",
    "seg": [
     [
      "春",
@@ -26404,7 +26405,8 @@
    ],
    "arti_lain": [
     "N3: Musim semi"
-   ]
+   ],
+   "arti_sumber": "semi"
   },
   "夏": {
    "kana": "なつ",
