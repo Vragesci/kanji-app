@@ -179,6 +179,20 @@ describe("penyusun sesi (metode 1, 5–7)", () => {
     });
     expect(jenis).toEqual(["meaning", "reading", "rakit", "meaning", "reading", "rakit"]);
   });
+
+  it("sesi murid baru (semua kanji hitungan 0) tetap bergiliran, tidak satu jenis saja", () => {
+    const p = buildSession(baru({ tg: "N5", lastAcc: null }), HARI0);
+    expect(new Set(p.quiz.map((x) => x.type)).size).toBeGreaterThan(1);
+  });
+
+  it("kata tidak tampil dua kali dalam satu sesi walau dua kanji berbeda berbagi kata yang sama (mis. 学生)", () => {
+    const semua = aktif({ tg: "N1" }).map((x) => x.kanji);
+    const jadi = (count: number) => ({ seen: true, vi: 0, count, wrongStreak: 0, everCorrect: true, lastSeen: hari(-1), due: HARI0 });
+    const ks = Object.fromEntries(semua.slice(0, 60).map((k) => [k, jadi(2)]));
+    const p = buildSession(baru({ tg: "N1", ks, lastAcc: 0.8 }), HARI0);
+    const kata = p.quiz.map((x) => x.kata);
+    expect(new Set(kata).size).toBe(kata.length);
+  });
 });
 
 describe("penjaga data (kanji-gabungan.json)", () => {

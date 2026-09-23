@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { KAMUS, kosakataUntuk } from "../../data/katalog";
+import { KAMUS } from "../../data/katalog";
 import type { AppData, ItemSoal } from "../../types";
 import { Btn } from "../komponen";
 import { KartuKata } from "./KartuKata";
@@ -14,8 +14,9 @@ export function Soal({ item, data, onDijawab, onLanjut }: {
   onDijawab: (benar: boolean) => void;
   onLanjut: () => void;
 }) {
-  // kosakata dan status kanji dikunci saat soal dibuka, supaya tidak berubah di tengah soal
-  const [kata] = useState(() => kosakataUntuk(item.k, data.ks[item.k]?.vi || 0, item.type === "rakit"));
+  // kata sudah ditentukan saat sesi dirakit (lihat rakitItems di engine/sesi.ts), supaya
+  // kata yang sama tidak tampil dua kali dalam satu sesi
+  const kata = item.kata;
   const [snap] = useState(() => data);
   const v = KAMUS[kata]!;
   const [hasil, setHasil] = useState<boolean | null>(null);

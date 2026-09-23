@@ -30,14 +30,21 @@ export const bisaDipelajari = (k: string): boolean => KMAP[k]!.kosakata.some(lay
 /**
  * Kosakata untuk kanji `k` pada indeks `vi`. Kalau kata di indeks itu tidak layak
  * (arti kosong; atau, untuk rakit, bacaan khusus), maju ke kata berikutnya.
+ * `hindari` (opsional): kata yang sudah dipakai kanji lain di sesi yang sama —
+ * dilewati kalau ada pilihan lain, supaya kata yang sama tidak tampil dua kali
+ * dalam satu sesi (mis. 学生 muncul lagi saat giliran kanji 生 setelah kanji 学).
  */
-export function kosakataUntuk(k: string, vi: number, untukRakit: boolean): string {
+export function kosakataUntuk(k: string, vi: number, untukRakit: boolean, hindari?: Set<string>): string {
   const list = KMAP[k]!.kosakata;
   const ok = untukRakit ? (w: string) => cocokRakit(w, k) : layak;
+  let cadangan: string | null = null;
   for (let i = 0; i < list.length; i++) {
     const w = list[(vi + i) % list.length]!;
-    if (ok(w)) return w;
+    if (!ok(w)) continue;
+    cadangan ??= w;
+    if (!hindari?.has(w)) return w;
   }
+  if (cadangan !== null) return cadangan; // semua pilihan sudah dipakai; lebih baik ulang daripada gagal
   throw new Error(`Kanji ${k} tidak punya kosakata layak${untukRakit ? " untuk rakit" : ""}`);
 }
 

@@ -83,6 +83,8 @@ export type ModeSesi = "learn" | "pilih";
 export interface ItemSoal {
   k: string;
   type: JenisSoal;
+  /** kata yang dipakai untuk soal ini, ditentukan saat sesi dirakit (lihat kosakataUntuk) */
+  kata: string;
 }
 
 export interface RencanaSesi {

@@ -1,5 +1,5 @@
 import type { AppData, ItemSoal, JenisSoal, KanjiState, RencanaSesi } from "../types";
-import { KANJI, URUT, bisaDipelajari, bisaRakit } from "../data/katalog";
+import { KANJI, URUT, bisaDipelajari, bisaRakit, kosakataUntuk } from "../data/katalog";
 import { shuffle } from "./acak";
 import { isDue, statusOf, type Status } from "./fsrs";
 
@@ -15,13 +15,32 @@ export const daftarTulis = (data: AppData): string[] =>
 // Kanji hijau (review jangka panjang) selalu rakit.
 const GILIRAN: JenisSoal[] = ["meaning", "reading", "rakit"];
 
-function jenisUntuk(k: string, s: KanjiState | undefined): JenisSoal {
+// `idx` = posisi kanji ini di dalam sesi (setelah diacak). Tanpa ini, kanji-kanji yang
+// hitungannya kebetulan sama (mis. sesi murid baru: semua kanji baru, count=0) semua
+// jatuh ke jenis yang sama dan satu sesi jadi tidak bergiliran sama sekali.
+function jenisUntuk(k: string, s: KanjiState | undefined, idx: number): JenisSoal {
   const st = statusOf(s);
-  const jenis: JenisSoal = st === "green" ? "rakit" : GILIRAN[(s?.count || 0) % GILIRAN.length]!;
+  const n = (s?.count || 0) + idx;
+  const jenis: JenisSoal = st === "green" ? "rakit" : GILIRAN[n % GILIRAN.length]!;
   // Kanji tanpa kosakata yang bisa dirakit (mis. 叔, 綿: hanya bacaan khusus) tetap
   // dilatih lewat soal arti/bacaan, bukan soal rakit yang tidak bisa diselesaikan.
-  if (jenis === "rakit" && !bisaRakit(k)) return (s?.count || 0) % 2 === 0 ? "meaning" : "reading";
+  if (jenis === "rakit" && !bisaRakit(k)) return n % 2 === 0 ? "meaning" : "reading";
   return jenis;
+}
+
+/**
+ * Acak urutan lalu tentukan jenis dan kata tiap soal. Kata dipilih sambil menghindari
+ * kata yang sudah dipakai kanji lain di sesi yang sama (lihat `kosakataUntuk`), supaya
+ * kata seperti 学生 tidak tampil dua kali hanya karena kanji 学 dan 生 sama-sama muncul.
+ */
+function rakitItems(list: string[], ks: Record<string, KanjiState>): ItemSoal[] {
+  const dipakai = new Set<string>();
+  return shuffle(list).map((k, idx) => {
+    const type = jenisUntuk(k, ks[k], idx);
+    const kata = kosakataUntuk(k, ks[k]?.vi || 0, type === "rakit", dipakai);
+    dipakai.add(kata);
+    return { k, type, kata };
+  });
 }
 
 /** sesi selalu ditutup dengan soal yang paling mungkin dijawab benar */
@@ -43,7 +62,7 @@ function tutupDenganTermudah(items: ItemSoal[], ks: Record<string, KanjiState>):
 
 /** Sesi dari kanji yang dipilih murid sendiri (maksimum 10), tanpa memandang jadwal. Jawabannya tetap dinilai seperti biasa. */
 export function sesiPilihan(data: AppData, pilihan: string[]): RencanaSesi {
-  const items = shuffle(pilihan.slice(0, 10)).map((k) => ({ k, type: jenisUntuk(k, data.ks[k]) }));
+  const items = rakitItems(pilihan.slice(0, 10), data.ks);
   return { quiz: tutupDenganTermudah(items, data.ks), write: [] };
 }
 
@@ -85,6 +104,6 @@ export function buildSession(data: AppData, t: string): RencanaSesi {
   take(orangeBelum, 10);
   if (acc === null || acc >= 0.7) take(whites, Math.max(0, 10 - pick.length));
 
-  const items = tutupDenganTermudah(shuffle(pick).map((k) => ({ k, type: jenisUntuk(k, ks[k]) })), ks);
+  const items = tutupDenganTermudah(rakitItems(pick, ks), ks);
   return { quiz: items, write: daftarTulis(data) };
 }
