@@ -72,4 +72,4 @@ export function greenStrength(s: KanjiState, t: string): number {
   return Math.min(1, R);
 }
 
-export const isDue = (s: KanjiState, t: string): boolean => s.due! <= t && s.lastSeen !== t;
+export const isDue = (s: KanjiState, t: string): boolean => s.due! <= t;

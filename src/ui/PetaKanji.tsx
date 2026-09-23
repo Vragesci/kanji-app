@@ -29,7 +29,11 @@ export function kelompokkan(kanji: Kanji[]) {
 }
 
 /** Peta kotak berwarna: satu kotak per kanji aktif. */
-export function PetaKanji({ data, t }: { data: AppData; t: string }) {
+export function PetaKanji({ data, t, pilihan, onPilih }: {
+  data: AppData; t: string;
+  /** kanji yang sedang dipilih; kotak bisa diketuk hanya kalau `onPilih` diberikan */
+  pilihan?: string[]; onPilih?: (k: string) => void;
+}) {
   const grup = useMemo(() => kelompokkan(aktif(data)), [data.tg]);
 
   return (
@@ -49,7 +53,19 @@ export function PetaKanji({ data, t }: { data: AppData; t: string }) {
               <Jp>{g.judul}</Jp>{g.romaji && ` (${g.romaji})`} — {hafal}/{g.isi.length} hafal
             </p>
             <div className="grid grid-cols-6 gap-2">
-              {g.isi.map((x) => <KotakKanji key={x.kanji} k={x.kanji} s={data.ks[x.kanji]} t={t} />)}
+              {g.isi.map((x) => {
+                const kotak = <KotakKanji k={x.kanji} s={data.ks[x.kanji]} t={t} />;
+                if (!onPilih) return <div key={x.kanji}>{kotak}</div>;
+                const dipilih = !!pilihan?.includes(x.kanji);
+                // tanda pilihan berupa bingkai tebal + centang, bukan warna, supaya terlihat oleh murid buta warna
+                return (
+                  <button key={x.kanji} type="button" aria-pressed={dipilih} aria-label={`Pilih ${x.kanji}`} onClick={() => onPilih(x.kanji)}
+                    className={`relative rounded-lg ${dipilih ? "outline-4 outline-offset-1 outline-aksen" : ""}`}>
+                    {kotak}
+                    {dipilih && <span aria-hidden className="absolute -top-1 -right-1 size-5 rounded-full bg-aksen text-white text-xs flex items-center justify-center">✓</span>}
+                  </button>
+                );
+              })}
             </div>
           </div>
         );

@@ -84,6 +84,17 @@ menulis, kalimat contoh (Tatoeba), dan audio.
 - Pengecualian yang disetujui (2026-09-20): (1) di soal bacaan, kosakata target tampil tanpa romaji
   (romaji langsung membocorkan jawaban); romaji baru tampil setelah murid menjawab. (2) PWA dikunci
   orientasi portrait.
+- Pengecualian yang disetujui (2026-09-21): sesi boleh diulang berkali-kali dalam sehari. Kanji yang sudah dijawab hari ini
+  tetap bisa muncul, dan kanji oranye yang belum jatuh tempo boleh mengisi sisa kuota. Jadwal 1-1-2-4-7 hari dan FSRS tidak berubah
+  (hitungan benar tetap naik paling banyak sekali per hari).
+- Pengecualian yang disetujui (2026-09-21): di soal bacaan, arti kosakata tidak tampil di bawah kata soal dan pilihan jawaban hanya
+  berisi hiragana di tengah tanpa romaji, supaya murid mengingat lewat kanji. Arti dan romaji baru tampil setelah murid menjawab.
+- Pengecualian yang disetujui (2026-09-21): tombol "Ulangi kanji yang sudah hafal" diganti "Pilih kanji yang ingin dipelajari". Murid mengetuk
+  kanji di peta (maksimum 10) lalu memulai sesi dari kanji itu, tanpa memandang jadwal. Jawabannya tetap dinilai dan menggeser jadwal seperti biasa.
+- Pengecualian yang disetujui (2026-09-21): di soal arti, romaji tidak tampil di bawah kata soal (baru tampil setelah menjawab).
+  Pilihan jawaban salah diambil dari kosakata yang satu lingkup makna bila ada (mis. 南: utara, timur, barat), bukan acak.
+- Pengecoh soal bacaan (2026-09-21): pada sebagian soal (sekitar 60%) pilihan salah berupa bacaan yang mirip (dakuten, vokal panjang, っ,
+  bacaan kanji yang tertukar, atau bacaan kata nyata yang mirip); sisanya kana acak sepanjang sama. Pilihan hanya hiragana, tanpa romaji.
 - Bagi murid buta warna, status peta juga dibedakan lewat ukuran huruf: merah kecil, oranye sedang,
   hijau besar (semakin hafal semakin besar).
 - Atribusi wajib di halaman "Tentang": materi tingkat JFT dari IRODORI

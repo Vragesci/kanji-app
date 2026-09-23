@@ -10,7 +10,7 @@ import { Btn } from "./ui/komponen";
 
 export default function App() {
   const { data, ubah, tersimpan } = useAppData();
-  const [sesi, setSesi] = useState<{ mode: ModeSesi; nomor: number } | null>(null);
+  const [sesi, setSesi] = useState<{ mode: ModeSesi; nomor: number; pilihan?: string[] } | null>(null);
   const [tentang, setTentang] = useState(false);
   // tanggal lokal hari ini; diperbarui saat aplikasi kembali terlihat dan tiap menit, supaya
   // beranda yang dibiarkan terbuka melewati tengah malam tidak tetap memakai tanggal kemarin
@@ -25,9 +25,23 @@ export default function App() {
   const { needRefresh: [adaVersiBaru], updateServiceWorker } = useRegisterSW();
   // vite-plugin-pwa hanya memuat ulang untuk pembaruan yang ditemukan saat halaman dibuka; kalau
   // aplikasi sudah lama terbuka, pembaruan dianggap "eksternal" dan tombol tampak tak berbuat apa-apa.
+  const [memperbarui, setMemperbarui] = useState(false);
   const perbarui = () => {
+    setMemperbarui(true);
     navigator.serviceWorker.addEventListener("controllerchange", () => window.location.reload(), { once: true });
     void updateServiceWorker(true);
+    // Cadangan kalau tombol tampak tak berbuat apa-apa (mis. iOS): kirim perintah ke versi yang menunggu;
+    // kalau tidak ada yang menunggu, versi baru sudah terpasang sehingga cukup muat ulang.
+    window.setTimeout(() => {
+      void navigator.serviceWorker.getRegistration().then((reg) => {
+        if (reg?.waiting) {
+          reg.waiting.postMessage({ type: "SKIP_WAITING" });
+          window.setTimeout(() => window.location.reload(), 2000);
+        } else {
+          window.location.reload();
+        }
+      });
+    }, 2000);
   };
 
   if (!data) return <div className="p-6 text-sm text-redup">Memuat…</div>;
@@ -43,20 +57,20 @@ export default function App() {
       {adaVersiBaru && !sesi && (
         <div role="status" className="max-w-md mx-auto px-5 pt-4 flex items-center gap-3">
           <p className="flex-1 text-sm">Versi baru aplikasi tersedia.</p>
-          <Btn className="!w-auto !min-h-11 !py-2" onClick={perbarui}>Perbarui</Btn>
+          <Btn className="!w-auto !min-h-11 !py-2" onClick={perbarui} disabled={memperbarui}>{memperbarui ? "Memperbarui…" : "Perbarui"}</Btn>
         </div>
       )}
       <main className="max-w-md mx-auto px-5 py-6">
         {sesi ? (
           <Sesi
-            key={sesi.nomor} mode={sesi.mode} data={data} t={t} ubah={ubah}
+            key={sesi.nomor} mode={sesi.mode} pilihan={sesi.pilihan} data={data} t={t} ubah={ubah}
             onKeluar={() => setSesi(null)}
           />
         ) : tentang ? (
           <Tentang onKembali={() => setTentang(false)} />
         ) : (
           <Beranda
-            data={data} t={t} ubah={ubah} onMulai={(mode) => setSesi({ mode, nomor: Date.now() })}
+            data={data} t={t} ubah={ubah} onMulai={(mode, pilihan) => setSesi({ mode, nomor: Date.now(), pilihan })}
             onTentang={() => setTentang(true)}
           />
         )}

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { TINGKAT } from "../data/katalog";
 import { UJIAN, statusOf } from "../engine/fsrs";
 import { buildSession, aktif } from "../engine/sesi";
@@ -20,21 +20,31 @@ function Chip({ aktifnya, onClick, children }: { aktifnya: boolean; onClick: () 
 
 /** Beranda: pengaturan dasar, tombol mulai, dan peta kanji. Tombol mulai di atas peta karena petanya panjang (hingga 1.377 kotak). */
 export function Beranda({ data, t, ubah, onMulai, onTentang }: {
-  data: AppData; t: string; ubah: (fn: (d: AppData) => AppData) => void; onMulai: (m: ModeSesi) => void; onTentang: () => void;
+  data: AppData; t: string; ubah: (fn: (d: AppData) => AppData) => void; onMulai: (m: ModeSesi, pilihan?: string[]) => void; onTentang: () => void;
 }) {
   const [alat, setAlat] = useState(false);
   const [konfirmasi, setKonfirmasi] = useState(false);
+  const [memilih, setMemilih] = useState(false);
+  const [pilihan, setPilihan] = useState<string[]>([]);
+  const petaRef = useRef<HTMLDivElement>(null);
+  const MAKS = 10; // satu sesi = 10 soal
+  const togel = (k: string) =>
+    setPilihan((p) => (p.includes(k) ? p.filter((x) => x !== k) : p.length >= MAKS ? p : [...p, k]));
+  const mulaiMemilih = () => {
+    setMemilih(true);
+    petaRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+  const selesaiMemilih = () => { setMemilih(false); setPilihan([]); };
   const set = useMemo(() => aktif(data), [data.tg]);
   const hafal = set.filter((x) => statusOf(data.ks[x.kanji]) === "green");
-  const tersedia = hafal.filter((x) => data.ks[x.kanji]!.lastSeen !== t).length;
-  const rencana = useMemo(() => buildSession(data, t, "learn"), [data, t]);
+  const rencana = useMemo(() => buildSession(data, t), [data, t]);
   const adaBelajar = rencana.quiz.length + rencana.write.length;
   const terakhir = data.log.slice(-5);
   const rata = terakhir.length ? Math.round((terakhir.reduce((a, b) => a + b.acc, 0) / terakhir.length) * 100) : null;
   const hariLatihan = new Set(data.log.map((l) => l.d)).size;
 
   return (
-    <div>
+    <div className={memilih ? "pb-24" : ""}>
       <h1 className="text-2xl font-bold">Aplikasi Kanji</h1>
       <p className="text-sm mt-1 text-redup">
         {parse(t).toLocaleDateString("id-ID", { weekday: "long", day: "numeric", month: "long" })}
@@ -66,14 +76,17 @@ export function Beranda({ data, t, ubah, onMulai, onTentang }: {
 
       <div className="space-y-3 mt-6">
         <Btn onClick={() => onMulai("learn")} disabled={adaBelajar === 0}>Lanjutkan belajar</Btn>
-        <Btn kind="ghost" onClick={() => onMulai("review")} disabled={tersedia === 0}>Ulangi kanji yang sudah hafal</Btn>
+        <Btn kind="ghost" onClick={mulaiMemilih} disabled={memilih}>Pilih kanji yang ingin dipelajari</Btn>
         {adaBelajar === 0 && (
-          <p className="text-sm text-center text-redup">Sesi hari ini sudah selesai. Kanji berikutnya muncul besok.</p>
+          <p className="text-sm text-center text-redup">Belum ada kanji yang perlu dilatih sekarang. Kanji berikutnya muncul besok.</p>
         )}
       </div>
 
-      <div className="mt-8">
-        <PetaKanji data={data} t={t} />
+      <div className="mt-8 scroll-mt-4" ref={petaRef}>
+        {memilih && (
+          <p className="text-sm">Ketuk kanji yang ingin dipelajari (maksimum {MAKS}), lalu tekan Mulai di bawah.</p>
+        )}
+        <PetaKanji data={data} t={t} pilihan={pilihan} onPilih={memilih ? togel : undefined} />
       </div>
 
       <div className="mt-10 p-4 rounded-xl bg-white border border-garis">
@@ -98,6 +111,16 @@ export function Beranda({ data, t, ubah, onMulai, onTentang }: {
       <button type="button" onClick={onTentang} className="block mx-auto mt-6 text-sm underline text-redup min-h-11">
         Tentang aplikasi dan sumber materi
       </button>
+      {memilih && (
+        <div className="fixed inset-x-0 bottom-0 z-10 bg-white border-t border-garis pb-[env(safe-area-inset-bottom)]">
+          <div className="max-w-md mx-auto px-5 py-3 flex items-center gap-3">
+            <Btn kind="ghost" className="!w-auto" onClick={selesaiMemilih}>Batal</Btn>
+            <Btn disabled={pilihan.length === 0} onClick={() => { onMulai("pilih", pilihan); selesaiMemilih(); }}>
+              {pilihan.length === 0 ? "Pilih kanji dulu" : `Mulai (${pilihan.length}/${MAKS})`}
+            </Btn>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

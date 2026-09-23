@@ -4,7 +4,7 @@ import { KOSONG } from "../db/penyimpanan";
 import type { AppData } from "../types";
 import { D0, W, batasHari, greenStrength, jarakHari, nextD, statusOf } from "./fsrs";
 import { applyAnswer, applyWrite } from "./penilaian";
-import { aktif, buildSession } from "./sesi";
+import { aktif, buildSession, sesiPilihan } from "./sesi";
 import { addDays } from "./tanggal";
 
 const K = "先"; // kanji N5 dengan banyak kosakata
@@ -121,7 +121,7 @@ describe("penjadwalan (FSRS v4.5)", () => {
 
 describe("penyusun sesi (metode 1, 5–7)", () => {
   it("satu sesi = maksimum 10 soal, tiap kanji sekali", () => {
-    const p = buildSession(baru({ tg: "N1" }), HARI0, "learn");
+    const p = buildSession(baru({ tg: "N1" }), HARI0);
     expect(p.quiz.length).toBeLessThanOrEqual(10);
     expect(new Set(p.quiz.map((x) => x.k)).size).toBe(p.quiz.length);
   });
@@ -132,7 +132,7 @@ describe("penyusun sesi (metode 1, 5–7)", () => {
       aktif({ tg: "N5" }).slice(0, 12).map((x) => [x.kanji, { seen: true, vi: 0, count: 0, wrongStreak: 0, lastSeen: hari(-1), due: HARI0 }]),
     );
     const kanjiBaru = (acc: number | null) =>
-      buildSession(baru({ tg: "N5", ks: merah, lastAcc: acc }), HARI0, "learn").quiz.filter((x) => !merah[x.k]).length;
+      buildSession(baru({ tg: "N5", ks: merah, lastAcc: acc }), HARI0).quiz.filter((x) => !merah[x.k]).length;
     expect(kanjiBaru(0.6)).toBe(0);
     expect(kanjiBaru(null)).toBe(2); // sesi pertama
     expect(kanjiBaru(0.8)).toBe(2);
@@ -143,21 +143,39 @@ describe("penyusun sesi (metode 1, 5–7)", () => {
     const empat = Object.fromEntries(
       aktif({ tg: "N5" }).slice(0, 4).map((x) => [x.kanji, { seen: true, vi: 0, count: 0, wrongStreak: 0, lastSeen: hari(-1), due: HARI0 }]),
     );
-    expect(buildSession(baru({ tg: "N5", ks: empat, lastAcc: 0.5 }), HARI0, "learn").quiz.length).toBe(4);
-    expect(buildSession(baru({ tg: "N5", ks: empat, lastAcc: 0.8 }), HARI0, "learn").quiz.length).toBe(10);
+    expect(buildSession(baru({ tg: "N5", ks: empat, lastAcc: 0.5 }), HARI0).quiz.length).toBe(4);
+    expect(buildSession(baru({ tg: "N5", ks: empat, lastAcc: 0.8 }), HARI0).quiz.length).toBe(10);
   });
 
   it("sesi ditutup dengan soal yang paling mungkin benar (hitungan tertinggi)", () => {
     const [a, b, c] = aktif({ tg: "N5" }).map((x) => x.kanji);
     const s = (count: number) => ({ seen: true, vi: 0, count, wrongStreak: 0, everCorrect: true, lastSeen: hari(-1), due: HARI0 });
-    const p = buildSession(baru({ ks: { [a!]: s(1), [b!]: s(4), [c!]: s(2) }, lastAcc: 0.6 }), HARI0, "learn");
+    const p = buildSession(baru({ ks: { [a!]: s(1), [b!]: s(4), [c!]: s(2) }, lastAcc: 0.6 }), HARI0);
     expect(p.quiz.at(-1)!.k).toBe(b);
+  });
+
+  it("sesi bisa diulang di hari yang sama: kanji yang baru dijawab hari ini tetap muncul", () => {
+    const [a, b, c] = aktif({ tg: "N5" }).map((x) => x.kanji);
+    const hariIni = { seen: true, vi: 0, count: 0, wrongStreak: 0, lastSeen: HARI0, due: hari(1) };
+    const oranyeBesok = { ...hariIni, count: 1, everCorrect: true }; // belum jatuh tempo sampai besok
+    const ks = { [a!]: hariIni, [b!]: oranyeBesok, [c!]: { ...oranyeBesok, count: 2 } };
+    const p = buildSession(baru({ ks, lastAcc: 0.6 }), HARI0);
+    expect(p.quiz.map((x) => x.k).sort()).toEqual([a, b, c].sort());
+  });
+
+  it("sesi kanji pilihan: hanya kanji yang dipilih, maksimum 10, tanpa memandang jadwal", () => {
+    const semua = aktif({ tg: "N5" }).map((x) => x.kanji);
+    const jadwalBesok = { seen: true, vi: 0, count: 1, wrongStreak: 0, everCorrect: true, lastSeen: HARI0, due: hari(3) };
+    const p = sesiPilihan(baru({ ks: { [semua[0]!]: jadwalBesok } }), semua.slice(0, 12));
+    expect(p.quiz.length).toBe(10);
+    expect(p.quiz.map((x) => x.k).sort()).toEqual(semua.slice(0, 10).sort());
+    expect(p.write).toEqual([]);
   });
 
   it("jenis soal bergiliran mengikuti hitungan: arti, bacaan, rakit, lalu ulang", () => {
     const jenis = [0, 1, 2, 3, 4, 5].map((count) => {
       const ks = { [K]: { seen: true, vi: 0, count, wrongStreak: 0, everCorrect: true, lastSeen: hari(-1), due: HARI0 } };
-      return buildSession(baru({ ks, lastAcc: 0.6 }), HARI0, "learn").quiz[0]!.type;
+      return buildSession(baru({ ks, lastAcc: 0.6 }), HARI0).quiz[0]!.type;
     });
     expect(jenis).toEqual(["meaning", "reading", "rakit", "meaning", "reading", "rakit"]);
   });
@@ -188,11 +206,11 @@ describe("penjaga data (kanji-gabungan.json)", () => {
       expect(bisaRakit(k)).toBe(false);
       for (const count of [0, 1, 2, 3, 4]) {
         const ks = { [k]: { seen: true, vi: 0, count, wrongStreak: 0, everCorrect: true, lastSeen: hari(-1), due: HARI0 } };
-        const p = buildSession(baru({ tg: "N1", ks, lastAcc: 0.6 }), HARI0, "learn");
+        const p = buildSession(baru({ tg: "N1", ks, lastAcc: 0.6 }), HARI0);
         const it = p.quiz.find((x) => x.k === k)!;
         expect(it.type).not.toBe("rakit");
       }
-      const p = buildSession(baru({ tg: "N1" }), HARI0, "learn"); // status putih
+      const p = buildSession(baru({ tg: "N1" }), HARI0); // status putih
       for (const it of p.quiz) if (it.k === k) expect(it.type).not.toBe("rakit");
     }
   });
@@ -242,11 +260,11 @@ describe("sesi (metode 1 dan 7)", () => {
     // sebelum sesi: hitungan 4, belum siap menulis
     let d = baru();
     for (let i = 0; i < 4; i++) d = applyAnswer(d, K, true, hari(i));
-    const rencana = buildSession(d, hari(4), "learn");
+    const rencana = buildSession(d, hari(4));
     expect(rencana.write).not.toContain(K);
     // dijawab benar di sesi itu: siap menulis, tetapi baru masuk daftar tulis sesi berikutnya
     d = applyAnswer(d, K, true, hari(4));
     expect(d.ks[K]!.readyWrite).toBe(true);
-    expect(buildSession(d, hari(5), "learn").write).toContain(K);
+    expect(buildSession(d, hari(5)).write).toContain(K);
   });
 });

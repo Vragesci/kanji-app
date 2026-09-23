@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { KAMUS, kosakataUntuk } from "../data/katalog";
 import { applyAnswer, applyWrite } from "../engine/penilaian";
-import { buildSession } from "../engine/sesi";
+import { buildSession, sesiPilihan } from "../engine/sesi";
 import type { AppData, ItemSoal, ModeSesi } from "../types";
 import { Btn, Jp, KotakKanji } from "./komponen";
 import { Soal } from "./soal/Soal";
@@ -11,16 +11,18 @@ type Fase = "quiz" | "write" | "done";
 
 interface Props {
   mode: ModeSesi;
+  /** kanji pilihan murid (mode "pilih") */
+  pilihan?: string[];
   data: AppData;
   t: string;
   ubah: (fn: (d: AppData) => AppData) => void;
   onKeluar: () => void;
 }
 
-export function Sesi({ mode, data, t: tHariIni, ubah, onKeluar }: Props) {
+export function Sesi({ mode, pilihan, data, t: tHariIni, ubah, onKeluar }: Props) {
   // tanggal dikunci saat sesi dimulai: sesi yang melewati tengah malam tetap satu tanggal
   const [t] = useState(tHariIni);
-  const [rencana] = useState(() => buildSession(data, t, mode));
+  const [rencana] = useState(() => (mode === "pilih" ? sesiPilihan(data, pilihan ?? []) : buildSession(data, t)));
   // tepat sesuai rencana (maksimum 10 soal); soal yang salah tidak diulang di sesi yang sama, jadwalnya maju ke sesi berikutnya
   const quiz: ItemSoal[] = rencana.quiz;
   const [tulis, setTulis] = useState<string[]>(rencana.write);

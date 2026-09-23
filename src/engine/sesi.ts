@@ -1,7 +1,7 @@
-import type { AppData, ItemSoal, JenisSoal, KanjiState, ModeSesi, RencanaSesi } from "../types";
+import type { AppData, ItemSoal, JenisSoal, KanjiState, RencanaSesi } from "../types";
 import { KANJI, URUT, bisaDipelajari, bisaRakit } from "../data/katalog";
 import { shuffle } from "./acak";
-import { greenStrength, isDue, statusOf, type Status } from "./fsrs";
+import { isDue, statusOf, type Status } from "./fsrs";
 
 /** kanji yang aktif: tingkat terpilih dan semua tingkat di bawahnya */
 export const aktif = (d: Pick<AppData, "tg">) =>
@@ -24,17 +24,33 @@ function jenisUntuk(k: string, s: KanjiState | undefined): JenisSoal {
   return jenis;
 }
 
-export function buildSession(data: AppData, t: string, mode: ModeSesi): RencanaSesi {
+/** sesi selalu ditutup dengan soal yang paling mungkin dijawab benar */
+function tutupDenganTermudah(items: ItemSoal[], ks: Record<string, KanjiState>): ItemSoal[] {
+  const easyIdx = items.reduce(
+    (best, it, i) => {
+      const s = ks[it.k];
+      const score = s ? (s.green ? 10 : s.count || 0) : -1;
+      return score > best.score ? { i, score } : best;
+    },
+    { i: -1, score: -1 },
+  ).i;
+  if (easyIdx >= 0) {
+    const [e] = items.splice(easyIdx, 1);
+    items.push(e!);
+  }
+  return items;
+}
+
+/** Sesi dari kanji yang dipilih murid sendiri (maksimum 10), tanpa memandang jadwal. Jawabannya tetap dinilai seperti biasa. */
+export function sesiPilihan(data: AppData, pilihan: string[]): RencanaSesi {
+  const items = shuffle(pilihan.slice(0, 10)).map((k) => ({ k, type: jenisUntuk(k, data.ks[k]) }));
+  return { quiz: tutupDenganTermudah(items, data.ks), write: [] };
+}
+
+export function buildSession(data: AppData, t: string): RencanaSesi {
   const ks = data.ks;
   const all = aktif(data).map((x) => x.kanji);
   const by = (st: Status) => all.filter((k) => statusOf(ks[k]) === st);
-
-  if (mode === "review") {
-    const greens = by("green")
-      .filter((k) => ks[k]!.lastSeen !== t)
-      .sort((a, b) => greenStrength(ks[a]!, t) - greenStrength(ks[b]!, t));
-    return { quiz: greens.slice(0, 10).map((k) => ({ k, type: jenisUntuk(k, ks[k]) })), write: [] };
-  }
 
   const pick: string[] = [];
   const take = (arr: string[], n: number) => {
@@ -47,7 +63,11 @@ export function buildSession(data: AppData, t: string, mode: ModeSesi): RencanaS
   const orangeDue = by("orange")
     .filter((k) => !ks[k]!.readyWrite && isDue(ks[k]!, t))
     .sort((a, b) => ks[a]!.due!.localeCompare(ks[b]!.due!));
-  const redDue = by("red").filter((k) => ks[k]!.lastSeen !== t);
+  // sesi boleh diulang di hari yang sama; kanji yang belum jatuh tempo hanya dipakai untuk mengisi sisa kuota
+  const redDue = by("red");
+  const orangeBelum = by("orange")
+    .filter((k) => !ks[k]!.readyWrite && !isDue(ks[k]!, t))
+    .sort((a, b) => ks[a]!.due!.localeCompare(ks[b]!.due!));
   const greenDue = by("green").filter((k) => isDue(ks[k]!, t));
   const whites = by("white");
   const acc = data.lastAcc;
@@ -62,22 +82,9 @@ export function buildSession(data: AppData, t: string, mode: ModeSesi): RencanaS
   take(redDue, 10);
   take(orangeDue, 10);
   take(greenDue, 10);
+  take(orangeBelum, 10);
   if (acc === null || acc >= 0.7) take(whites, Math.max(0, 10 - pick.length));
 
-  const items: ItemSoal[] = shuffle(pick).map((k) => ({ k, type: jenisUntuk(k, ks[k]) }));
-  // sesi selalu ditutup dengan soal yang paling mungkin dijawab benar
-  const easyIdx = items.reduce(
-    (best, it, i) => {
-      const s = ks[it.k];
-      const score = s ? (s.green ? 10 : s.count || 0) : -1;
-      return score > best.score ? { i, score } : best;
-    },
-    { i: -1, score: -1 },
-  ).i;
-  if (easyIdx >= 0) {
-    const [e] = items.splice(easyIdx, 1);
-    items.push(e!);
-  }
-
+  const items = tutupDenganTermudah(shuffle(pick).map((k) => ({ k, type: jenisUntuk(k, ks[k]) })), ks);
   return { quiz: items, write: daftarTulis(data) };
 }

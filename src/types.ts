@@ -78,7 +78,7 @@ export interface AppData {
 }
 
 export type JenisSoal = "meaning" | "reading" | "rakit";
-export type ModeSesi = "learn" | "review";
+export type ModeSesi = "learn" | "pilih";
 
 export interface ItemSoal {
   k: string;
