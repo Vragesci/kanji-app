@@ -62,7 +62,7 @@ jadwal dipegang FSRS dengan parameter bawaan resmi (lihat konstanta `W` di proto
 
 **Tahap 1 — yang dikerjakan sekarang.** PWA React + Vite + TypeScript + Tailwind.
 Data disimpan di perangkat (IndexedDB, bukan localStorage, karena datanya besar).
-Tanpa akun, tanpa server. Dipasang di Vercel/Netlify, dibagikan sebagai tautan,
+Tanpa akun, tanpa server. Dipasang di Cloudflare Pages, dibagikan sebagai tautan,
 bisa dipasang ke layar utama HP dan jalan luring. Sasaran: diuji ke 4 murid LPK
 dan 1 pemagang di Jepang.
 

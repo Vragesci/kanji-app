@@ -1,9 +1,0 @@
-node_modules
-dist
-dev-dist
-.vercel
-# bukan bagian build. Diawali "/" supaya hanya berkas di root yang dikecualikan
-# (src/data/kanji-gabungan.json tetap terunggah; build memakai salinan itu)
-/prototipe-kanji.tsx
-/kanji-gabungan.json
-/CLAUDE.md

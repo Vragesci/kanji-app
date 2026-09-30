@@ -16,18 +16,43 @@ npm run preview    # menjalankan hasil build (service worker hanya aktif di sini
 
 ## Deploy
 
-Hasil build adalah situs statis di `dist/`. Konfigurasi sudah ada untuk kedua penyedia; pakai salah satu dan hapus yang lain.
+Hasil build adalah situs statis di `dist/`. Hostingnya **Cloudflare Pages** (paket gratis: lebar pita tanpa
+batas, penggunaan komersial diizinkan, jadi aplikasi boleh dibuat berbayar tanpa naik paket).
 
-**Vercel** (`vercel.json`): `npx vercel` untuk pratinjau, `npx vercel --prod` untuk produksi.
-Atau impor repositori di dashboard; Vercel mengenali Vite otomatis.
+Berkas yang mengatur deploy:
 
-**Netlify** (`netlify.toml`): `npx netlify deploy` untuk pratinjau, `npx netlify deploy --prod` untuk produksi.
-Atau hubungkan repositori di dashboard.
+- `wrangler.toml` — nama proyek dan folder hasil build (`dist`). Kalau berkas ini ada, Cloudflare
+  memakainya sebagai acuan utama, jadi ubah di sini, bukan di dashboard.
+- `public/_headers` — header PWA; disalin apa adanya ke akar `dist/` saat build. `sw.js` dan
+  `manifest.webmanifest` tidak boleh di-cache lama (kalau tidak, pembaruan tidak sampai ke murid),
+  sedangkan `/assets/*` boleh di-cache selamanya karena nama berkasnya memuat hash.
+- `.node-version` — Node 24, menyamakan versi build dengan `engines` di `package.json`.
 
-Kedua berkas mengatur header yang penting bagi PWA: `sw.js` dan `manifest.webmanifest` tidak boleh di-cache lama
-(kalau tidak, pembaruan tidak sampai ke murid), sedangkan `/assets/*` boleh di-cache selamanya (nama berkas memuat hash).
+### Pertama kali
 
-Setelah deploy, cek di HP: buka tautan, pasang ke layar utama, matikan data seluler, buka lagi, dan jalankan satu sesi.
+Di dashboard Cloudflare: **Workers & Pages → Create → Pages → Connect to Git**, pilih repositori ini, lalu
+isi *Framework preset* `Vite`, *Build command* `npm run build`, *Build output directory* `dist`. Setelah itu
+setiap push ke `main` ter-deploy sendiri, dan setiap PR dapat tautan pratinjau.
+
+### Dari terminal
+
+```
+npx wrangler pages deploy dist                    # pratinjau
+npx wrangler pages deploy dist --branch main      # produksi
+```
+
+### Sesudah deploy
+
+Pastikan header benar-benar terpakai (ini yang menentukan pembaruan sampai ke murid atau tidak):
+
+```
+curl -sI https://<domain>/sw.js               | grep -i cache-control
+curl -sI https://<domain>/manifest.webmanifest | grep -i -E 'cache-control|content-type'
+```
+
+Harapannya `no-cache` untuk keduanya, dan `application/manifest+json` untuk manifest.
+
+Lalu cek di HP: buka tautan, pasang ke layar utama, matikan data seluler, buka lagi, dan jalankan satu sesi.
 
 ## Pembaruan versi
 

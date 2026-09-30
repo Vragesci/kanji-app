@@ -1,0 +1,5 @@
+# Konfigurasi Cloudflare Pages. Kalau berkas ini ada, Cloudflare memakainya sebagai acuan
+# utama — pengaturan build di dashboard yang berbeda akan diabaikan.
+name = "aplikasi-kanji"
+pages_build_output_dir = "./dist"
+compatibility_date = "2026-09-30"
