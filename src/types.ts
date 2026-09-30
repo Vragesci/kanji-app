@@ -54,9 +54,14 @@ export interface KanjiState {
   lastReview?: string;
   lapsed?: boolean;
   lapses?: number;
+  /** cap waktu ISO perubahan terakhir di perangkat; dipakai saat dua perangkat bentrok.
+   *  Distempel di `useAppData.ubah`, bukan di kode metode. */
+  diubah?: string;
 }
 
 export interface LogSesi {
+  /** id acak per entri, dibuat di perangkat; penggabungan memakai ini agar tidak dobel */
+  id?: string;
   /** tanggal sesi */
   d: string;
   /** jumlah kanji yang dinilai */
@@ -75,6 +80,8 @@ export interface AppData {
   tg: Tingkat;
   /** tanggal ujian JLPT terpilih, atau null = tanpa target */
   ujian: string | null;
+  /** cap waktu ISO perubahan terakhir pada bidang meta di atas (tg/ujian/offset/lastAcc) */
+  metaDiubah?: string;
 }
 
 export type JenisSoal = "meaning" | "reading" | "rakit";

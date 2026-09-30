@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { AppData } from "./types";
 import { KOSONG, mintaPenyimpananTetap, muat, simpan } from "./db/penyimpanan";
+import { stempel } from "./sinkron/stempel";
 
 /**
  * Data murid: dimuat dari IndexedDB sekali, lalu setiap perubahan ditulis balik
@@ -49,9 +50,9 @@ export function useAppData() {
     return () => document.removeEventListener("visibilitychange", segarkan);
   }, []);
 
-  const ubah = useCallback((fn: (d: AppData) => AppData) => {
+  /** Menerapkan keadaan baru apa adanya, lalu menulis selisihnya ke IndexedDB. */
+  const terapkan = useCallback((baru: AppData) => {
     const lama = ref.current;
-    const baru = fn(lama);
     if (baru === lama) return;
     ref.current = baru;
     versi.current++;
@@ -72,7 +73,26 @@ export function useAppData() {
     });
   }, []);
 
+  /** Perubahan dari murid: bagian yang berubah distempel cap waktu untuk sinkronisasi. */
+  const ubah = useCallback(
+    (fn: (d: AppData) => AppData) => {
+      const lama = ref.current;
+      terapkan(stempel(lama, fn(lama), new Date().toISOString()));
+    },
+    [terapkan],
+  );
+
+  /**
+   * Keadaan hasil sinkronisasi. Sengaja TIDAK lewat `stempel`: cap waktu di
+   * dalamnya sudah hasil penggabungan, dan menstempelnya lagi akan membuat
+   * setiap rekaman tampak baru diubah sehingga data server yang benar tertimpa.
+   */
+  const ganti = useCallback(
+    (fn: (d: AppData) => AppData) => { terapkan(fn(ref.current)); },
+    [terapkan],
+  );
+
   const ambil = useCallback(() => ref.current, []);
 
-  return { data, ubah, ambil, tersimpan };
+  return { data, ubah, ganti, ambil, tersimpan };
 }

@@ -66,10 +66,31 @@ Tanpa akun, tanpa server. Dipasang di Cloudflare Pages, dibagikan sebagai tautan
 bisa dipasang ke layar utama HP dan jalan luring. Sasaran: diuji ke 4 murid LPK
 dan 1 pemagang di Jepang.
 
-**Tahap 2 — setelah metodenya terbukti dipakai.** Akun + Supabase: riwayat ikut
-antar perangkat, dan pengajar punya papan pantau kelas (kanji apa yang paling
-sering salah di seluruh kelas, siapa yang berhenti belajar). Ini fitur yang tidak
-dimiliki WaniKani maupun Anki, karena keduanya untuk pembelajar mandiri.
+**Tahap 2 — sedang dikerjakan (2026-09-30).** Akun + Supabase: riwayat ikut antar
+perangkat. Dikerjakan atas permintaan, mendahului syarat "setelah metodenya terbukti
+dipakai"; risikonya sudah disampaikan, yaitu perubahan metode setelah uji murid bisa
+menuntut migrasi data yang sudah berisi. Karena itu `KanjiState` disimpan sebagai
+jsonb, bukan kolom per bidang, supaya perubahan bentuknya tidak menuntut migrasi tabel.
+
+Keputusan yang sudah diambil untuk Tahap 2:
+
+- **Papan pantau pengajar tidak dibuat.** Tidak ada tabel kelas, tidak ada kolom peran,
+  dan tidak ada satu pun kebijakan RLS yang mengizinkan seorang murid membaca baris
+  murid lain. Kalau kelak diperlukan, itu keputusan baru, bukan sisa pekerjaan.
+- **Masuk lewat email tanpa sandi**, dengan kode 6 angka sebagai jalur utama. Tautan
+  di email tetap berfungsi, tapi di aplikasi terpasang kode yang dipakai: menekan
+  tautan membuka peramban, bukan aplikasi terpasang, sehingga sesinya lahir di konteks
+  penyimpanan yang salah.
+- **Wajib masuk sekali saat daring, sesudah itu luring tanpa batas.** Tidak ada sinyal
+  tidak boleh berarti tidak bisa belajar. Hanya keluar-akun yang disengaja, atau
+  penolakan tegas dari server yang benar-benar terhubung, yang mengembalikan murid ke
+  layar masuk.
+- **Sinkronisasi butuh persetujuan murid.** Menolak bukan jalan buntu: aplikasi tetap
+  jalan penuh dan datanya tinggal di perangkat.
+- **Penggabungan per kanji memakai cap waktu terakhir**, bukan hitungan tertinggi, supaya
+  aturan "salah sekali -> hitungan kembali ke nol" tidak bocor saat dua HP bentrok.
+  Cap waktu distempel di lapisan data (`src/sinkron/stempel.ts`), bukan di kode metode;
+  `src/engine/` tidak berubah karena Tahap 2.
 
 **Tahap 3 — kalau tahap 2 berhasil.** Urutan goresan (data KanjiVG) untuk sesi
 menulis, kalimat contoh (Tatoeba), dan audio.

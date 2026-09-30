@@ -3,13 +3,26 @@ import { useRegisterSW } from "virtual:pwa-register/react";
 import { addDays, fmt } from "./engine/tanggal";
 import type { ModeSesi } from "./types";
 import { useAppData } from "./useAppData";
+import { useAkun } from "./sinkron/useAkun";
+import { useSetuju } from "./sinkron/useSetuju";
+import { useSinkron } from "./sinkron/useSinkron";
 import { Beranda } from "./ui/Beranda";
+import { Masuk } from "./ui/Masuk";
+import { Persetujuan } from "./ui/Persetujuan";
 import { Sesi } from "./ui/Sesi";
 import { Tentang } from "./ui/Tentang";
 import { Btn } from "./ui/komponen";
 
 export default function App() {
-  const { data, ubah, tersimpan } = useAppData();
+  const { data, ubah, ganti, tersimpan } = useAppData();
+  const akun = useAkun();
+  const setuju = useSetuju(akun.akun?.id ?? null);
+  const sinkron = useSinkron({
+    userId: akun.akun?.id ?? null,
+    setuju: setuju.setuju === "setuju",
+    data,
+    ganti,
+  });
   const [sesi, setSesi] = useState<{ mode: ModeSesi; nomor: number; pilihan?: string[] } | null>(null);
   const [tentang, setTentang] = useState(false);
   // tanggal lokal hari ini; diperbarui saat aplikasi kembali terlihat dan tiap menit, supaya
@@ -44,6 +57,30 @@ export default function App() {
     }, 2000);
   };
 
+  if (akun.status === "memuat") return <div className="p-6 text-sm text-redup">Memuat…</div>;
+
+  // Wajib masuk, tapi hanya sekali dan hanya saat daring: `bolehBelajar` tetap
+  // true untuk murid yang pernah masuk di perangkat ini walau sesinya tidak
+  // bisa dipastikan sekarang, supaya sesi di kereta tanpa sinyal tidak terhenti.
+  if (!akun.bolehBelajar) {
+    return (
+      <main className="min-h-dvh max-w-md mx-auto px-5 py-8 pb-[env(safe-area-inset-bottom)]">
+        <Masuk kirimKode={akun.kirimKode} verifikasiKode={akun.verifikasiKode} />
+      </main>
+    );
+  }
+
+  if (setuju.setuju === "belum" && akun.akun) {
+    return (
+      <main className="min-h-dvh max-w-md mx-auto px-5 py-8 pb-[env(safe-area-inset-bottom)]">
+        <Persetujuan
+          email={akun.akun.email} sibuk={setuju.sibuk}
+          onSetuju={() => void setuju.terima()} onTolak={setuju.tolak}
+        />
+      </main>
+    );
+  }
+
   if (!data) return <div className="p-6 text-sm text-redup">Memuat…</div>;
   const t = addDays(hari, data.offset);
 
@@ -52,6 +89,11 @@ export default function App() {
       {!tersimpan && (
         <p role="alert" className="text-xs text-center py-2 px-4 bg-salah text-merah">
           Data tidak bisa disimpan di perangkat ini (mungkin jendela pribadi). Kemajuan hilang saat halaman ditutup.
+        </p>
+      )}
+      {sinkron.status === "gagal" && (
+        <p role="alert" className="text-xs text-center py-2 px-4 bg-salah text-merah">
+          Kemajuanmu tersimpan di HP ini, tapi belum sampai ke server. Buka halaman Tentang untuk mencoba lagi.
         </p>
       )}
       {adaVersiBaru && !sesi && (
@@ -67,7 +109,18 @@ export default function App() {
             onKeluar={() => setSesi(null)}
           />
         ) : tentang ? (
-          <Tentang onKembali={() => setTentang(false)} />
+          <Tentang
+            onKembali={() => setTentang(false)}
+            email={akun.akun?.email ?? null}
+            luring={akun.status === "luring"}
+            statusSinkron={sinkron.status}
+            pesanSinkron={sinkron.pesan}
+            setuju={setuju.setuju}
+            onSetuju={() => void setuju.terima()}
+            onTolakSinkron={setuju.tolak}
+            onSinkronkan={() => void sinkron.sinkronkanSekarang()}
+            onKeluar={() => void akun.keluarAkun()}
+          />
         ) : (
           <Beranda
             data={data} t={t} ubah={ubah} onMulai={(mode, pilihan) => setSesi({ mode, nomor: Date.now(), pilihan })}

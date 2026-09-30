@@ -1,3 +1,7 @@
+import { useState } from "react";
+import type { Setuju } from "../sinkron/useSetuju";
+import type { StatusSinkron } from "../sinkron/useSinkron";
+import { hapusAkun } from "../sinkron/sinkron";
 import { Btn, Jp } from "./komponen";
 import { PanduanPasang } from "./PetunjukPasang";
 
@@ -8,7 +12,46 @@ function Tautan({ href, children }: { href: string; children: string }) {
   return <a href={href} target="_blank" rel="noopener noreferrer" className="underline text-aksen">{children}</a>;
 }
 
-export function Tentang({ onKembali }: { onKembali: () => void }) {
+const KATA_SINKRON: Record<StatusSinkron, string> = {
+  mati: "Tidak aktif — data hanya di HP ini",
+  sedang: "Menyinkronkan…",
+  beres: "Tersinkron dengan server",
+  luring: "Menunggu sambungan — kemajuanmu aman di HP ini",
+  gagal: "Sinkronisasi gagal",
+};
+
+export function Tentang({
+  onKembali, email, luring, statusSinkron, pesanSinkron, setuju,
+  onSetuju, onTolakSinkron, onSinkronkan, onKeluar,
+}: {
+  onKembali: () => void;
+  email: string | null;
+  luring: boolean;
+  statusSinkron: StatusSinkron;
+  pesanSinkron: string | null;
+  setuju: Setuju;
+  onSetuju: () => void;
+  onTolakSinkron: () => void;
+  onSinkronkan: () => void;
+  onKeluar: () => void;
+}) {
+  const [konfirmasiHapus, setKonfirmasiHapus] = useState(false);
+  const [sibukHapus, setSibukHapus] = useState(false);
+  const [galatHapus, setGalatHapus] = useState<string | null>(null);
+
+  const hapus = async () => {
+    setGalatHapus(null);
+    setSibukHapus(true);
+    try {
+      await hapusAkun();
+      onKeluar();
+    } catch (e) {
+      setGalatHapus(e instanceof Error ? e.message : "Gagal menghapus akun. Coba lagi saat tersambung internet.");
+    } finally {
+      setSibukHapus(false);
+    }
+  };
+
   return (
     <div>
       <div className="flex items-center gap-3">
@@ -25,8 +68,79 @@ export function Tentang({ onKembali }: { onKembali: () => void }) {
             Urutan kanji mengikuti buku <i>Irodori</i>, dan soalnya memakai kosakata utuh, bukan huruf lepas.
           </p>
           <p className="mt-2">
-            Kemajuan belajarmu tersimpan di perangkat ini saja. Tidak ada akun dan tidak ada data yang dikirim ke server.
+            Kemajuan belajarmu selalu disimpan di HP ini lebih dulu, jadi aplikasi tetap bisa dipakai tanpa internet.
+            Kalau kamu mengizinkan, kemajuan itu juga disimpan di server supaya ikut pindah saat kamu berganti HP.
           </p>
+        </section>
+
+        <section>
+          <h2 className="font-bold text-base">Akunmu</h2>
+          <p className="mt-2">
+            Masuk sebagai <b className="break-all">{email ?? "—"}</b>.
+          </p>
+          {luring && (
+            <p className="mt-2 text-redup">
+              Sekarang tanpa sambungan. Kamu tetap bisa belajar; kemajuanmu dikirim sendiri
+              begitu internet tersambung lagi.
+            </p>
+          )}
+          <p className="mt-2">
+            Sinkronisasi: <b>{KATA_SINKRON[statusSinkron]}</b>
+            {statusSinkron === "gagal" && pesanSinkron ? ` (${pesanSinkron})` : ""}
+          </p>
+
+          {setuju === "setuju" ? (
+            <div className="mt-3 space-y-3">
+              <Btn kind="ghost" onClick={onSinkronkan} disabled={statusSinkron === "sedang"}>
+                Sinkronkan sekarang
+              </Btn>
+              <Btn kind="ghost" onClick={onTolakSinkron}>Berhenti menyimpan di server</Btn>
+            </div>
+          ) : (
+            <div className="mt-3 space-y-3">
+              <p className="text-redup">
+                Kemajuanmu saat ini hanya tersimpan di HP ini, jadi tidak ikut pindah kalau kamu berganti HP.
+              </p>
+              <Btn kind="ghost" onClick={onSetuju}>Mulai simpan di server</Btn>
+            </div>
+          )}
+
+          <div className="mt-3 space-y-3">
+            <Btn kind="ghost" onClick={onKeluar}>Keluar dari akun</Btn>
+          </div>
+        </section>
+
+        <section>
+          <h2 className="font-bold text-base">Data dan privasi</h2>
+          <p className="mt-2">
+            Kalau sinkronisasi aktif, yang disimpan di server hanya: kanji yang sudah kamu pelajari beserta
+            hitungan benar/salah dan jadwal ulangnya, riwayat sesi (tanggal, jumlah soal, ketepatan), tingkat
+            dan tanggal ujian yang kamu pilih, serta alamat emailmu sebagai penanda akun.
+          </p>
+          <p className="mt-2">
+            Tidak ada nama, umur, nomor HP, atau lokasi. <b>Hanya kamu</b> yang bisa membaca datamu: murid lain
+            tidak bisa, dan pengajar tidak punya halaman untuk memantau kemajuan murid.
+          </p>
+          <p className="mt-2">
+            Menghapus akun menghapus seluruh data itu dari server dan tidak bisa dibatalkan. Kemajuan yang
+            tersimpan di HP ini tidak ikut terhapus.
+          </p>
+          {!konfirmasiHapus ? (
+            <Btn kind="ghost" className="mt-3 !text-merah" onClick={() => setKonfirmasiHapus(true)}>
+              Hapus akun dan semua datanya
+            </Btn>
+          ) : (
+            <div className="mt-3 space-y-3">
+              <p role="alert" className="font-bold text-merah">
+                Hapus akun {email} beserta seluruh data belajarnya di server?
+              </p>
+              <Btn className="!bg-merah" onClick={() => void hapus()} disabled={sibukHapus}>
+                {sibukHapus ? "Menghapus…" : "Ya, hapus sekarang"}
+              </Btn>
+              <Btn kind="ghost" onClick={() => setKonfirmasiHapus(false)} disabled={sibukHapus}>Batal</Btn>
+            </div>
+          )}
+          {galatHapus && <p role="alert" className="mt-3 text-merah">{galatHapus}</p>}
         </section>
 
         <PanduanPasang />

@@ -27,6 +27,8 @@ Berkas yang mengatur deploy:
   `manifest.webmanifest` tidak boleh di-cache lama (kalau tidak, pembaruan tidak sampai ke murid),
   sedangkan `/assets/*` boleh di-cache selamanya karena nama berkasnya memuat hash.
 - `.node-version` — Node 24, menyamakan versi build dengan `engines` di `package.json`.
+- Env var `VITE_SUPABASE_URL` dan `VITE_SUPABASE_ANON_KEY` harus diisi di Cloudflare
+  (*Settings -> Variables and Secrets*), kalau tidak murid tidak bisa masuk. Lihat bagian Tahap 2.
 
 ### Pertama kali
 
@@ -53,6 +55,84 @@ curl -sI https://<domain>/manifest.webmanifest | grep -i -E 'cache-control|conte
 Harapannya `no-cache` untuk keduanya, dan `application/manifest+json` untuk manifest.
 
 Lalu cek di HP: buka tautan, pasang ke layar utama, matikan data seluler, buka lagi, dan jalankan satu sesi.
+
+## Tahap 2 — akun dan sinkronisasi
+
+Kemajuan belajar disimpan di server supaya ikut pindah saat murid berganti HP.
+IndexedDB tetap sumber kebenaran di perangkat; server hanya cermin yang disinkronkan.
+
+### Menyiapkan Supabase
+
+1. Buat proyek di [supabase.com](https://supabase.com) (paket gratis cukup).
+2. Jalankan `supabase/migrations/0001_tahap2.sql` di **SQL Editor**. Berkas itu membuat
+   tabel `profil`, `kanji_state`, `log_sesi`, menyalakan RLS, dan menambah fungsi
+   `hapus_akun_saya()`.
+3. **Authentication -> Email Templates**, tambahkan kode 6 angka ke templat
+   **Magic Link** *dan* **Confirm signup** — misalnya `Kode kamu: {{ .Token }}`.
+   Langkah ini wajib: templat bawaan hanya memuat tautan, dan di aplikasi yang sudah
+   dipasang ke layar utama murid memakai kode, bukan tautan (lihat alasannya di bawah).
+4. **Authentication -> URL Configuration**, isi *Site URL* dengan domain Cloudflare Pages.
+5. Isi `VITE_SUPABASE_URL` dan `VITE_SUPABASE_ANON_KEY` — di `.env.local` untuk
+   pengembangan, dan di Cloudflare Pages (*Settings -> Variables and Secrets*) untuk
+   produksi. Lihat `.env.example`. Jangan pernah memakai `service_role` key: kunci itu
+   melewati seluruh RLS.
+
+Tanpa kedua env var itu aplikasi tetap terbangun, tapi layar masuk hanya menjelaskan
+bahwa kredensialnya belum diisi.
+
+### Cara masuk: email, tanpa sandi
+
+Murid memasukkan email, lalu mengetik **kode 6 angka** dari email itu. Tautan di email
+tetap berfungsi bagi yang memakai peramban, tapi kode adalah jalur utama, dan itu
+disengaja: menekan tautan membuka peramban, bukan aplikasi yang terpasang di layar
+utama, sehingga sesinya lahir di konteks penyimpanan yang salah dan aplikasi tetap
+tampak belum masuk. Mengetik kode membuat sesi lahir di aplikasi yang sedang dipakai.
+
+Kode berlaku 1 jam, dan Supabase membatasi permintaan kode baru sekali per 60 detik.
+
+### Wajib masuk, tapi tetap jalan luring
+
+Masuk diwajibkan **sekali**, saat ada sinyal. Sesudah itu penanda akun tersimpan di
+perangkat dan aplikasi selalu bisa dibuka serta dipakai tanpa internet — tidak pernah
+memblokir belajar hanya karena server tak terjangkau. Yang mengembalikan murid ke layar
+masuk hanya dua hal: menekan "Keluar dari akun", atau server yang benar-benar terhubung
+menyatakan sesinya tidak sah lagi. Pembedaan "tidak ada sinyal" versus "ditolak server"
+ada di `masalahJaringan()` (`src/sinkron/klien.ts`), dan bila ragu jawabannya selalu
+"anggap masalah jaringan".
+
+Akibat yang tidak bisa dihindari: murid yang **belum pernah** masuk di sebuah HP butuh
+sinyal sekali untuk memulai.
+
+### Persetujuan
+
+Sesudah masuk, sebelum satu byte pun dikirim, murid ditanya apakah datanya boleh
+disimpan di server. Menolak bukan jalan buntu: aplikasi tetap jalan penuh dan datanya
+tinggal di perangkat. Pilihan itu bisa diubah kapan saja di halaman Tentang, begitu juga
+menghapus akun beserta seluruh datanya di server.
+
+### Cara penggabungan bekerja
+
+`src/sinkron/gabung.ts` murni (tanpa jaringan, tanpa jam, tanpa angka acak) supaya bisa diuji.
+
+- **Kanji** — per rekaman, cap waktu paling akhir yang menang. Bukan "hitungan tertinggi":
+  kalau memakai itu, jawaban salah di HP kedua bisa tertimpa rekaman lama berhitungan tinggi,
+  sehingga aturan "salah sekali -> hitungan kembali ke nol" bocor. Ada tes khusus untuk ini.
+- **Log sesi** — tambah-saja, digabung menurut `id` yang dibuat di perangkat.
+- **Meta** (tingkat, tanggal ujian, offset, ketepatan terakhir) — satu cap waktu bersama.
+
+Cap waktu distempel di `src/sinkron/stempel.ts`, dipanggil dari `useAppData.ubah`.
+Kode metode di `src/engine/` **tidak** ikut diubah oleh Tahap 2.
+
+Data murid yang sudah belajar sebelum ada akun dilengkapi saat dimuat (`lengkapi()` di
+`src/db/penyimpanan.ts`) dengan cap waktu saat pemuatan, bukan tanggal paling tua —
+supaya kemajuan nyata di perangkat tidak kalah oleh data server yang lebih tua.
+
+### Yang belum teruji
+
+Seluruh kode sudah lolos typecheck dan 63 tes, tapi **belum pernah dijalankan terhadap
+proyek Supabase sungguhan**. Yang perlu dicoba sendiri setelah penyiapan di atas:
+masuk dengan kode, sinkronisasi pertama dari perangkat yang sudah punya data lokal,
+bentrok dua HP, dan hapus akun.
 
 ## Pembaruan versi
 
