@@ -7,6 +7,8 @@ export const KAMUS: Record<string, Kosakata> = data.kosakata;
 
 export const TINGKAT: Tingkat[] = ["N5", "JFT", "N3", "N2", "N1"];
 export const URUT: Record<Tingkat, number> = { N5: 0, JFT: 1, N3: 2, N2: 3, N1: 4 };
+/** nama tingkat di layar: data JFT (Irodori) ditampilkan sebagai N4 (2026-10-16) */
+export const labelTingkat = (tg: Tingkat): string => (tg === "JFT" ? "N4" : tg);
 
 /** tingkat kanji, untuk menilai kesulitan kosakata */
 const TINGKAT_KANJI: Record<string, number> = Object.fromEntries(data.kanji.map((x) => [x.kanji, URUT[x.tingkat]]));

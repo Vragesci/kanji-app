@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from "react";
-import { TINGKAT } from "../data/katalog";
+import { TINGKAT, labelTingkat } from "../data/katalog";
 import { statusOf } from "../engine/fsrs";
 import { buildSession, aktif } from "../engine/sesi";
 import { TOTAL_SOAL, tingkatBawah } from "../engine/penempatan";
@@ -56,14 +56,14 @@ export function Beranda({ data, t, ubah, onMulai, onTentang }: {
 
       <div className="flex flex-wrap gap-2 mt-4">
         {TINGKAT.map((tg) => (
-          <Chip key={tg} aktifnya={data.tg === tg} onClick={() => ubah((d) => ({ ...d, tg }))}>{`sampai ${tg}`}</Chip>
+          <Chip key={tg} aktifnya={data.tg === tg} onClick={() => ubah((d) => ({ ...d, tg }))}>{`sampai ${labelTingkat(tg)}`}</Chip>
         ))}
       </div>
 
 
       {bawah.length > 0 && (
         <div className="mt-4 p-4 rounded-xl bg-white border border-garis">
-          <p className="font-bold text-sm">Sudah menguasai {bawah.map((tg) => (tg === "JFT" ? "JFT/Irodori" : tg)).join(" dan ")}?</p>
+          <p className="font-bold text-sm">Sudah menguasai {bawah.map(labelTingkat).join(" dan ")}?</p>
           <p className="text-sm mt-1 text-redup">
             Ikuti tes penempatan (sekitar {TOTAL_SOAL} soal). Tingkat yang lulus langsung ditandai hafal,
             jadi tidak perlu mengulang dari awal.

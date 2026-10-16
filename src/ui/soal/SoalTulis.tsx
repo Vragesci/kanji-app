@@ -2,18 +2,24 @@ import { useEffect, useRef, useState, type PointerEvent } from "react";
 import type { Kosakata } from "../../types";
 import { Btn, Jp } from "../komponen";
 
-/** Sesi menulis: murid menulis kanji di kanvas, lalu menilai sendiri. Urutan goresan menyusul di tahap 3. */
+/**
+ * Sesi menulis (alur 2026-10-16): murid menulis dulu tanpa panduan, lalu mencocokkan dengan kanji yang benar.
+ * Kalau belum benar, barulah panduan muncul untuk dijiplak. Urutan goresan menyusul di tahap 3.
+ */
+type Tahap = "tulis" | "cek" | "jiplak";
 export function SoalTulis({ k, v, onSelesai }: { k: string; v: Kosakata; onSelesai: (ok: boolean) => void }) {
   const kanvas = useRef<HTMLCanvasElement>(null);
   const menggambar = useRef(false);
-  const [panduan, setPanduan] = useState(true);
+  const [tahap, setTahap] = useState<Tahap>("tulis");
+  const panduan = tahap !== "tulis";
   const PIKSEL = 560;
 
   const hapus = () => {
     const c = kanvas.current;
     if (c) c.getContext("2d")!.clearRect(0, 0, c.width, c.height);
   };
-  useEffect(hapus, [panduan]);
+  // kanvas dikosongkan saat mulai menjiplak; saat "cek" tulisan murid tetap terlihat di atas panduan
+  useEffect(() => { if (tahap === "jiplak") hapus(); }, [tahap]);
 
   const posisi = (e: PointerEvent<HTMLCanvasElement>): [number, number] => {
     const c = kanvas.current!;
@@ -44,7 +50,9 @@ export function SoalTulis({ k, v, onSelesai }: { k: string; v: Kosakata; onSeles
 
   return (
     <div className="mt-6">
-      <p className="text-sm text-redup">Sesi tulis {panduan ? "(dengan panduan)" : "(tanpa panduan)"}</p>
+      <p className="text-sm text-redup">
+        {tahap === "tulis" ? "Tulis kanjinya tanpa melihat" : tahap === "cek" ? "Cocokkan tulisanmu" : "Jiplak panduan ini"}
+      </p>
       <p className="text-center mt-2">
         <span className="font-bold">{v.arti}</span>: <Jp>{v.kana}</Jp> <span className="text-redup">({v.romaji})</span>
       </p>
@@ -65,19 +73,29 @@ export function SoalTulis({ k, v, onSelesai }: { k: string; v: Kosakata; onSeles
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-2 mt-4">
-        <Btn kind="ghost" onClick={hapus}>Hapus</Btn>
-        {panduan
-          ? <Btn onClick={() => setPanduan(false)}>Tulis tanpa panduan</Btn>
-          : <Btn kind="ghost" onClick={() => setPanduan(true)}>Lihat panduan</Btn>}
-      </div>
+      {tahap === "tulis" && (
+        <div className="grid grid-cols-2 gap-2 mt-4">
+          <Btn kind="ghost" onClick={hapus}>Hapus</Btn>
+          <Btn onClick={() => setTahap("cek")}>Cek tulisan</Btn>
+        </div>
+      )}
 
-      {!panduan && (
+      {tahap === "cek" && (
         <div className="mt-4">
-          <p className="text-sm text-center mb-2 text-redup">Bandingkan dengan panduan. Apakah tulisanmu sudah benar?</p>
+          <p className="text-sm text-center mb-2 text-redup">Kanji yang benar tampil di belakang tulisanmu. Apakah sudah benar?</p>
           <div className="grid grid-cols-2 gap-2">
-            <Btn kind="ghost" onClick={() => onSelesai(false)}>Belum, ulang lain kali</Btn>
+            <Btn kind="ghost" onClick={() => setTahap("jiplak")}>Belum benar</Btn>
             <Btn onClick={() => onSelesai(true)}>Sudah benar</Btn>
+          </div>
+        </div>
+      )}
+
+      {tahap === "jiplak" && (
+        <div className="mt-4">
+          <p className="text-sm text-center mb-2 text-redup">Jiplak kanji di atas. Kanji ini akan diulang lain kali.</p>
+          <div className="grid grid-cols-2 gap-2">
+            <Btn kind="ghost" onClick={hapus}>Hapus</Btn>
+            <Btn onClick={() => onSelesai(false)}>Selesai menjiplak</Btn>
           </div>
         </div>
       )}

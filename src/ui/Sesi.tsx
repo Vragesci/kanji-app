@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { KAMUS, kosakataUntuk } from "../data/katalog";
+import { KAMUS, kosakataUntuk, labelTingkat } from "../data/katalog";
 import { applyAnswer, applyWrite } from "../engine/penilaian";
 import { buildSession, sesiPilihan } from "../engine/sesi";
 import { nilaiPenempatan, sesiPenempatan, tandaiSudahTahu, type HasilTingkat, type SoalPenempatan } from "../engine/penempatan";
@@ -122,7 +122,7 @@ export function Sesi({ mode, pilihan, data, t: tHariIni, ubah, onKeluar }: Props
             <div className="mt-6 space-y-2 text-left">
               {hasilTes.map((h) => (
                 <p key={h.tingkat} className="p-3 rounded-xl bg-white border border-garis text-sm">
-                  <b>{h.tingkat === "JFT" ? "JFT/Irodori" : h.tingkat}</b>: benar {h.benar} dari {h.total} —{" "}
+                  <b>{labelTingkat(h.tingkat)}</b>: benar {h.benar} dari {h.total} —{" "}
                   {h.lulus
                     ? <span className="text-hijau font-bold">lulus, {h.ditandai} kanji ditandai hafal</span>
                     : <span className="text-merah font-bold">belum lulus, kanji tingkat ini dipelajari seperti biasa</span>}

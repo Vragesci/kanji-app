@@ -104,6 +104,10 @@ menulis, kalimat contoh (Tatoeba), dan audio.
 - "Sudah tahu" (2026-10-16): pada kanji yang baru pertama kali muncul di sesi, murid bisa mengetuk "Sudah tahu kanji ini —
   lewati"; kanji itu langsung hijau (jadwal sama seperti tes penempatan) dan tidak dihitung dalam ketepatan sesi.
 - Peta (2026-10-16): kotak oranye menampilkan 5 titik = berapa kali sudah benar dari 5 sebelum sesi menulis.
+- Label tingkat (2026-10-16): data tingkat JFT (Irodori) ditampilkan sebagai "N4" di layar. Isinya tetap mengikuti
+  urutan Irodori, jadi sebagian kanjinya (mis. 連, 絡) di daftar JLPT tergolong N3. Kode internal tetap "JFT".
+- Sesi menulis (2026-10-16): murid menulis dulu tanpa panduan, lalu mencocokkan dengan kanji yang benar (tampil di
+  belakang tulisannya). "Sudah benar" → hijau. "Belum benar" → panduan muncul untuk dijiplak, kanji diulang lain kali.
 - Bagi murid buta warna, status peta juga dibedakan lewat ukuran huruf: merah kecil, oranye sedang,
   hijau besar (semakin hafal semakin besar).
 - Atribusi wajib di halaman "Tentang": materi tingkat JFT dari IRODORI
