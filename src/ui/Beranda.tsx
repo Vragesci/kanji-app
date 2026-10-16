@@ -4,7 +4,6 @@ import { statusOf } from "../engine/fsrs";
 import { buildSession, aktif } from "../engine/sesi";
 import { TOTAL_SOAL, tingkatBawah } from "../engine/penempatan";
 import { parse } from "../engine/tanggal";
-import { KOSONG } from "../db/penyimpanan";
 import type { AppData, ModeSesi } from "../types";
 import { Btn } from "./komponen";
 import { PetaKanji } from "./PetaKanji";
@@ -23,8 +22,6 @@ function Chip({ aktifnya, onClick, children }: { aktifnya: boolean; onClick: () 
 export function Beranda({ data, t, ubah, onMulai, onTentang }: {
   data: AppData; t: string; ubah: (fn: (d: AppData) => AppData) => void; onMulai: (m: ModeSesi, pilihan?: string[]) => void; onTentang: () => void;
 }) {
-  const [alat, setAlat] = useState(false);
-  const [konfirmasi, setKonfirmasi] = useState(false);
   const [memilih, setMemilih] = useState(false);
   const [pilihan, setPilihan] = useState<string[]>([]);
   const petaRef = useRef<HTMLDivElement>(null);
@@ -40,9 +37,6 @@ export function Beranda({ data, t, ubah, onMulai, onTentang }: {
   const hafal = set.filter((x) => statusOf(data.ks[x.kanji]) === "green");
   const rencana = useMemo(() => buildSession(data, t), [data, t]);
   const adaBelajar = rencana.quiz.length + rencana.write.length;
-  const terakhir = data.log.slice(-5);
-  const rata = terakhir.length ? Math.round((terakhir.reduce((a, b) => a + b.acc, 0) / terakhir.length) * 100) : null;
-  const hariLatihan = new Set(data.log.map((l) => l.d)).size;
   const bawah = useMemo(() => tingkatBawah(data), [data.tg, data.ks]);
 
   return (
@@ -89,26 +83,7 @@ export function Beranda({ data, t, ubah, onMulai, onTentang }: {
         <PetaKanji data={data} t={t} pilihan={pilihan} onPilih={memilih ? togel : undefined} />
       </div>
 
-      <div className="mt-10 p-4 rounded-xl bg-white border border-garis">
-        <p className="font-bold text-sm">Data uji coba</p>
-        <p className="text-sm mt-2">Hari latihan: {hariLatihan}</p>
-        <p className="text-sm">Akurasi rata-rata 5 sesi terakhir: {rata === null ? "belum ada" : `${rata}%`}</p>
-        <button type="button" onClick={() => setAlat(!alat)} className="text-xs mt-3 underline text-redup min-h-11">
-          {alat ? "Sembunyikan alat uji" : "Alat uji (khusus guru)"}
-        </button>
-        {alat && (
-          <div className="grid grid-cols-2 gap-2 mt-2">
-            <Btn kind="ghost" onClick={() => ubah((d) => ({ ...d, offset: d.offset + 1 }))}>Majukan 1 hari</Btn>
-            {konfirmasi ? (
-              <Btn kind="ghost" onClick={() => { ubah(() => KOSONG); setKonfirmasi(false); }}>Yakin, hapus</Btn>
-            ) : (
-              <Btn kind="ghost" onClick={() => setKonfirmasi(true)}>Mulai ulang</Btn>
-            )}
-          </div>
-        )}
-      </div>
-
-      <button type="button" onClick={onTentang} className="block mx-auto mt-6 text-sm underline text-redup min-h-11">
+      <button type="button" onClick={onTentang} className="block mx-auto mt-10 text-sm underline text-redup min-h-11">
         Tentang aplikasi dan sumber materi
       </button>
       {memilih && (
