@@ -110,6 +110,12 @@ menulis, kalimat contoh (Tatoeba), dan audio.
   belakang tulisannya). "Sudah benar" → hijau. "Belum benar" → panduan muncul untuk dijiplak, kanji diulang lain kali.
   Soal tulis memakai kanji itu sendiri sebagai kata bila ada (人 → ひと); kalau tidak, kanji target dikosongkan di dalam
   kata (学□) dan bacaannya ditandai ("Tulis kanji untuk せい (sei)"), supaya jelas yang ditulis hanya satu kanji.
+- Pengecekan tulisan otomatis (2026-10-16, memajukan sebagian tahap 3): tulisan dinilai aplikasi per goresan memakai data
+  KanjiVG (`public/goresan/<tingkat>.json`, disiapkan `scripts/goresan.mjs`; CC BY-SA 3.0, atribusi di "Tentang").
+  Diperiksa berurutan: jumlah goresan, arah (goresan panjang saja; titik tidak), bentuk + letak tiap goresan, lalu urutan
+  (penugasan termurah antar-goresan). Toleransi di `BATAS` (src/engine/goresan.ts), dikalibrasi dengan tulisan tiruan.
+  Benar → hijau. Salah → pesan koreksi + goresan bernomor (yang salah merah) untuk dijiplak, kanji diulang lain kali.
+  Kalau data goresan belum terunduh (luring), murid menilai sendiri.
 - Bagi murid buta warna, status peta juga dibedakan lewat ukuran huruf: merah kecil, oranye sedang,
   hijau besar (semakin hafal semakin besar).
 - Atribusi wajib di halaman "Tentang": materi tingkat JFT dari IRODORI

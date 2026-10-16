@@ -44,6 +44,11 @@ export function Tentang({ onKembali }: { onKembali: () => void }) {
               <Tautan href={EDRDG}>Electronic Dictionary Research and Development Group (EDRDG)</Tautan>,
               dipakai di bawah lisensi <Tautan href={CC}>Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA 4.0)</Tautan>.
             </li>
+            <li>
+              <b>KanjiVG</b> — urutan dan bentuk goresan untuk pengecekan tulisan berasal dari{" "}
+              <Tautan href="https://kanjivg.tagaini.net">KanjiVG</Tautan> © Ulrich Apel, dipakai di bawah lisensi{" "}
+              <Tautan href="https://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 (CC BY-SA 3.0)</Tautan>.
+            </li>
           </ul>
         </section>
 

@@ -14,6 +14,16 @@ npm run build      # tsc + vite build -> dist/
 npm run preview    # menjalankan hasil build (service worker hanya aktif di sini, bukan di `dev`)
 ```
 
+## Data goresan (KanjiVG)
+
+`public/goresan/*.json` dibuat dari KanjiVG (CC BY-SA 3.0). Untuk membuat ulang (mis. setelah kanji baru ditambahkan):
+
+```
+git clone --depth 1 --filter=blob:none --sparse https://github.com/KanjiVG/kanjivg /tmp/kanjivg
+git -C /tmp/kanjivg sparse-checkout set kanji
+node scripts/goresan.mjs /tmp/kanjivg/kanji
+```
+
 ## Deploy
 
 Hasil build adalah situs statis di `dist/`. Konfigurasi sudah ada untuk kedua penyedia; pakai salah satu dan hapus yang lain.
