@@ -29,11 +29,10 @@ export function applyAnswer(data: AppData, k: string, correct: boolean, t: strin
   } else if (correct) {
     s.everCorrect = true;
     s.wrongStreak = 0;
-    if (s.lastCountDay !== t) {
-      s.count = (s.count || 0) + 1;
-      s.lastCountDay = t;
-      s.vi = (s.vi || 0) + 1; // pertemuan berikutnya pakai kosakata lain
-    }
+    // setiap jawaban benar dihitung, termasuk sesi ulangan di hari yang sama (5 kali benar → sesi menulis)
+    s.count = (s.count || 0) + 1;
+    s.lastCountDay = t;
+    s.vi = (s.vi || 0) + 1; // pertemuan berikutnya pakai kosakata lain
     if (s.count >= 5) s.readyWrite = true;
     s.due = addDays(t, NEXT_GAP[Math.min(Math.max(s.count - 1, 0), 4)]!); // benar ke-1..5 -> 1,1,2,4,7 hari
   } else {

@@ -37,8 +37,9 @@ kosakata{} : { kana, romaji, arti, seg[[huruf,bacaan]], seg_valid, tingkat, sumb
    di kereta.
 2. Empat status per kanji: putih (belum dilihat), merah (belum hafal), oranye
    (pernah benar), hijau (hafal). Ditampilkan sebagai peta kotak berwarna.
-3. Kanji naik ke hijau setelah **benar 5 kali di sesi yang berbeda**, lalu lulus
-   satu sesi menulis. Salah sekali → hitungan kembali ke nol.
+3. Kanji naik ke hijau setelah **benar 5 kali** (setiap jawaban benar dihitung, termasuk sesi
+   ulangan di hari yang sama; diubah 2026-10-16), lalu lulus satu sesi menulis.
+   Salah sekali → hitungan kembali ke nol.
 4. **Salah 3 kali berturut-turut pada kanji yang sama → ganti kosakata**, bukan
    ganti cara bertanya. Kanji yang sama muncul lewat kata lain (`vi` bertambah).
 5. Jenis soal bergiliran: arti, bacaan, rakit kosakata.
@@ -86,7 +87,7 @@ menulis, kalimat contoh (Tatoeba), dan audio.
   orientasi portrait.
 - Pengecualian yang disetujui (2026-09-21): sesi boleh diulang berkali-kali dalam sehari. Kanji yang sudah dijawab hari ini
   tetap bisa muncul, dan kanji oranye yang belum jatuh tempo boleh mengisi sisa kuota. Jadwal 1-1-2-4-7 hari dan FSRS tidak berubah
-  (hitungan benar tetap naik paling banyak sekali per hari).
+  (sejak 2026-10-16 hitungan benar naik setiap kali benar, tidak lagi dibatasi sekali per hari).
 - Pengecualian yang disetujui (2026-09-21): di soal bacaan, arti kosakata tidak tampil di bawah kata soal dan pilihan jawaban hanya
   berisi hiragana di tengah tanpa romaji, supaya murid mengingat lewat kanji. Arti dan romaji baru tampil setelah murid menjawab.
 - Pengecualian yang disetujui (2026-09-21): tombol "Ulangi kanji yang sudah hafal" diganti "Pilih kanji yang ingin dipelajari". Murid mengetuk
@@ -95,6 +96,10 @@ menulis, kalimat contoh (Tatoeba), dan audio.
   Pilihan jawaban salah diambil dari kosakata yang satu lingkup makna bila ada (mis. 南: utara, timur, barat), bukan acak.
 - Pengecoh soal bacaan (2026-09-21): pada sebagian soal (sekitar 60%) pilihan salah berupa bacaan yang mirip (dakuten, vokal panjang, っ,
   bacaan kanji yang tertukar, atau bacaan kata nyata yang mirip); sisanya kana acak sepanjang sama. Pilihan hanya hiragana, tanpa romaji.
+- Kosakata (2026-10-16): kosakata tiap kanji diurutkan dari yang termudah (tingkat tertinggi di antara kanji
+  penyusunnya dan tingkat kata itu sendiri). Soal mengutamakan kata yang semua kanjinya ada di tingkat pilihan murid;
+  kalau tidak ada, dipakai kata termudah yang tersedia (mis. 木 di N5 → 木曜日, bukan 木綿).
+- Soal rakit (2026-10-16): kotak yang salah menampilkan kanji yang tadi dipilih murid ("Pilihanmu: …").
 - Bagi murid buta warna, status peta juga dibedakan lewat ukuran huruf: merah kecil, oranye sedang,
   hijau besar (semakin hafal semakin besar).
 - Atribusi wajib di halaman "Tentang": materi tingkat JFT dari IRODORI

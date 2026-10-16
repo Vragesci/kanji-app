@@ -88,7 +88,7 @@ export function Sesi({ mode, pilihan, data, t: tHariIni, ubah, onKeluar }: Props
       )}
 
       {fase === "write" && (
-        <SoalTulis key={tulis[wIdx]} k={tulis[wIdx]!} v={KAMUS[kosakataUntuk(tulis[wIdx]!, 0, false)]!} onSelesai={selesaiTulis} />
+        <SoalTulis key={tulis[wIdx]} k={tulis[wIdx]!} v={KAMUS[kosakataUntuk(tulis[wIdx]!, 0, false, undefined, data.tg || "N5")]!} onSelesai={selesaiTulis} />
       )}
 
       {fase === "done" && (

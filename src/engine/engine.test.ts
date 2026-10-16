@@ -4,7 +4,7 @@ import { KOSONG } from "../db/penyimpanan";
 import type { AppData } from "../types";
 import { D0, W, batasHari, greenStrength, jarakHari, nextD, statusOf } from "./fsrs";
 import { applyAnswer, applyWrite } from "./penilaian";
-import { aktif, buildSession, sesiPilihan } from "./sesi";
+import { aktif, buildSession, daftarTulis, sesiPilihan } from "./sesi";
 import { addDays } from "./tanggal";
 
 const K = "先"; // kanji N5 dengan banyak kosakata
@@ -26,15 +26,14 @@ describe("status & hitungan (metode 2–3)", () => {
     expect(statusOf(d.ks[K])).toBe("green");
   });
 
-  it("benar 5 kali di hari berbeda; benar berulang di hari yang sama hanya dihitung sekali", () => {
+  it("benar 5 kali (boleh di hari yang sama) → siap sesi menulis", () => {
     let d = baru();
     for (let i = 0; i < 4; i++) d = applyAnswer(d, K, true, hari(0));
-    expect(d.ks[K]!.count).toBe(1);
-    for (let i = 1; i <= 3; i++) d = applyAnswer(d, K, true, hari(i));
     expect(d.ks[K]!.count).toBe(4);
     expect(d.ks[K]!.readyWrite).toBeUndefined();
-    d = applyAnswer(d, K, true, hari(4));
+    d = applyAnswer(d, K, true, hari(0));
     expect(d.ks[K]!.readyWrite).toBe(true);
+    expect(daftarTulis(d)).toContain(K);
   });
 
   it("salah sekali → hitungan kembali ke nol", () => {
@@ -280,5 +279,24 @@ describe("sesi (metode 1 dan 7)", () => {
     d = applyAnswer(d, K, true, hari(4));
     expect(d.ks[K]!.readyWrite).toBe(true);
     expect(buildSession(d, hari(5)).write).toContain(K);
+  });
+});
+
+describe("kosakata mengikuti tingkat murid", () => {
+  it("kanji N5 tidak dilatih lewat kosakata yang memuat kanji N1 (木 → bukan 木綿)", () => {
+    for (let vi = 0; vi < 6; vi++) expect(kosakataUntuk("木", vi, false, undefined, "N5")).not.toBe("木綿");
+    expect(kosakataUntuk("木", 0, false, undefined, "N5")).toBe("木曜日");
+  });
+
+  it("kosakata tiap kanji diurutkan dari yang termudah", () => {
+    expect(KMAP["木"]!.kosakata[0]).toBe("木曜日");
+    expect(KMAP["木"]!.kosakata.slice(0, 2)).toEqual(["木曜日", "木星"]); // 木綿 & 樹木 (N1) di belakang
+  });
+
+  it("setiap kanji tetap punya kosakata di tingkat N5", () => {
+    for (const x of KANJI.filter((x) => bisaDipelajari(x.kanji))) {
+      expect(() => kosakataUntuk(x.kanji, 0, false, undefined, "N5")).not.toThrow();
+      if (bisaRakit(x.kanji)) expect(() => kosakataUntuk(x.kanji, 0, true, undefined, "N5")).not.toThrow();
+    }
   });
 });

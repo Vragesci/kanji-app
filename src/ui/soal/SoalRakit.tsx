@@ -20,6 +20,8 @@ export function SoalRakit({ target, v, data, hasil, onJawab }: {
   );
   const [terisi, setTerisi] = useState<Record<number, string>>({});
   const [slotSalah, setSlotSalah] = useState<number[]>([]);
+  // kanji yang dipilih murid di kotak yang salah, ditampilkan di bawah kotak itu
+  const [pilihanSalah, setPilihanSalah] = useState<Record<number, string>>({});
   const cur = blanks.find((i) => !(i in terisi));
 
   const [opsiSlot] = useState(() => {
@@ -40,6 +42,7 @@ export function SoalRakit({ target, v, data, hasil, onJawab }: {
     const salah = ok ? slotSalah : [...slotSalah, cur];
     setTerisi(baru);
     setSlotSalah(salah);
+    if (!ok) setPilihanSalah((p) => ({ ...p, [cur]: ch }));
     if (blanks.every((i) => i in baru)) onJawab(salah.length === 0);
   };
 
@@ -73,6 +76,12 @@ export function SoalRakit({ target, v, data, hasil, onJawab }: {
                 </Jp>
               )}
               <Jp className="text-sm mt-1 text-redup min-h-5">{seg[1]}</Jp>
+              {pilihanSalah[i] && (
+                <span className="flex flex-col items-center leading-tight text-merah" aria-label={`Pilihanmu: ${pilihanSalah[i]}`}>
+                  <span className="text-[11px]">Pilihanmu:</span>
+                  <Jp className="text-xl line-through">{pilihanSalah[i]}</Jp>
+                </span>
+              )}
             </div>
           );
         })}
