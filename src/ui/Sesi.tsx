@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { KAMUS, kosakataUntuk, labelTingkat } from "../data/katalog";
+import { KAMUS, kataTulis, labelTingkat } from "../data/katalog";
 import { applyAnswer, applyWrite } from "../engine/penilaian";
 import { buildSession, sesiPilihan } from "../engine/sesi";
 import { nilaiPenempatan, sesiPenempatan, tandaiSudahTahu, type HasilTingkat, type SoalPenempatan } from "../engine/penempatan";
@@ -111,7 +111,7 @@ export function Sesi({ mode, pilihan, data, t: tHariIni, ubah, onKeluar }: Props
       )}
 
       {fase === "write" && (
-        <SoalTulis key={tulis[wIdx]} k={tulis[wIdx]!} v={KAMUS[kosakataUntuk(tulis[wIdx]!, 0, false, undefined, data.tg || "N5")]!} onSelesai={selesaiTulis} />
+        <SoalTulis key={tulis[wIdx]} k={tulis[wIdx]!} v={KAMUS[kataTulis(tulis[wIdx]!, data.tg || "N5")]!} onSelesai={selesaiTulis} />
       )}
 
       {fase === "done" && (

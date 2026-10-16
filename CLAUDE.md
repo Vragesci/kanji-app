@@ -108,6 +108,8 @@ menulis, kalimat contoh (Tatoeba), dan audio.
   urutan Irodori, jadi sebagian kanjinya (mis. 連, 絡) di daftar JLPT tergolong N3. Kode internal tetap "JFT".
 - Sesi menulis (2026-10-16): murid menulis dulu tanpa panduan, lalu mencocokkan dengan kanji yang benar (tampil di
   belakang tulisannya). "Sudah benar" → hijau. "Belum benar" → panduan muncul untuk dijiplak, kanji diulang lain kali.
+  Soal tulis memakai kanji itu sendiri sebagai kata bila ada (人 → ひと); kalau tidak, kanji target dikosongkan di dalam
+  kata (学□) dan bacaannya ditandai ("Tulis kanji untuk せい (sei)"), supaya jelas yang ditulis hanya satu kanji.
 - Bagi murid buta warna, status peta juga dibedakan lewat ukuran huruf: merah kecil, oranye sedang,
   hijau besar (semakin hafal semakin besar).
 - Atribusi wajib di halaman "Tentang": materi tingkat JFT dari IRODORI

@@ -85,6 +85,15 @@ export function kosakataUntuk(
   throw new Error(`Kanji ${k} tidak punya kosakata layak${untukRakit ? " untuk rakit" : ""}`);
 }
 
+/**
+ * Kata untuk sesi menulis: utamakan kanji itu sendiri sebagai kata (人 → ひと), supaya murid
+ * diminta menulis satu kanji dengan bacaannya sendiri, bukan bagian dari kata lain (何人).
+ */
+export function kataTulis(k: string, tingkat: Tingkat = "N1"): string {
+  if (KMAP[k]!.kosakata.includes(k) && layak(k)) return k;
+  return kosakataUntuk(k, 0, false, undefined, tingkat);
+}
+
 /** kosakata layak, untuk membuat pengecoh soal arti dan bacaan */
 export const SEMUA_KATA: { kata: string; v: Kosakata }[] = Object.entries(KAMUS)
   .filter(([, v]) => !!v.arti)

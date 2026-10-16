@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type PointerEvent } from "react";
 import type { Kosakata } from "../../types";
 import { Btn, Jp } from "../komponen";
+import { keRomaji } from "../../engine/romaji";
 
 /**
  * Sesi menulis (alur 2026-10-16): murid menulis dulu tanpa panduan, lalu mencocokkan dengan kanji yang benar.
@@ -53,9 +54,7 @@ export function SoalTulis({ k, v, onSelesai }: { k: string; v: Kosakata; onSeles
       <p className="text-sm text-redup">
         {tahap === "tulis" ? "Tulis kanjinya tanpa melihat" : tahap === "cek" ? "Cocokkan tulisanmu" : "Jiplak panduan ini"}
       </p>
-      <p className="text-center mt-2">
-        <span className="font-bold">{v.arti}</span>: <Jp>{v.kana}</Jp> <span className="text-redup">({v.romaji})</span>
-      </p>
+      <Petunjuk k={k} v={v} terbuka={tahap !== "tulis"} />
 
       <div className="relative mx-auto mt-4 rounded-2xl bg-white border border-garis w-full max-w-70 aspect-square overflow-hidden [container-type:inline-size]">
         {/* garis silang tengah sebagai patokan proporsi */}
@@ -98,6 +97,40 @@ export function SoalTulis({ k, v, onSelesai }: { k: string; v: Kosakata; onSeles
             <Btn onClick={() => onSelesai(false)}>Selesai menjiplak</Btn>
           </div>
         </div>
+      )}
+    </div>
+  );
+}
+
+/**
+ * Petunjuk soal tulis: kata dengan kanji target dikosongkan (学□) dan bacaan kanji itu ditandai,
+ * supaya jelas yang ditulis hanya satu kanji (生 = せい), bukan seluruh kata (学生).
+ */
+function Petunjuk({ k, v, terbuka }: { k: string; v: Kosakata; terbuka: boolean }) {
+  const segTarget = v.seg_valid ? v.seg.find((s) => s[0] === k) : undefined;
+  const bacaan = segTarget?.[1];
+  const kosong = (
+    <span className="inline-block align-middle w-[1.1em] h-[1.1em] mx-px rounded border-2 border-dashed border-aksen" aria-label="kanji yang ditulis" />
+  );
+  const kata = segTarget
+    ? v.seg.map((s, i) => (s[0] === k ? (terbuka ? <span key={i} className="text-aksen">{k}</span> : <span key={i}>{kosong}</span>) : <span key={i}>{s[0]}</span>))
+    : [...v.seg.map((s) => s[0]).join("")].map((c, i) => (c === k ? (terbuka ? <span key={i} className="text-aksen">{c}</span> : <span key={i}>{kosong}</span>) : <span key={i}>{c}</span>));
+  return (
+    <div className="text-center mt-2">
+      <p className="font-bold">{v.arti}</p>
+      <Jp as="p" className="text-3xl mt-1">{kata}</Jp>
+      <p className="mt-1">
+        {segTarget ? (
+          <Jp>{v.seg.map((s, i) => (s[0] === k ? <b key={i} className="text-aksen">{s[1]}</b> : <span key={i}>{s[1] || s[0]}</span>))}</Jp>
+        ) : (
+          <Jp>{v.kana}</Jp>
+        )}{" "}
+        <span className="text-redup">({v.romaji})</span>
+      </p>
+      {bacaan && v.seg.length > 1 && (
+        <p className="text-sm mt-1 text-redup">
+          Tulis kanji untuk <Jp className="text-tinta font-bold">{bacaan}</Jp> ({keRomaji(bacaan)})
+        </p>
       )}
     </div>
   );
