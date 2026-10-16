@@ -1,4 +1,4 @@
-import type { AppData, KanjiState } from "../types";
+import type { KanjiState } from "../types";
 import { diff } from "./tanggal";
 
 // FSRS (Free Spaced Repetition Scheduler) v4.5 dengan parameter bawaan resminya.
@@ -13,18 +13,11 @@ export const DECAY = -0.5;
 export const FACTOR = 19 / 81;
 /** Target retensi tetap 0,90. Bukan pengaturan murid. */
 export const RETENSI = 0.9;
-// Retensi tetap 0.90; yang dibatasi adalah jarak maksimum, dipatok ke jumlah hari
-// tersisa menuju ujian, supaya tidak ada kanji yang jadwalnya melewati hari ujian.
+// Retensi tetap 0.90; jarak maksimum antar-ulangan 180 hari (target ujian dihapus 2026-10-16).
 export const MAX_DEFAULT = 180;
 
 /** Jarak fase belajar (sebelum hijau) setelah jawaban benar ke-1, 2, 3, 4, 5 (di hari berbeda) */
 export const NEXT_GAP = [1, 1, 2, 4, 7];
-
-export const UJIAN = [
-  { label: "Des 2026", tgl: "2026-12-06" },
-  { label: "Jul 2027", tgl: "2027-07-04" },
-  { label: "Des 2027", tgl: "2027-12-05" },
-];
 
 export const clampD = (d: number): number => Math.min(10, Math.max(1, d));
 /** peluang masih ingat setelah `lewat` hari, untuk ingatan sestabil S hari */
@@ -41,16 +34,6 @@ export const S_salah = (D: number, S: number, R: number): number =>
 /** jarak hari berikutnya: dihitung dari stabilitas, bukan dari jumlah jawaban benar */
 export const jarakHari = (S: number, batas: number = MAX_DEFAULT): number =>
   Math.min(batas, Math.max(1, Math.round((S / FACTOR) * (Math.pow(RETENSI, 1 / DECAY) - 1))));
-
-/**
- * batas jarak = sisa hari menuju ujian yang dipilih; 180 hari hanya kalau tanpa target
- * (atau tanggal ujian yang tersimpan sudah lewat).
- */
-export function batasHari(data: Pick<AppData, "ujian">, t: string): number {
-  if (!data.ujian) return MAX_DEFAULT;
-  const sisa = diff(t, data.ujian);
-  return sisa > 0 ? sisa : MAX_DEFAULT;
-}
 
 export function fsrsState(s: KanjiState): { S: number; D: number } {
   return { S: s.S || s.interval || 7, D: s.D || D0(3) };

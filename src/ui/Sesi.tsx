@@ -2,6 +2,8 @@ import { useRef, useState } from "react";
 import { KAMUS, kosakataUntuk } from "../data/katalog";
 import { applyAnswer, applyWrite } from "../engine/penilaian";
 import { buildSession, sesiPilihan } from "../engine/sesi";
+import { nilaiPenempatan, sesiPenempatan, tandaiSudahTahu, type HasilTingkat, type SoalPenempatan } from "../engine/penempatan";
+import { statusOf } from "../engine/fsrs";
 import type { AppData, ItemSoal, ModeSesi } from "../types";
 import { Btn, Jp, KotakKanji } from "./komponen";
 import { Soal } from "./soal/Soal";
@@ -22,7 +24,13 @@ interface Props {
 export function Sesi({ mode, pilihan, data, t: tHariIni, ubah, onKeluar }: Props) {
   // tanggal dikunci saat sesi dimulai: sesi yang melewati tengah malam tetap satu tanggal
   const [t] = useState(tHariIni);
-  const [rencana] = useState(() => (mode === "pilih" ? sesiPilihan(data, pilihan ?? []) : buildSession(data, t)));
+  const [rencana] = useState(() =>
+    mode === "tes" ? { quiz: sesiPenempatan(data), write: [] as string[] }
+    : mode === "pilih" ? sesiPilihan(data, pilihan ?? []) : buildSession(data, t));
+  // status kanji saat sesi dimulai: tombol "Sudah tahu" hanya untuk kanji yang baru pertama kali muncul
+  const [awal] = useState(() => data.ks);
+  const [hasilTes, setHasilTes] = useState<HasilTingkat[] | null>(null);
+  const [dilewati, setDilewati] = useState(0);
   // tepat sesuai rencana (maksimum 10 soal); soal yang salah tidak diulang di sesi yang sama, jadwalnya maju ke sesi berikutnya
   const quiz: ItemSoal[] = rencana.quiz;
   const [tulis, setTulis] = useState<string[]>(rencana.write);
@@ -35,6 +43,13 @@ export function Sesi({ mode, pilihan, data, t: tHariIni, ubah, onKeluar }: Props
   const pertama = useRef<Record<string, boolean>>({});
 
   const selesaiQuiz = () => {
+    if (mode === "tes") {
+      // tes penempatan tidak memengaruhi beban sesi (lastAcc) maupun log latihan
+      setHasilTes(nilaiPenempatan(data, quiz as SoalPenempatan[], pertama.current, t).hasil);
+      ubah((d) => nilaiPenempatan(d, quiz as SoalPenempatan[], pertama.current, t).data);
+      setFase("done");
+      return;
+    }
     const hasil = Object.values(pertama.current);
     const a = hasil.length ? hasil.filter(Boolean).length / hasil.length : 1;
     const entri = { d: t, n: hasil.length, acc: a };
@@ -52,7 +67,14 @@ export function Sesi({ mode, pilihan, data, t: tHariIni, ubah, onKeluar }: Props
     const it = quiz[idx]!;
     if (it.k in pertama.current) return;
     pertama.current[it.k] = benar;
-    ubah((d) => applyAnswer(d, it.k, benar, t));
+    if (mode !== "tes") ubah((d) => applyAnswer(d, it.k, benar, t)); // tes penempatan dinilai di akhir
+  };
+
+  const sudahTahu = () => {
+    const k = quiz[idx]!.k;
+    ubah((d) => tandaiSudahTahu(d, k, t, idx));
+    setDilewati((n) => n + 1);
+    lanjutQuiz();
   };
 
   const lanjutQuiz = () => {
@@ -84,6 +106,7 @@ export function Sesi({ mode, pilihan, data, t: tHariIni, ubah, onKeluar }: Props
         <Soal
           key={`${idx}${quiz[idx]!.k}${quiz[idx]!.type}`}
           item={quiz[idx]!} data={data} onDijawab={dijawab} onLanjut={lanjutQuiz}
+          onSudahTahu={mode !== "tes" && statusOf(awal[quiz[idx]!.k]) === "white" ? sudahTahu : undefined}
         />
       )}
 
@@ -95,6 +118,19 @@ export function Sesi({ mode, pilihan, data, t: tHariIni, ubah, onKeluar }: Props
         <div className="mt-10 text-center">
           <Jp as="p" className="text-4xl text-aksen">おつかれさま</Jp>
           <p className="text-sm text-redup">otsukaresama</p>
+          {hasilTes && (
+            <div className="mt-6 space-y-2 text-left">
+              {hasilTes.map((h) => (
+                <p key={h.tingkat} className="p-3 rounded-xl bg-white border border-garis text-sm">
+                  <b>{h.tingkat === "JFT" ? "JFT/Irodori" : h.tingkat}</b>: benar {h.benar} dari {h.total} —{" "}
+                  {h.lulus
+                    ? <span className="text-hijau font-bold">lulus, {h.ditandai} kanji ditandai hafal</span>
+                    : <span className="text-merah font-bold">belum lulus, kanji tingkat ini dipelajari seperti biasa</span>}
+                </p>
+              ))}
+            </div>
+          )}
+          {dilewati > 0 && <p className="mt-4 text-sm">Ditandai sudah tahu: <b>{dilewati}</b> kanji</p>}
           {acc !== null && (
             <p className="mt-6">Jawaban benar di percobaan pertama: <b>{Math.round(acc * 100)}%</b></p>
           )}

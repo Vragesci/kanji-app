@@ -1,8 +1,9 @@
 import { useMemo, useRef, useState } from "react";
 import { TINGKAT } from "../data/katalog";
-import { UJIAN, statusOf } from "../engine/fsrs";
+import { statusOf } from "../engine/fsrs";
 import { buildSession, aktif } from "../engine/sesi";
-import { diff, parse } from "../engine/tanggal";
+import { TOTAL_SOAL, tingkatBawah } from "../engine/penempatan";
+import { parse } from "../engine/tanggal";
 import { KOSONG } from "../db/penyimpanan";
 import type { AppData, ModeSesi } from "../types";
 import { Btn } from "./komponen";
@@ -42,10 +43,11 @@ export function Beranda({ data, t, ubah, onMulai, onTentang }: {
   const terakhir = data.log.slice(-5);
   const rata = terakhir.length ? Math.round((terakhir.reduce((a, b) => a + b.acc, 0) / terakhir.length) * 100) : null;
   const hariLatihan = new Set(data.log.map((l) => l.d)).size;
+  const bawah = useMemo(() => tingkatBawah(data), [data.tg, data.ks]);
 
   return (
     <div className={memilih ? "pb-24" : ""}>
-      <h1 className="text-2xl font-bold">Aplikasi Kanji</h1>
+      <h1 className="text-2xl font-bold">Ngaji Kanji</h1>
       <p className="text-sm mt-1 text-redup">
         {parse(t).toLocaleDateString("id-ID", { weekday: "long", day: "numeric", month: "long" })}
       </p>
@@ -58,18 +60,16 @@ export function Beranda({ data, t, ubah, onMulai, onTentang }: {
         ))}
       </div>
 
-      <div className="flex flex-wrap items-center gap-2 mt-3">
-        <span className="text-xs text-redup">Target ujian:</span>
-        {[...UJIAN, { label: "tanpa target", tgl: null as string | null }]
-          .filter((u) => !u.tgl || u.tgl > t)
-          .map((u) => (
-            <Chip key={u.label} aktifnya={data.ujian === u.tgl} onClick={() => ubah((d) => ({ ...d, ujian: u.tgl }))}>{u.label}</Chip>
-          ))}
-      </div>
-      {data.ujian && (
-        <p className="text-xs mt-2 text-redup">
-          {diff(t, data.ujian)} hari lagi — tidak ada kanji yang dijadwalkan melewati hari ujian.
-        </p>
+
+      {bawah.length > 0 && (
+        <div className="mt-4 p-4 rounded-xl bg-white border border-garis">
+          <p className="font-bold text-sm">Sudah menguasai {bawah.map((tg) => (tg === "JFT" ? "JFT/Irodori" : tg)).join(" dan ")}?</p>
+          <p className="text-sm mt-1 text-redup">
+            Ikuti tes penempatan (sekitar {TOTAL_SOAL} soal). Tingkat yang lulus langsung ditandai hafal,
+            jadi tidak perlu mengulang dari awal.
+          </p>
+          <Btn kind="ghost" className="mt-3" onClick={() => onMulai("tes")}>Mulai tes penempatan</Btn>
+        </div>
       )}
 
       <p className="text-sm mt-5">Kanji hafal: <b>{hafal.length}</b> dari {set.length}</p>

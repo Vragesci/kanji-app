@@ -1,4 +1,4 @@
-# Aplikasi Kanji — brief proyek
+# Ngaji Kanji — brief proyek
 
 Dokumen ini dibaca Claude Code setiap sesi. Isinya keputusan yang sudah diambil,
 bukan ide yang masih terbuka. Jangan mengubah metode di bawah tanpa diminta.
@@ -53,9 +53,7 @@ Fase belajar (sebelum hijau) memakai jarak tetap 1-1-2-4-7 hari. Setelah hijau,
 jadwal dipegang FSRS dengan parameter bawaan resmi (lihat konstanta `W` di prototipe).
 
 - Target retensi tetap **0,90**. Jangan dijadikan pengaturan murid.
-- Jarak maksimum = sisa hari menuju tanggal ujian JLPT yang dipilih murid
-  (Des/Jul), atau 180 hari kalau tanpa target. Tujuannya: tidak ada kanji yang
-  jadwalnya melewati hari ujian.
+- Jarak maksimum antar-ulangan = 180 hari. Pilihan target ujian JLPT dihapus (2026-10-16).
 - Salah di fase hijau: stabilitas turun lewat rumus `S_salah`, dan kosakatanya digeser.
 - Pudarnya warna hijau = nilai retrievability, bukan animasi.
 
@@ -100,6 +98,12 @@ menulis, kalimat contoh (Tatoeba), dan audio.
   penyusunnya dan tingkat kata itu sendiri). Soal mengutamakan kata yang semua kanjinya ada di tingkat pilihan murid;
   kalau tidak ada, dipakai kata termudah yang tersedia (mis. 木 di N5 → 木曜日, bukan 木綿).
 - Soal rakit (2026-10-16): kotak yang salah menampilkan kanji yang tadi dipilih murid ("Pilihanmu: …").
+- Tes penempatan (2026-10-16): murid yang memilih tingkat di atas N5 bisa mengikuti tes sekitar 20 soal arti/bacaan dari
+  kanji yang belum dilihat di tingkat-tingkat bawahnya. Tingkat dengan ketepatan ≥ 80% lulus: semua kanji putihnya langsung
+  hijau, jadwal ulangannya disebar 30–90 hari; kanji yang dijawab salah jadi merah. Tes tidak mengubah lastAcc maupun log.
+- "Sudah tahu" (2026-10-16): pada kanji yang baru pertama kali muncul di sesi, murid bisa mengetuk "Sudah tahu kanji ini —
+  lewati"; kanji itu langsung hijau (jadwal sama seperti tes penempatan) dan tidak dihitung dalam ketepatan sesi.
+- Peta (2026-10-16): kotak oranye menampilkan 5 titik = berapa kali sudah benar dari 5 sebelum sesi menulis.
 - Bagi murid buta warna, status peta juga dibedakan lewat ukuran huruf: merah kecil, oranye sedang,
   hijau besar (semakin hafal semakin besar).
 - Atribusi wajib di halaman "Tentang": materi tingkat JFT dari IRODORI

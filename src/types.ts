@@ -73,12 +73,10 @@ export interface AppData {
   log: LogSesi[];
   /** tingkat tertinggi yang aktif; semua tingkat di bawahnya ikut */
   tg: Tingkat;
-  /** tanggal ujian JLPT terpilih, atau null = tanpa target */
-  ujian: string | null;
 }
 
 export type JenisSoal = "meaning" | "reading" | "rakit";
-export type ModeSesi = "learn" | "pilih";
+export type ModeSesi = "learn" | "pilih" | "tes";
 
 export interface ItemSoal {
   k: string;

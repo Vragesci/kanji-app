@@ -1,7 +1,7 @@
 import type { AppData, KanjiState } from "../types";
 import { addDays, diff } from "./tanggal";
 import {
-  D0, NEXT_GAP, S_benar, S_salah, W, batasHari, clampD, fsrsState, ingat, jarakHari, nextD,
+  D0, NEXT_GAP, S_benar, S_salah, W, clampD, fsrsState, ingat, jarakHari, nextD,
 } from "./fsrs";
 
 /** Menilai satu jawaban (percobaan pertama sebuah kanji di sesi ini). */
@@ -24,7 +24,7 @@ export function applyAnswer(data: AppData, k: string, correct: boolean, t: strin
       s.vi = (s.vi || 0) + 1; // lupa: muncul lagi lewat kosakata lain
     }
     s.lastReview = t;
-    s.interval = jarakHari(s.S, batasHari(data, t));
+    s.interval = jarakHari(s.S);
     s.due = addDays(t, s.interval);
   } else if (correct) {
     s.everCorrect = true;
@@ -53,7 +53,7 @@ export function applyWrite(data: AppData, k: string, ok: boolean, t: string): Ap
   // Kanji yang tadi sering salah mulai dengan Difficulty lebih tinggi, jadi jaraknya lebih rapat.
   const D = clampD(D0(3) + 0.4 * (lama.salahTotal || 0));
   const S = W[3];
-  const j = jarakHari(S, batasHari(data, t));
+  const j = jarakHari(S);
   const s: KanjiState = {
     seen: true, vi: 0, count: 0, wrongStreak: 0, ...lama,
     green: true, readyWrite: false, lapsed: false, lapses: 0,

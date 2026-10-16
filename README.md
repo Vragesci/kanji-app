@@ -1,4 +1,4 @@
-# Aplikasi Kanji
+# Ngaji Kanji
 
 PWA belajar kanji berbahasa Indonesia (tahap 1: React + Vite + TypeScript + Tailwind, data di IndexedDB, tanpa akun).
 Keputusan metode ada di `CLAUDE.md`; jangan diubah tanpa diminta.

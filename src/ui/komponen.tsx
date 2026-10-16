@@ -42,11 +42,21 @@ export function KotakKanji({ k, s, t, ukuran }: { k: string; s: KanjiState | und
   const hurufPeta: Record<Status, string> = {
     white: "text-xl", red: "text-sm", orange: "text-xl", green: "text-3xl font-bold",
   };
+  // Titik kemajuan di peta: berapa kali benar dari 5 sebelum sesi menulis (oranye saja).
+  const benar = st === "orange" && !ukuran ? Math.min(s?.count || 0, 5) : null;
+  const label = `${k}, ${NAMA_STATUS[st]}${benar !== null ? `, benar ${benar} dari 5` : ""}`;
   return (
-    <Jp as="div" role="img" aria-label={`${k}, ${NAMA_STATUS[st]}`}
-      className={`flex items-center justify-center rounded-lg ${gaya[st]} ${ukuran ? "" : `w-full aspect-square ${hurufPeta[st]}`}`}
+    <Jp as="div" role="img" aria-label={label}
+      className={`relative flex items-center justify-center rounded-lg ${gaya[st]} ${ukuran ? "" : `w-full aspect-square ${hurufPeta[st]}`}`}
       style={ukuran ? { width: ukuran, height: ukuran, fontSize: ukuran * 0.55, opacity } : { opacity }}>
       {k}
+      {benar !== null && (
+        <span aria-hidden className="absolute bottom-1 inset-x-0 flex justify-center gap-0.5">
+          {[0, 1, 2, 3, 4].map((i) => (
+            <i key={i} className={`block size-1.5 rounded-full ${i < benar ? "bg-white" : "bg-white/35"}`} />
+          ))}
+        </span>
+      )}
     </Jp>
   );
 }

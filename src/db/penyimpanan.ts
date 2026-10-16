@@ -13,7 +13,7 @@ interface Skema extends DBSchema {
 const NAMA_DB = "kanji-app";
 const VERSI = 1;
 
-export const KOSONG: AppData = { ks: {}, offset: 0, lastAcc: null, log: [], tg: "N5", ujian: null };
+export const KOSONG: AppData = { ks: {}, offset: 0, lastAcc: null, log: [], tg: "N5" };
 
 let dbPromise: Promise<IDBPDatabase<Skema>> | null = null;
 const buka = () =>

@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { KAMUS, KANJI, KMAP, bisaDipelajari, bisaRakit, kosakataUntuk } from "../data/katalog";
 import { KOSONG } from "../db/penyimpanan";
 import type { AppData } from "../types";
-import { D0, W, batasHari, greenStrength, jarakHari, nextD, statusOf } from "./fsrs";
+import { D0, W, greenStrength, jarakHari, nextD, statusOf } from "./fsrs";
 import { applyAnswer, applyWrite } from "./penilaian";
 import { aktif, buildSession, daftarTulis, sesiPilihan } from "./sesi";
 import { addDays } from "./tanggal";
@@ -92,16 +92,6 @@ describe("penjadwalan (FSRS v4.5)", () => {
     expect(d.ks[K]!.S).toBe(W[3]);
     expect(d.ks[K]!.interval).toBe(14);
     expect(d.ks[K]!.due).toBe(hari(19));
-  });
-
-  it("jarak maksimum = sisa hari menuju ujian (tak ada jadwal melewati ujian)", () => {
-    const ujian = hari(10);
-    let d = baru({ ujian });
-    for (let i = 0; i < 5; i++) d = applyAnswer(d, K, true, hari(i));
-    d = applyWrite(d, K, true, hari(5));
-    expect(d.ks[K]!.due! <= ujian).toBe(true);
-    expect(d.ks[K]!.interval).toBe(5);
-    expect(jarakHari(500)).toBe(180); // tanpa target: 180 hari
   });
 
   it("benar di fase hijau memperbesar stabilitas; salah menurunkannya dan mengganti kosakata", () => {
@@ -260,12 +250,6 @@ describe("FSRS v4.5: rumus dan batas jarak", () => {
     expect(nextD(8, 3)).toBeCloseTo(W[7] * D0(3) + (1 - W[7]) * 8, 10);
   });
 
-  it("target ujian lebih dari 180 hari: batas = seluruh sisa hari, bukan 180", () => {
-    expect(batasHari({ ujian: hari(280) }, HARI0)).toBe(280);
-    expect(batasHari({ ujian: hari(30) }, HARI0)).toBe(30);
-    expect(batasHari({ ujian: null }, HARI0)).toBe(180);
-    expect(batasHari({ ujian: hari(-3) }, HARI0)).toBe(180); // ujian sudah lewat
-  });
 });
 
 describe("sesi (metode 1 dan 7)", () => {
@@ -298,5 +282,12 @@ describe("kosakata mengikuti tingkat murid", () => {
       expect(() => kosakataUntuk(x.kanji, 0, false, undefined, "N5")).not.toThrow();
       if (bisaRakit(x.kanji)) expect(() => kosakataUntuk(x.kanji, 0, true, undefined, "N5")).not.toThrow();
     }
+  });
+});
+
+describe("batas jarak FSRS", () => {
+  it("jarak maksimum tetap 180 hari (target ujian dihapus)", () => {
+    expect(jarakHari(10_000)).toBe(180);
+    expect(jarakHari(W[3])).toBeGreaterThanOrEqual(1);
   });
 });

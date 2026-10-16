@@ -12,8 +12,8 @@ export default defineConfig({
       registerType: "prompt",
       includeAssets: ["favicon-32.png", "apple-touch-icon.png"],
       manifest: {
-        name: "Aplikasi Kanji",
-        short_name: "Kanji",
+        name: "Ngaji Kanji",
+        short_name: "Ngaji Kanji",
         description: "Belajar kanji dengan arti bahasa Indonesia, mengikuti urutan IRODORI.",
         id: "/",
         lang: "id",

@@ -19,7 +19,7 @@ const KELOMPOK: { kunci: string; judul: string; romaji?: string }[] = [
 const LEGENDA = [
   { kelas: "bg-white border border-garis", teks: "Belum dilihat" },
   { kelas: "bg-merah", teks: "Belum hafal (huruf kecil)" },
-  { kelas: "bg-oranye", teks: "Sedang proses (huruf sedang)" },
+  { kelas: "bg-oranye", teks: "Sedang proses (huruf sedang; titik = benar ke-berapa dari 5)" },
   { kelas: "bg-hijau", teks: "Hafal (huruf besar; pudar = perlu diulang)" },
 ];
 
