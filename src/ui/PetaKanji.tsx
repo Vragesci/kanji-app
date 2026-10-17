@@ -44,10 +44,12 @@ export function kelompokkan(kanji: Kanji[], ks: Record<string, KanjiState> = {})
 }
 
 /** Peta kotak berwarna: satu kotak per kanji aktif. */
-export function PetaKanji({ data, t, pilihan, onPilih }: {
+export function PetaKanji({ data, t, pilihan, onPilih, onBuka }: {
   data: AppData; t: string;
-  /** kanji yang sedang dipilih; kotak bisa diketuk hanya kalau `onPilih` diberikan */
+  /** kanji yang sedang dipilih; kotak bisa diketuk untuk memilih kalau `onPilih` diberikan */
   pilihan?: string[]; onPilih?: (k: string) => void;
+  /** di luar mode memilih: mengetuk kotak membuka detail kanji */
+  onBuka?: (k: string) => void;
 }) {
   const grup = useMemo(() => kelompokkan(aktif(data), data.ks), [data.tg, data.ks]);
 
@@ -73,7 +75,15 @@ export function PetaKanji({ data, t, pilihan, onPilih }: {
             <div className="grid grid-cols-6 gap-2">
               {g.isi.map((x) => {
                 const kotak = <KotakKanji k={x.kanji} s={data.ks[x.kanji]} t={t} />;
-                if (!onPilih) return <div key={x.kanji}>{kotak}</div>;
+                if (!onPilih) {
+                  if (!onBuka) return <div key={x.kanji}>{kotak}</div>;
+                  return (
+                    <button key={x.kanji} type="button" aria-label={`Lihat detail ${x.kanji}`} onClick={() => onBuka(x.kanji)}
+                      className="rounded-lg active:scale-95 transition-transform">
+                      {kotak}
+                    </button>
+                  );
+                }
                 const dipilih = !!pilihan?.includes(x.kanji);
                 // tanda pilihan berupa bingkai tebal + centang, bukan warna, supaya terlihat oleh murid buta warna
                 return (

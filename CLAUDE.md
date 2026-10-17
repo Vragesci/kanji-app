@@ -130,6 +130,12 @@ menulis, kalimat contoh (Tatoeba), dan audio.
   Noto Sans JP Bold (bentuk baku, bukan Reggae One). Ikon dibuat ulang dengan `scripts/ikon.mjs`.
   Nama di beranda & "Tentang" ditulis "Nga字 Kanji" (komponen `NamaAplikasi`): Reggae One, 字 memakai huruf Jepang
   sistem tebal berwarna biru logo; pembaca layar membaca "Ngaji Kanji". Nama di manifest tetap "Ngaji Kanji".
+- Detail kanji (2026-10-17): mengetuk kotak di peta beranda (di luar mode memilih) membuka lembar bawah berisi
+  on-yomi (katakana) dan kun-yomi (hiragana, okurigana lebih redup) beserta romaji, dari KANJIDIC2
+  (`src/data/bacaan.json`, disiapkan `scripts/bacaan.mjs`). Bacaan yang dipakai di kosakata aplikasi didahulukan;
+  sisanya lewat "Tampilkan semua bacaan". Contoh kata = kata yang semua kanjinya ada di tingkat pilihan menu atas
+  (`tingkatKanjiKata`, tanpa melihat tingkat kata itu sendiri); kalau tidak ada, kata dari tingkat terendah yang
+  tersedia dengan keterangan.
 - Bagi murid buta warna, status peta juga dibedakan lewat ukuran huruf: merah kecil, oranye sedang,
   hijau besar (semakin hafal semakin besar).
 - Atribusi wajib di halaman "Tentang": materi tingkat JFT dari IRODORI

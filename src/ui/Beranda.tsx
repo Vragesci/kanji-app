@@ -7,6 +7,7 @@ import { parse } from "../engine/tanggal";
 import type { AppData, ModeSesi } from "../types";
 import { Btn, NamaAplikasi } from "./komponen";
 import { PetaKanji } from "./PetaKanji";
+import { DetailKanji } from "./DetailKanji";
 import { BannerPasang } from "./PetunjukPasang";
 
 function Chip({ aktifnya, onClick, children }: { aktifnya: boolean; onClick: () => void; children: string }) {
@@ -24,6 +25,7 @@ export function Beranda({ data, t, ubah, onMulai, onTentang }: {
 }) {
   const [memilih, setMemilih] = useState(false);
   const [pilihan, setPilihan] = useState<string[]>([]);
+  const [detail, setDetail] = useState<string | null>(null);
   const petaRef = useRef<HTMLDivElement>(null);
   const MAKS = 10; // satu sesi = 10 soal
   const togel = (k: string) =>
@@ -77,10 +79,12 @@ export function Beranda({ data, t, ubah, onMulai, onTentang }: {
       </div>
 
       <div className="mt-8 scroll-mt-4" ref={petaRef}>
-        {memilih && (
+        {memilih ? (
           <p className="text-sm">Ketuk kanji yang ingin dipelajari (maksimum {MAKS}), lalu tekan Mulai di bawah.</p>
+        ) : (
+          <p className="text-sm text-redup">Ketuk kanji untuk melihat on-yomi, kun-yomi, dan contoh katanya.</p>
         )}
-        <PetaKanji data={data} t={t} pilihan={pilihan} onPilih={memilih ? togel : undefined} />
+        <PetaKanji data={data} t={t} pilihan={pilihan} onPilih={memilih ? togel : undefined} onBuka={setDetail} />
       </div>
 
       <button type="button" onClick={onTentang} className="block mx-auto mt-10 text-sm underline text-redup min-h-11">
@@ -96,6 +100,7 @@ export function Beranda({ data, t, ubah, onMulai, onTentang }: {
           </div>
         </div>
       )}
+      {detail && <DetailKanji k={detail} data={data} onTutup={() => setDetail(null)} />}
     </div>
   );
 }

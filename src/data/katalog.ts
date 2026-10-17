@@ -30,6 +30,17 @@ export function kesulitan(kata: string): number {
 }
 
 /**
+ * Tingkat tertinggi di antara kanji penyusun kata saja, tanpa tingkat kata itu sendiri.
+ * Dipakai contoh kata di detail kanji: 学生 tercatat sebagai kosakata Irodori (N4),
+ * tapi kedua kanjinya N5, jadi tetap layak tampil untuk murid yang memilih "sampai N5".
+ */
+export function tingkatKanjiKata(kata: string): number {
+  let n = 0;
+  for (const c of kata) if (isKanji(c)) n = Math.max(n, TINGKAT_KANJI[c] ?? DI_LUAR);
+  return n;
+}
+
+/**
  * Berapa kanji dalam `kata` yang tingkatnya di atas kanji `k` sendiri — yaitu huruf yang
  * kemungkinan besar belum dikenal murid saat `k` diajarkan. Dipakai sebagai urutan kedua
  * (2026-10-17): 国 (N5) lebih baik dilatih lewat 外国 (satu kanji asing) daripada 国際交流
