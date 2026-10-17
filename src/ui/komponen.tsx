@@ -2,6 +2,20 @@ import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode } from "react";
 import { greenStrength, statusOf, type Status } from "../engine/fsrs";
 import type { KanjiState } from "../types";
 
+/**
+ * Nama aplikasi "Nga字 Kanji" (logo L3): huruf Reggae One, 字 memakai huruf Jepang baku berwarna biru logo.
+ * Pembaca layar tetap membaca "Ngaji Kanji".
+ */
+export function NamaAplikasi({ as: Tag = "h1", className = "" }: { as?: "h1" | "h2"; className?: string }) {
+  return (
+    <Tag aria-label="Ngaji Kanji" className={`font-merek leading-tight text-tinta ${className}`}>
+      <span aria-hidden="true">
+        Nga<span lang="ja" className="font-jp font-bold text-merek">字</span> Kanji
+      </span>
+    </Tag>
+  );
+}
+
 /** Teks Jepang: selalu lang="ja" dan font Jepang. */
 export function Jp({ as: Tag = "span", className = "", ...rest }: { as?: "span" | "p" | "div" } & HTMLAttributes<HTMLElement>) {
   return <Tag lang="ja" className={`font-jp ${className}`} {...rest} />;

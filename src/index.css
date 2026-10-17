@@ -13,6 +13,8 @@
   --color-salah: #F8E5E3;
   --color-kotak: #EEF1F5;
   --color-panduan: #B4BDCA;
+  /* biru logo (lingkaran 字) */
+  --color-merek: #3346C2;
   /* Font sistem: tanpa unduhan, jalan luring. Teks Jepang diberi lang="ja" supaya
      Android memilih bentuk glif Jepang, bukan Tionghoa. */
   /* Reggae One (SIL OFL): khusus tulisan nama "Ngaji Kanji" */

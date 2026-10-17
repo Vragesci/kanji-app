@@ -5,7 +5,7 @@ import { buildSession, aktif } from "../engine/sesi";
 import { TOTAL_SOAL, tingkatBawah } from "../engine/penempatan";
 import { parse } from "../engine/tanggal";
 import type { AppData, ModeSesi } from "../types";
-import { Btn } from "./komponen";
+import { Btn, NamaAplikasi } from "./komponen";
 import { PetaKanji } from "./PetaKanji";
 import { BannerPasang } from "./PetunjukPasang";
 
@@ -41,7 +41,7 @@ export function Beranda({ data, t, ubah, onMulai, onTentang }: {
 
   return (
     <div className={memilih ? "pb-24" : ""}>
-      <h1 className="font-merek text-[1.75rem] leading-tight tracking-normal text-tinta">Ngaji Kanji</h1>
+      <NamaAplikasi className="text-[1.75rem]" />
       <p className="text-sm mt-1 text-redup">
         {parse(t).toLocaleDateString("id-ID", { weekday: "long", day: "numeric", month: "long" })}
       </p>
