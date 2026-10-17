@@ -97,6 +97,14 @@ menulis, kalimat contoh (Tatoeba), dan audio.
 - Kosakata (2026-10-16): kosakata tiap kanji diurutkan dari yang termudah (tingkat tertinggi di antara kanji
   penyusunnya dan tingkat kata itu sendiri). Soal mengutamakan kata yang semua kanjinya ada di tingkat pilihan murid;
   kalau tidak ada, dipakai kata termudah yang tersedia (mis. 木 di N5 → 木曜日, bukan 木綿).
+- Kosakata (2026-10-17): selain tingkat, pemilihan kata menghindari kata yang menyeret banyak kanji di atas
+  tingkat kanji targetnya (国 N5 → 外国, bukan 国際交流 yang memuat 際・交・流). Kata utuh tetap didahulukan
+  daripada kanji telanjang (足) dan bentuk imbuhan (～店), kecuali kalau kata utuhnya memuat kanji yang belum
+  diajarkan (足 → 足, bukan 満足). Kanji yang memang tidak punya kata lain setingkat tetap memakai kata itu
+  (流 → 国際交流, kata dari Irodori 初級2).
+- Peta (2026-10-17): kanji yang sudah dipelajari (merah/oranye/hijau) dikumpulkan di kelompok "Sudah dipelajari"
+  paling atas — hijau dulu, lalu oranye, lalu merah — supaya kemajuan murid tidak tertutup ratusan kotak putih.
+  Kanji itu tidak digandakan: kelompok IRODORI di bawahnya hanya berisi kanji yang belum dilihat.
 - Soal rakit (2026-10-16): kotak yang salah menampilkan kanji yang tadi dipilih murid ("Pilihanmu: …").
 - Tes penempatan (2026-10-16): murid yang memilih tingkat di atas N5 bisa mengikuti tes sekitar 20 soal arti/bacaan dari
   kanji yang belum dilihat di tingkat-tingkat bawahnya. Tingkat dengan ketepatan ≥ 80% lulus: semua kanji putihnya langsung

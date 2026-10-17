@@ -277,6 +277,24 @@ describe("kosakata mengikuti tingkat murid", () => {
     expect(KMAP["木"]!.kosakata.slice(0, 2)).toEqual(["木曜日", "木星"]); // 木綿 & 樹木 (N1) di belakang
   });
 
+  it("kanji tidak dilatih lewat kata yang menyeret banyak kanji di atas tingkatnya (国 → bukan 国際交流)", () => {
+    // 国際交流 setingkat N4 menurut kanji-kanjinya, tapi tiga dari empat kanjinya (際交流)
+    // ada di atas 国 (N5): sebagai soal untuk 国 kata itu terlalu tinggi.
+    for (const tg of ["N5", "JFT"] as const) {
+      expect(kosakataUntuk("国", 0, false, undefined, tg)).toBe("外国");
+      expect(kosakataUntuk("人", 0, false, undefined, tg)).not.toBe("人為的");
+    }
+    expect(KMAP["国"]!.kosakata.indexOf("外国")).toBeLessThan(KMAP["国"]!.kosakata.indexOf("国際交流"));
+    // kanji JFT 流 memang tidak punya kata lain setingkatnya: 国際交流 tetap boleh dipakai
+    expect(kosakataUntuk("流", 0, false, undefined, "JFT")).toBe("国際交流");
+  });
+
+  it("kata utuh dipakai lebih dulu daripada kanji telanjang (足 → 足, karena 満足 memuat kanji JFT)", () => {
+    expect(kosakataUntuk("車", 0, false, undefined, "N5")).toBe("電車"); // 電 juga N5
+    expect(kosakataUntuk("足", 0, false, undefined, "N5")).toBe("足"); // 満 di atas N5
+    expect(kosakataUntuk("店", 0, false, undefined, "N5")).not.toBe("～店");
+  });
+
   it("setiap kanji tetap punya kosakata di tingkat N5", () => {
     for (const x of KANJI.filter((x) => bisaDipelajari(x.kanji))) {
       expect(() => kosakataUntuk(x.kanji, 0, false, undefined, "N5")).not.toThrow();
