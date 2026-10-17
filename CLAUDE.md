@@ -118,6 +118,8 @@ menulis, kalimat contoh (Tatoeba), dan audio.
   Kalau data goresan belum terunduh (luring), murid menilai sendiri.
 - Nama aplikasi (2026-10-17): tulisan "Ngaji Kanji" memakai huruf Reggae One (SIL OFL), subset Latin saja lewat
   @fontsource/reggae-one (±20 KB, ikut di-precache). Teks lain tetap huruf sistem.
+- Logo (2026-10-17): 字 putih di lingkaran biru #3346C2 di atas latar putih (permainan kata "Nga字"). Kanji memakai
+  Noto Sans JP Bold (bentuk baku, bukan Reggae One). Ikon dibuat ulang dengan `scripts/ikon.mjs`.
 - Bagi murid buta warna, status peta juga dibedakan lewat ukuran huruf: merah kecil, oranye sedang,
   hijau besar (semakin hafal semakin besar).
 - Atribusi wajib di halaman "Tentang": materi tingkat JFT dari IRODORI
