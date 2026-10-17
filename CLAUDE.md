@@ -116,6 +116,8 @@ menulis, kalimat contoh (Tatoeba), dan audio.
   (penugasan termurah antar-goresan). Toleransi di `BATAS` (src/engine/goresan.ts), dikalibrasi dengan tulisan tiruan.
   Benar → hijau. Salah → pesan koreksi + goresan bernomor (yang salah merah) untuk dijiplak, kanji diulang lain kali.
   Kalau data goresan belum terunduh (luring), murid menilai sendiri.
+- Nama aplikasi (2026-10-17): tulisan "Ngaji Kanji" memakai huruf Reggae One (SIL OFL), subset Latin saja lewat
+  @fontsource/reggae-one (±20 KB, ikut di-precache). Teks lain tetap huruf sistem.
 - Bagi murid buta warna, status peta juga dibedakan lewat ukuran huruf: merah kecil, oranye sedang,
   hijau besar (semakin hafal semakin besar).
 - Atribusi wajib di halaman "Tentang": materi tingkat JFT dari IRODORI

@@ -15,6 +15,8 @@
   --color-panduan: #B4BDCA;
   /* Font sistem: tanpa unduhan, jalan luring. Teks Jepang diberi lang="ja" supaya
      Android memilih bentuk glif Jepang, bukan Tionghoa. */
+  /* Reggae One (SIL OFL): khusus tulisan nama "Ngaji Kanji" */
+  --font-merek: "Reggae One", "Hiragino Sans", sans-serif;
   --font-jp: "Hiragino Sans", "Noto Sans CJK JP", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
 }
 

@@ -41,7 +41,7 @@ export function Beranda({ data, t, ubah, onMulai, onTentang }: {
 
   return (
     <div className={memilih ? "pb-24" : ""}>
-      <h1 className="text-2xl font-bold">Ngaji Kanji</h1>
+      <h1 className="font-merek text-[1.75rem] leading-tight tracking-normal text-tinta">Ngaji Kanji</h1>
       <p className="text-sm mt-1 text-redup">
         {parse(t).toLocaleDateString("id-ID", { weekday: "long", day: "numeric", month: "long" })}
       </p>

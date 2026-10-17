@@ -19,7 +19,7 @@ export function Tentang({ onKembali }: { onKembali: () => void }) {
 
       <div className="mt-6 space-y-6 text-sm leading-relaxed">
         <section>
-          <h2 className="font-bold text-base">Ngaji Kanji</h2>
+          <h2 className="font-merek text-lg">Ngaji Kanji</h2>
           <p className="mt-2">
             Aplikasi belajar kanji berbahasa Indonesia untuk calon pekerja dan pemagang ke Jepang, serta murid kelas daring.
             Urutan kanji mengikuti buku <i>Irodori</i>, dan soalnya memakai kosakata utuh, bukan huruf lepas.
