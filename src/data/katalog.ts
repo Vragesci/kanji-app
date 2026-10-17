@@ -29,12 +29,44 @@ export function kesulitan(kata: string): number {
   return n;
 }
 
-// Kosakata tiap kanji diurutkan dari yang paling mudah (urutan asli dipertahankan bila setara).
+/**
+ * Berapa kanji dalam `kata` yang tingkatnya di atas kanji `k` sendiri — yaitu huruf yang
+ * kemungkinan besar belum dikenal murid saat `k` diajarkan. Dipakai sebagai urutan kedua
+ * (2026-10-17): 国 (N5) lebih baik dilatih lewat 外国 (satu kanji asing) daripada 国際交流
+ * (tiga kanji asing), walaupun keduanya sama-sama tingkat N4 menurut `kesulitan`.
+ */
+function asing(kata: string, k: string): number {
+  const dasar = TINGKAT_KANJI[k] ?? DI_LUAR;
+  let n = 0;
+  for (const c of kata) if (isKanji(c) && c !== k && (TINGKAT_KANJI[c] ?? DI_LUAR) > dasar) n++;
+  return n;
+}
+
+/** kata yang isinya hanya kanji itu sendiri (国) atau bentuk imbuhan (～店) */
+const telanjang = (kata: string): boolean => [...kata].length === 1 || kata.includes("\uFF5E");
+
+/**
+ * Peringkat kosakata di dalam tingkat yang sama (2026-10-17):
+ *   0 kata utuh yang semua kanjinya sudah setingkat atau lebih mudah (学生, 水道)
+ *   1 kanji telanjang (足, ～店) — dipakai kalau tidak ada kata utuh yang mudah
+ *   2+ kata utuh yang masih memuat kanji asing, makin banyak makin belakang
+ *     (国: 外国 sebelum 国際交流, dan keduanya sesudah 国)
+ * Soal memakai kosakata utuh (lihat brief), tapi kata utuh tidak boleh menyeret kanji yang
+ * belum diajarkan: itulah yang membuat 国 (N5) dilatih lewat 国際交流.
+ */
+const peringkat = (kata: string, k: string): number => {
+  if (telanjang(kata)) return 1;
+  const n = asing(kata, k);
+  return n === 0 ? 0 : 1 + n;
+};
+
+// Kosakata tiap kanji diurutkan dari yang paling mudah: tingkat dulu, lalu peringkat di atas,
+// lalu urutan asli bila setara.
 export const KANJI: Kanji[] = data.kanji.map((x) => ({
   ...x,
   kosakata: x.kosakata
-    .map((w, i) => ({ w, i, s: kesulitan(w) }))
-    .sort((a, b) => a.s - b.s || a.i - b.i)
+    .map((w, i) => ({ w, i, s: kesulitan(w), r: peringkat(w, x.kanji) }))
+    .sort((p, q) => p.s - q.s || p.r - q.r || p.i - q.i)
     .map((o) => o.w),
 }));
 
