@@ -45,7 +45,14 @@ export function DetailKanji({ k, data, onTutup }: { k: string; data: AppData; on
             <div className="min-w-0">
               <p className={`font-bold ${WARNA_STATUS[st]}`}>{NAMA_STATUS[st][0]!.toUpperCase() + NAMA_STATUS[st].slice(1)}</p>
               {st === "orange" && (
-                <p className="text-sm mt-1 text-redup">Benar {Math.min(s?.count || 0, 5)} dari 5{s?.readyWrite ? " · siap latihan tulis" : ""}</p>
+                <p className="text-sm mt-1 text-redup">
+                  {s?.tahu
+                    ? "Ditandai sudah tahu · menunggu tes tulis"
+                    : `Benar ${Math.min(s?.count || 0, 5)} dari 5${s?.readyWrite ? " · menunggu tes tulis" : ""}`}
+                </p>
+              )}
+              {st === "green" && s?.tahu && (
+                <p className="text-sm mt-1 text-redup">Menunggu cek tulis</p>
               )}
               {info.level && (
                 <p className="text-sm mt-1 text-redup">

@@ -38,12 +38,19 @@ export interface KanjiState {
   lastSeen?: string;
   /** indeks kosakata yang sedang dipakai; bertambah saat pertemuan berikutnya / salah 3x */
   vi: number;
-  /** jumlah hari berbeda dengan jawaban benar berturut-turut (fase belajar) */
+  /** jumlah jawaban benar berturut-turut di fase belajar (5 → sesi menulis); salah sekali → nol */
   count: number;
   wrongStreak: number;
   everCorrect?: boolean;
-  lastCountDay?: string;
   readyWrite?: boolean;
+  /**
+   * Nomor jawaban terakhir (AppData.seq). Dipakai antrean sesi untuk bergilir: kanji yang paling
+   * lama tidak dilatih didahulukan. Perlu nomor, bukan tanggal, karena sesi boleh diulang
+   * berkali-kali dalam sehari dan semuanya bertanggal sama.
+   */
+  seq?: number;
+  /** murid menekan "Sudah tahu kanji ini": menunggu pengecekan lewat sesi menulis */
+  tahu?: boolean;
   salahTotal?: number;
   due?: string;
   green?: boolean;
@@ -67,6 +74,8 @@ export interface LogSesi {
 
 export interface AppData {
   ks: Record<string, KanjiState>;
+  /** penghitung jawaban yang terus naik; dipakai KanjiState.seq untuk urutan antrean */
+  seq: number;
   /** hari yang dimajukan lewat alat uji guru */
   offset: number;
   lastAcc: number | null;

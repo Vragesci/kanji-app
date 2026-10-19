@@ -4,7 +4,7 @@ import { KOSONG } from "../db/penyimpanan";
 import type { AppData } from "../types";
 import { D0, W, greenStrength, jarakHari, nextD, statusOf } from "./fsrs";
 import { applyAnswer, applyWrite } from "./penilaian";
-import { aktif, buildSession, daftarTulis, sesiPilihan } from "./sesi";
+import { PROSES_MAKS, TULIS_MAKS, aktif, buildSession, daftarTulis, sesiPilihan } from "./sesi";
 import { addDays } from "./tanggal";
 
 const K = "先"; // kanji N5 dengan banyak kosakata
@@ -75,14 +75,14 @@ describe("ganti kosakata setelah salah 3 kali berturut-turut (metode 4)", () => 
 });
 
 describe("penjadwalan (FSRS v4.5)", () => {
-  it("fase belajar memakai jarak 1-1-2-4-7 hari", () => {
+  it("fase belajar tidak memakai jarak hari: lima kali benar bisa selesai di hari yang sama", () => {
+    // Jarak 1-1-2-4-7 hari dihapus 2026-10-19: benar ke-5 paling cepat jatuh di hari ke-8,
+    // jadi soal tulis praktis tidak pernah muncul. Yang mengatur urutan sekarang antrean sesi.
     let d = baru();
-    const jarak: number[] = [];
-    for (let i = 0; i < 5; i++) {
-      d = applyAnswer(d, K, true, hari(i));
-      jarak.push((new Date(d.ks[K]!.due!).getTime() - new Date(hari(i)).getTime()) / 86400000);
-    }
-    expect(jarak).toEqual([1, 1, 2, 4, 7]);
+    for (let i = 0; i < 5; i++) d = applyAnswer(d, K, true, HARI0);
+    expect(d.ks[K]!.count).toBe(5);
+    expect(d.ks[K]!.readyWrite).toBe(true);
+    expect(daftarTulis(d)).toContain(K);
   });
 
   it("lulus menulis: stabilitas awal W[3] dan jarak ≈ 14 hari", () => {
@@ -116,24 +116,58 @@ describe("penyusun sesi (metode 1, 5–7)", () => {
   });
 
   it("beban menyesuaikan ketepatan: <70% tanpa kanji baru, 70–90% dua, >90% tiga", () => {
-    // 12 kanji merah: cukup untuk memenuhi kuota, jadi jatah kanji baru terlihat murni
+    // 6 kanji merah: antrean belum penuh, jadi jatah kanji baru terlihat murni
     const merah = Object.fromEntries(
-      aktif({ tg: "N5" }).slice(0, 12).map((x) => [x.kanji, { seen: true, vi: 0, count: 0, wrongStreak: 0, lastSeen: hari(-1), due: HARI0 }]),
+      aktif({ tg: "N5" }).slice(0, 6).map((x) => [x.kanji, { seen: true, vi: 0, count: 0, wrongStreak: 0, lastSeen: hari(-1) }]),
     );
     const kanjiBaru = (acc: number | null) =>
       buildSession(baru({ tg: "N5", ks: merah, lastAcc: acc }), HARI0).quiz.filter((x) => !merah[x.k]).length;
     expect(kanjiBaru(0.6)).toBe(0);
-    expect(kanjiBaru(null)).toBe(2); // sesi pertama
+    expect(kanjiBaru(null)).toBe(2);
     expect(kanjiBaru(0.8)).toBe(2);
     expect(kanjiBaru(0.95)).toBe(3);
   });
 
   it("akurasi <70%: sesi memendek daripada mengisi kuota dengan kanji baru", () => {
     const empat = Object.fromEntries(
-      aktif({ tg: "N5" }).slice(0, 4).map((x) => [x.kanji, { seen: true, vi: 0, count: 0, wrongStreak: 0, lastSeen: hari(-1), due: HARI0 }]),
+      aktif({ tg: "N5" }).slice(0, 4).map((x) => [x.kanji, { seen: true, vi: 0, count: 0, wrongStreak: 0, lastSeen: hari(-1) }]),
     );
     expect(buildSession(baru({ tg: "N5", ks: empat, lastAcc: 0.5 }), HARI0).quiz.length).toBe(4);
-    expect(buildSession(baru({ tg: "N5", ks: empat, lastAcc: 0.8 }), HARI0).quiz.length).toBe(10);
+    expect(buildSession(baru({ tg: "N5", ks: empat, lastAcc: 0.8 }), HARI0).quiz.length).toBe(6); // 4 + jatah 2
+  });
+
+  it("sesi pertama: kuota diisi kanji baru", () => {
+    expect(buildSession(baru({ tg: "N5" }), HARI0).quiz.length).toBe(10);
+  });
+
+  it("antrean penuh: tidak ada kanji baru walau ketepatan tinggi", () => {
+    const penuh = Object.fromEntries(
+      aktif({ tg: "N5" }).slice(0, PROSES_MAKS).map((x) => [x.kanji, { seen: true, vi: 0, count: 1, wrongStreak: 0, everCorrect: true, lastSeen: hari(-1) }]),
+    );
+    const p = buildSession(baru({ tg: "N5", ks: penuh, lastAcc: 0.95 }), HARI0);
+    expect(p.quiz.length).toBe(10);
+    expect(p.quiz.every((it) => !!penuh[it.k])).toBe(true);
+  });
+
+  it("soal tulis yang menumpuk ikut menahan kanji baru", () => {
+    const menunggu = Object.fromEntries(
+      aktif({ tg: "N5" }).slice(0, PROSES_MAKS).map((x) => [x.kanji, {
+        seen: true, vi: 0, count: 5, wrongStreak: 0, everCorrect: true, readyWrite: true, lastSeen: hari(-1),
+      }]),
+    );
+    const p = buildSession(baru({ tg: "N5", ks: menunggu, lastAcc: 0.95 }), HARI0);
+    expect(p.quiz.length).toBe(0); // selesaikan dulu yang menunggu ditulis
+    expect(p.write.length).toBe(TULIS_MAKS);
+  });
+
+  it("antrean bergilir: kanji yang paling lama tidak dilatih didahulukan", () => {
+    const urut = aktif({ tg: "N5" }).slice(0, 12).map((x) => x.kanji);
+    const ks = Object.fromEntries(urut.map((k, i) => [k, {
+      seen: true, vi: 0, count: 1, wrongStreak: 0, everCorrect: true, seq: i + 1, lastSeen: HARI0,
+    }]));
+    const dipilih = new Set(buildSession(baru({ tg: "N5", ks, lastAcc: 0.95 }), HARI0).quiz.map((x) => x.k));
+    expect(urut.slice(0, 10).every((k) => dipilih.has(k))).toBe(true);
+    expect(urut.slice(10).some((k) => dipilih.has(k))).toBe(false);
   });
 
   it("sesi ditutup dengan soal yang paling mungkin benar (hitungan tertinggi)", () => {
@@ -145,8 +179,8 @@ describe("penyusun sesi (metode 1, 5–7)", () => {
 
   it("sesi bisa diulang di hari yang sama: kanji yang baru dijawab hari ini tetap muncul", () => {
     const [a, b, c] = aktif({ tg: "N5" }).map((x) => x.kanji);
-    const hariIni = { seen: true, vi: 0, count: 0, wrongStreak: 0, lastSeen: HARI0, due: hari(1) };
-    const oranyeBesok = { ...hariIni, count: 1, everCorrect: true }; // belum jatuh tempo sampai besok
+    const hariIni = { seen: true, vi: 0, count: 0, wrongStreak: 0, lastSeen: HARI0, seq: 1 };
+    const oranyeBesok = { ...hariIni, count: 1, everCorrect: true, seq: 2 };
     const ks = { [a!]: hariIni, [b!]: oranyeBesok, [c!]: { ...oranyeBesok, count: 2 } };
     const p = buildSession(baru({ ks, lastAcc: 0.6 }), HARI0);
     expect(p.quiz.map((x) => x.k).sort()).toEqual([a, b, c].sort());
@@ -253,16 +287,35 @@ describe("FSRS v4.5: rumus dan batas jarak", () => {
 });
 
 describe("sesi (metode 1 dan 7)", () => {
-  it("kanji yang baru mencapai benar ke-5 tidak langsung masuk daftar menulis sesi yang sama", () => {
-    // sebelum sesi: hitungan 4, belum siap menulis
+  it("kanji yang baru mencapai benar ke-5 langsung masuk daftar tulis", () => {
+    // Sesi.tsx menghitung ulang daftar tulis sesudah kuis, jadi kanji ini ditulis di sesi yang sama.
     let d = baru();
-    for (let i = 0; i < 4; i++) d = applyAnswer(d, K, true, hari(i));
-    const rencana = buildSession(d, hari(4));
-    expect(rencana.write).not.toContain(K);
-    // dijawab benar di sesi itu: siap menulis, tetapi baru masuk daftar tulis sesi berikutnya
-    d = applyAnswer(d, K, true, hari(4));
-    expect(d.ks[K]!.readyWrite).toBe(true);
-    expect(buildSession(d, hari(5)).write).toContain(K);
+    for (let i = 0; i < 4; i++) d = applyAnswer(d, K, true, HARI0);
+    expect(daftarTulis(d)).not.toContain(K);
+    d = applyAnswer(d, K, true, HARI0);
+    expect(daftarTulis(d)).toContain(K);
+  });
+
+  it("daftar tulis dibatasi TULIS_MAKS per sesi, yang paling lama menunggu di depan", () => {
+    const k = aktif({ tg: "N5" }).slice(0, 8).map((x) => x.kanji);
+    const ks = Object.fromEntries(k.map((x, i) => [x, {
+      seen: true, vi: 0, count: 5, wrongStreak: 0, everCorrect: true, readyWrite: true, seq: 8 - i,
+    }]));
+    const daftar = daftarTulis(baru({ tg: "N5", ks }));
+    expect(daftar.length).toBe(TULIS_MAKS);
+    expect(daftar).toEqual([...k].reverse().slice(0, TULIS_MAKS)); // seq terkecil = paling lama menunggu
+  });
+
+  it("sesi yang diulang di hari yang sama menuntaskan kanji sampai soal tulis", () => {
+    // Inilah yang dulu mustahil: hitungan mandek di 4 karena kanji yang hampir lulus
+    // selalu di belakang antrean (due paling jauh) dan kanji baru terus ditambahkan.
+    let d = baru({ tg: "N5" });
+    for (let s = 0; s < 5; s++) {
+      for (const it of buildSession(d, HARI0).quiz) d = applyAnswer(d, it.k, true, HARI0);
+    }
+    expect(daftarTulis(d).length).toBe(TULIS_MAKS);
+    // antrean tidak membengkak: kanji yang belum hijau tetap maksimum satu sesi penuh
+    expect(Object.values(d.ks).filter((x) => x.seen && !x.green).length).toBe(PROSES_MAKS);
   });
 });
 

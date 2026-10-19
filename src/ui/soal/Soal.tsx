@@ -13,7 +13,7 @@ export function Soal({ item, data, onDijawab, onLanjut, onSudahTahu }: {
   data: AppData;
   onDijawab: (benar: boolean) => void;
   onLanjut: () => void;
-  /** hanya untuk kanji yang baru pertama kali muncul: tandai hafal dan lewati soal ini */
+  /** hanya untuk kanji yang baru pertama kali muncul: lewati soal ini, lalu dicek lewat sesi menulis */
   onSudahTahu?: () => void;
 }) {
   // kata sudah ditentukan saat sesi dirakit (lihat rakitItems di engine/sesi.ts), supaya
@@ -37,7 +37,7 @@ export function Soal({ item, data, onDijawab, onLanjut, onSudahTahu }: {
 
       {hasil === null && onSudahTahu && (
         <button type="button" onClick={onSudahTahu} className="block mx-auto mt-6 text-sm underline text-redup min-h-11">
-          Sudah tahu kanji ini — lewati
+          Sudah tahu kanji ini — langsung ke tes tulis
         </button>
       )}
 

@@ -74,7 +74,10 @@ export function Beranda({ data, t, ubah, onMulai, onTentang }: {
         <Btn onClick={() => onMulai("learn")} disabled={adaBelajar === 0}>Lanjutkan belajar</Btn>
         <Btn kind="ghost" onClick={mulaiMemilih} disabled={memilih}>Pilih kanji yang ingin dipelajari</Btn>
         {adaBelajar === 0 && (
-          <p className="text-sm text-center text-redup">Belum ada kanji yang perlu dilatih sekarang. Kanji berikutnya muncul besok.</p>
+          <p className="text-sm text-center text-redup">
+            Semua kanji tingkat ini sudah hafal. Review berikutnya muncul sesuai jadwalnya —
+            atau pilih tingkat yang lebih tinggi di atas.
+          </p>
         )}
       </div>
 

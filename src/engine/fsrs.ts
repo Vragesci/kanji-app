@@ -16,9 +16,6 @@ export const RETENSI = 0.9;
 // Retensi tetap 0.90; jarak maksimum antar-ulangan 180 hari (target ujian dihapus 2026-10-16).
 export const MAX_DEFAULT = 180;
 
-/** Jarak fase belajar (sebelum hijau) setelah jawaban benar ke-1, 2, 3, 4, 5 (di hari berbeda) */
-export const NEXT_GAP = [1, 1, 2, 4, 7];
-
 export const clampD = (d: number): number => Math.min(10, Math.max(1, d));
 /** peluang masih ingat setelah `lewat` hari, untuk ingatan sestabil S hari */
 export const ingat = (lewat: number, S: number): number =>

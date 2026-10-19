@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { KAMUS, kataTulis, labelTingkat } from "../data/katalog";
 import { applyAnswer, applyWrite } from "../engine/penilaian";
-import { buildSession, sesiPilihan } from "../engine/sesi";
+import { buildSession, daftarTulis, sesiPilihan } from "../engine/sesi";
 import { nilaiPenempatan, sesiPenempatan, tandaiSudahTahu, type HasilTingkat, type SoalPenempatan } from "../engine/penempatan";
 import { statusOf } from "../engine/fsrs";
 import type { AppData, ItemSoal, ModeSesi } from "../types";
@@ -18,10 +18,12 @@ interface Props {
   data: AppData;
   t: string;
   ubah: (fn: (d: AppData) => AppData) => void;
+  /** data terbaru (bukan hasil render terakhir): dipakai menyusun daftar tulis sesudah kuis */
+  ambil: () => AppData;
   onKeluar: () => void;
 }
 
-export function Sesi({ mode, pilihan, data, t: tHariIni, ubah, onKeluar }: Props) {
+export function Sesi({ mode, pilihan, data, t: tHariIni, ubah, ambil, onKeluar }: Props) {
   // tanggal dikunci saat sesi dimulai: sesi yang melewati tengah malam tetap satu tanggal
   const [t] = useState(tHariIni);
   const [rencana] = useState(() =>
@@ -51,12 +53,18 @@ export function Sesi({ mode, pilihan, data, t: tHariIni, ubah, onKeluar }: Props
       return;
     }
     const hasil = Object.values(pertama.current);
-    const a = hasil.length ? hasil.filter(Boolean).length / hasil.length : 1;
-    const entri = { d: t, n: hasil.length, acc: a };
-    // hanya sesi belajar yang menggeser beban sesi berikutnya (lastAcc)
-    ubah((d) => (mode === "learn" ? { ...d, lastAcc: a, log: [...d.log, entri] } : { ...d, log: [...d.log, entri] }));
-    // menulis hanya untuk kanji yang sudah menunggu sebelum sesi ini dimulai; yang baru mencapai benar ke-5 menulis di sesi berikutnya
-    const daftar = mode === "learn" ? rencana.write : [];
+    // sesi yang tidak menilai satu soal pun (semuanya ditandai "sudah tahu") tidak dicatat dan
+    // tidak menggeser beban sesi berikutnya; dulu sesi seperti itu dihitung 100%
+    const a = hasil.length ? hasil.filter(Boolean).length / hasil.length : null;
+    if (a !== null) {
+      const entri = { d: t, n: hasil.length, acc: a };
+      // hanya sesi belajar yang menggeser beban sesi berikutnya (lastAcc)
+      ubah((d) => (mode === "learn" ? { ...d, lastAcc: a, log: [...d.log, entri] } : { ...d, log: [...d.log, entri] }));
+    }
+    // Daftar tulis dihitung ulang dari data terbaru (2026-10-19): kanji yang baru mencapai benar
+    // ke-5 atau baru ditandai "sudah tahu" di sesi ini langsung ditulis sekarang, tidak menunggu
+    // sesi berikutnya. Berlaku untuk sesi belajar maupun sesi kanji pilihan.
+    const daftar = daftarTulis(ambil());
     setAcc(a);
     setTulis(daftar);
     setWIdx(0);
@@ -72,7 +80,7 @@ export function Sesi({ mode, pilihan, data, t: tHariIni, ubah, onKeluar }: Props
 
   const sudahTahu = () => {
     const k = quiz[idx]!.k;
-    ubah((d) => tandaiSudahTahu(d, k, t, idx));
+    ubah((d) => tandaiSudahTahu(d, k, t));
     setDilewati((n) => n + 1);
     lanjutQuiz();
   };
@@ -130,7 +138,9 @@ export function Sesi({ mode, pilihan, data, t: tHariIni, ubah, onKeluar }: Props
               ))}
             </div>
           )}
-          {dilewati > 0 && <p className="mt-4 text-sm">Ditandai sudah tahu: <b>{dilewati}</b> kanji</p>}
+          {dilewati > 0 && (
+            <p className="mt-4 text-sm">Ditandai sudah tahu: <b>{dilewati}</b> kanji — dicek lewat sesi menulis</p>
+          )}
           {acc !== null && (
             <p className="mt-6">Jawaban benar di percobaan pertama: <b>{Math.round(acc * 100)}%</b></p>
           )}

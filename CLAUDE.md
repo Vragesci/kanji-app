@@ -39,7 +39,8 @@ kosakata{} : { kana, romaji, arti, seg[[huruf,bacaan]], seg_valid, tingkat, sumb
    (pernah benar), hijau (hafal). Ditampilkan sebagai peta kotak berwarna.
 3. Kanji naik ke hijau setelah **benar 5 kali** (setiap jawaban benar dihitung, termasuk sesi
    ulangan di hari yang sama; diubah 2026-10-16), lalu lulus satu sesi menulis.
-   Salah sekali → hitungan kembali ke nol.
+   Salah sekali → hitungan kembali ke nol. Fase ini **tidak memakai jarak hari** (2026-10-19):
+   lima kali benar bisa dicapai dalam sehari kalau murid mengulang sesi.
 4. **Salah 3 kali berturut-turut pada kanji yang sama → ganti kosakata**, bukan
    ganti cara bertanya. Kanji yang sama muncul lewat kata lain (`vi` bertambah).
 5. Jenis soal bergiliran: arti, bacaan, rakit kosakata.
@@ -49,13 +50,37 @@ kosakata{} : { kana, romaji, arti, seg[[huruf,bacaan]], seg_valid, tingkat, sumb
 
 ## Penjadwalan: FSRS v4.5
 
-Fase belajar (sebelum hijau) memakai jarak tetap 1-1-2-4-7 hari. Setelah hijau,
+Fase belajar (sebelum hijau) **tanpa jarak hari** (diubah 2026-10-19; sebelumnya 1-1-2-4-7 hari).
+Jarak lama membuat benar ke-5 paling cepat jatuh di hari ke-8, jadi soal tulis praktis tidak pernah
+muncul; yang mengatur kapan kanji muncul lagi sekarang antrean sesi, bukan tanggal. Setelah hijau,
 jadwal dipegang FSRS dengan parameter bawaan resmi (lihat konstanta `W` di prototipe).
+Untuk fase belajar dan antrean, `prototipe-kanji.tsx` sudah tidak lagi jadi acuan.
 
 - Target retensi tetap **0,90**. Jangan dijadikan pengaturan murid.
 - Jarak maksimum antar-ulangan = 180 hari. Pilihan target ujian JLPT dihapus (2026-10-16).
 - Salah di fase hijau: stabilitas turun lewat rumus `S_salah`, dan kosakatanya digeser.
 - Pudarnya warna hijau = nilai retrievability, bukan animasi.
+
+## Antrean sesi (2026-10-19)
+
+Tanpa jarak hari, yang menentukan isi sesi adalah antrean. Konstanta ada di `src/engine/sesi.ts`.
+
+1. Review hijau yang jatuh tempo (FSRS), maksimum 3 per sesi (`REVIEW_MAKS`), supaya tidak menutup
+   jatah kanji yang sedang dipelajari.
+2. Kanji yang sedang dipelajari, **bergilir**: yang paling lama tidak dilatih di depan
+   (`KanjiState.seq` = nomor jawaban terakhir, bukan tanggal, karena sesi boleh diulang dalam
+   sehari), lalu yang hitungan benarnya paling tinggi.
+3. Kanji baru sebanyak jatah ketepatan (metode 6), **hanya kalau** jumlah kanji yang sudah dilihat
+   tapi belum hijau masih di bawah 10 (`PROSES_MAKS` = satu sesi penuh). Kanji yang menunggu tes
+   tulis ikut dihitung, jadi tes tulis yang menumpuk juga menahan kanji baru.
+4. Sesi pertama (dan saat antrean habis) mengisi kuota dengan kanji baru, supaya sesinya tidak
+   cuma dua soal. Ketepatan di bawah 70% tetap menahan kanji baru, kecuali kalau sesi jadi kosong.
+5. Soal tulis maksimum 5 per sesi (`TULIS_MAKS`), yang paling lama menunggu di depan; sisanya
+   di sesi berikutnya. Kanji yang belum hijau didahulukan; cek tulis kanji yang sudah hijau lewat
+   tes penempatan hanya mengisi sisa slot, maksimum 2 per sesi (`CEK_MAKS`).
+
+Daftar soal tulis dihitung **sesudah kuis** dari data terbaru, jadi kanji yang baru mencapai benar
+ke-5 (atau baru ditandai "sudah tahu") langsung ditulis di sesi yang sama, bukan sesi berikutnya.
 
 ## Rencana bertahap
 
@@ -84,8 +109,8 @@ menulis, kalimat contoh (Tatoeba), dan audio.
   (romaji langsung membocorkan jawaban); romaji baru tampil setelah murid menjawab. (2) PWA dikunci
   orientasi portrait.
 - Pengecualian yang disetujui (2026-09-21): sesi boleh diulang berkali-kali dalam sehari. Kanji yang sudah dijawab hari ini
-  tetap bisa muncul, dan kanji oranye yang belum jatuh tempo boleh mengisi sisa kuota. Jadwal 1-1-2-4-7 hari dan FSRS tidak berubah
-  (sejak 2026-10-16 hitungan benar naik setiap kali benar, tidak lagi dibatasi sekali per hari).
+  tetap bisa muncul (sejak 2026-10-16 hitungan benar naik setiap kali benar, tidak lagi dibatasi sekali per hari; sejak
+  2026-10-19 fase belajar tidak lagi memakai jarak hari sama sekali — lihat "Antrean sesi"). FSRS sesudah hijau tidak berubah.
 - Pengecualian yang disetujui (2026-09-21): di soal bacaan, arti kosakata tidak tampil di bawah kata soal dan pilihan jawaban hanya
   berisi hiragana di tengah tanpa romaji, supaya murid mengingat lewat kanji. Arti dan romaji baru tampil setelah murid menjawab.
 - Pengecualian yang disetujui (2026-09-21): tombol "Ulangi kanji yang sudah hafal" diganti "Pilih kanji yang ingin dipelajari". Murid mengetuk
@@ -106,11 +131,18 @@ menulis, kalimat contoh (Tatoeba), dan audio.
   paling atas — hijau dulu, lalu oranye, lalu merah — supaya kemajuan murid tidak tertutup ratusan kotak putih.
   Kanji itu tidak digandakan: kelompok IRODORI di bawahnya hanya berisi kanji yang belum dilihat.
 - Soal rakit (2026-10-16): kotak yang salah menampilkan kanji yang tadi dipilih murid ("Pilihanmu: …").
-- Tes penempatan (2026-10-16): murid yang memilih tingkat di atas N5 bisa mengikuti tes sekitar 20 soal arti/bacaan dari
-  kanji yang belum dilihat di tingkat-tingkat bawahnya. Tingkat dengan ketepatan ≥ 80% lulus: semua kanji putihnya langsung
-  hijau, jadwal ulangannya disebar 30–90 hari; kanji yang dijawab salah jadi merah. Tes tidak mengubah lastAcc maupun log.
-- "Sudah tahu" (2026-10-16): pada kanji yang baru pertama kali muncul di sesi, murid bisa mengetuk "Sudah tahu kanji ini —
-  lewati"; kanji itu langsung hijau (jadwal sama seperti tes penempatan) dan tidak dihitung dalam ketepatan sesi.
+- Tes penempatan (2026-10-16, ditambah 2026-10-19): murid yang memilih tingkat di atas N5 bisa mengikuti tes sekitar 20 soal
+  arti/bacaan dari kanji yang belum dilihat di tingkat-tingkat bawahnya. Tingkat dengan ketepatan ≥ 80% lulus: semua kanji
+  putihnya langsung hijau, jadwal ulangannya disebar 30–90 hari; kanji yang dijawab salah jadi merah. Tes tidak mengubah
+  lastAcc maupun log. Kanji yang lulus **tetap menunggu cek tulis** (`readyWrite` + `tahu`): hijau di peta sejak awal supaya
+  kemajuan murid langsung terlihat, lalu dicek bertahap lewat sesi menulis maksimum 2 per sesi. Tulisannya benar → tanda cek
+  lepas, jadwal FSRS-nya tidak diubah. Belum benar → kanji kehilangan status hijau, jadi merah, dan dipelajari dari awal.
+  Pilihan ini (hijau dulu, cek bertahap) diambil karena satu tingkat bisa berisi ratusan kanji: menahan hijau sampai semuanya
+  lulus tes tulis berarti ~20 sesi sebelum peta murid berubah.
+- "Sudah tahu" (2026-10-16, diubah 2026-10-19): pada kanji yang baru pertama kali muncul di sesi, murid bisa mengetuk
+  "Sudah tahu kanji ini — langsung ke tes tulis". Kanji itu **tidak langsung hijau** (beda dengan tes penempatan, yang
+  menandai ratusan kanji sekaligus): ia masuk daftar tes tulis sesi itu sebagai pengecekan bahwa memang sudah hafal. Tulisannya benar → hijau seperti kanji yang lulus lewat benar 5 kali;
+  belum benar → pengakuannya tidak terbukti, kanji jadi merah dan dipelajari dari awal. Tidak dihitung dalam ketepatan sesi.
 - Peta (2026-10-16): kotak oranye menampilkan 5 titik = berapa kali sudah benar dari 5 sebelum sesi menulis.
 - Label tingkat (2026-10-16): data tingkat JFT (Irodori) ditampilkan sebagai "N4" di layar. Isinya tetap mengikuti
   urutan Irodori, jadi sebagian kanjinya (mis. 連, 絡) di daftar JLPT tergolong N3. Kode internal tetap "JFT".

@@ -43,19 +43,40 @@ export function sesiPenempatan(data: Pick<AppData, "tg" | "ks">): SoalPenempatan
 }
 
 /**
- * Kanji yang dinyatakan sudah dikuasai langsung hijau. Jadwal ulangannya disebar 30–90 hari
+ * Kanji yang lulus tes penempatan langsung hijau. Jadwal ulangannya disebar 30–90 hari
  * (bukan semua di hari yang sama), supaya ratusan kanji tidak jatuh tempo bersamaan dan menutup
  * sesi berikutnya. Pada retensi 0,90, jarak hari = stabilitas S.
+ *
+ * Sejak 2026-10-19 kanji ini juga menunggu **cek tulis** (`readyWrite` + `tahu`): tetap hijau di
+ * peta, tetapi lama-lama dicek lewat sesi menulis, maksimum CEK_MAKS per sesi. Tulisannya benar →
+ * tanda ceknya lepas, jadwalnya tidak berubah. Belum benar → kanji jadi merah (lihat applyWrite).
  */
-export function tandaiSudahTahu(data: AppData, k: string, t: string, urutan = 0): AppData {
+export function tandaiLulusTes(data: AppData, k: string, t: string, urutan = 0): AppData {
   const lama: Partial<KanjiState> = data.ks[k] || {};
   const jarak = 30 + (urutan % 61);
+  const seq = (data.seq || 0) + 1;
   const s: KanjiState = {
     vi: 0, count: 0, wrongStreak: 0, ...lama,
-    seen: true, everCorrect: true, green: true, readyWrite: false, lapsed: false, lapses: 0,
+    seen: true, seq, everCorrect: true, green: true, readyWrite: true, tahu: true, lapsed: false, lapses: 0,
     S: jarak, D: D0(3), interval: jarak, lastReview: t, due: addDays(t, jarak),
   };
-  return { ...data, ks: { ...data.ks, [k]: s } };
+  return { ...data, seq, ks: { ...data.ks, [k]: s } };
+}
+
+/**
+ * Tombol "Sudah tahu kanji ini" (2026-10-19): kanji tidak langsung hijau, tetapi masuk daftar
+ * sesi menulis sebagai pengecekan bahwa murid memang hafal. Tulisannya benar → hijau seperti
+ * kanji yang lulus lewat hitungan benar 5 kali; belum benar → kanji dipelajari dari awal
+ * (lihat applyWrite).
+ */
+export function tandaiSudahTahu(data: AppData, k: string, t: string): AppData {
+  const lama: Partial<KanjiState> = data.ks[k] || {};
+  const seq = (data.seq || 0) + 1;
+  const s: KanjiState = {
+    vi: 0, wrongStreak: 0, ...lama,
+    seen: true, lastSeen: t, seq, count: 5, everCorrect: true, readyWrite: true, tahu: true,
+  };
+  return { ...data, seq, ks: { ...data.ks, [k]: s } };
 }
 
 export interface HasilTingkat { tingkat: Tingkat; benar: number; total: number; lulus: boolean; ditandai: number }
@@ -80,7 +101,7 @@ export function nilaiPenempatan(
       const salah = new Set(soal.filter((it) => !jawaban[it.k]).map((it) => it.k));
       putihDi(d, tg).forEach((k) => {
         if (salah.has(k)) return;
-        d = tandaiSudahTahu(d, k, t, ditandai++);
+        d = tandaiLulusTes(d, k, t, ditandai++);
       });
       for (const k of salah) d = applyAnswer(d, k, false, t);
     } else {
