@@ -19,7 +19,7 @@ const KELOMPOK: { kunci: string; judul: string; romaji?: string; jp?: boolean }[
 const LEGENDA = [
   { kelas: "bg-white border border-garis", teks: "Belum dilihat" },
   { kelas: "bg-merah", teks: "Belum hafal (huruf kecil)" },
-  { kelas: "bg-oranye", teks: "Sedang proses (huruf sedang; titik = benar ke-berapa dari 5)" },
+  { kelas: "bg-oranye", teks: "Sedang proses (huruf sedang)" },
   { kelas: "bg-hijau", teks: "Hafal (huruf besar; pudar = perlu diulang)" },
 ];
 
@@ -62,6 +62,10 @@ export function PetaKanji({ data, t, pilihan, onPilih, onBuka }: {
           </span>
         ))}
       </div>
+      <p className="mt-1 text-xs text-redup">
+        Titik di bawah kanji = kemajuannya. Titik pertama berarti kanji sudah dikenalkan, lima
+        titik berikutnya berarti sudah dijawab benar sekian kali dari 5.
+      </p>
       {grup.map((g) => {
         const hafal = g.isi.filter((x) => statusOf(data.ks[x.kanji]) === "green").length;
         // Kelompok lain hanya berisi kanji putih (yang sudah dipelajari pindah ke atas),

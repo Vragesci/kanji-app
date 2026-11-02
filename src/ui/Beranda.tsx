@@ -3,7 +3,7 @@ import { TINGKAT, labelTingkat } from "../data/katalog";
 import { statusOf } from "../engine/fsrs";
 import { buildSession, aktif } from "../engine/sesi";
 import { TOTAL_SOAL, tingkatBawah } from "../engine/penempatan";
-import { parse } from "../engine/tanggal";
+import { diff, parse } from "../engine/tanggal";
 import type { AppData, ModeSesi } from "../types";
 import { Btn, NamaAplikasi } from "./komponen";
 import { PetaKanji } from "./PetaKanji";
@@ -37,6 +37,11 @@ export function Beranda({ data, t, ubah, onMulai, onTentang }: {
   const selesaiMemilih = () => { setMemilih(false); setPilihan([]); };
   const set = useMemo(() => aktif(data), [data.tg]);
   const hafal = set.filter((x) => statusOf(data.ks[x.kanji]) === "green");
+  const dipelajari = set.filter((x) => statusOf(data.ks[x.kanji]) !== "white").length;
+  const naikMinggu = set.filter((x) => {
+    const p = data.ks[x.kanji]?.naikPada;
+    return !!p && diff(p, t) >= 0 && diff(p, t) <= 6;
+  }).length;
   const rencana = useMemo(() => buildSession(data, t), [data, t]);
   const adaBelajar = rencana.quiz.length + rencana.write.length;
   const bawah = useMemo(() => tingkatBawah(data), [data.tg, data.ks]);
@@ -68,7 +73,21 @@ export function Beranda({ data, t, ubah, onMulai, onTentang }: {
         </div>
       )}
 
-      <p className="text-sm mt-5">Kanji hafal: <b>{hafal.length}</b> dari {set.length}</p>
+      {/*
+        Kemajuan (2026-11-02): dulu beranda hanya menampilkan "Kanji hafal", padahal hijau baru
+        didapat setelah lima jawaban benar dan satu sesi menulis — murid baru melihat angka 0
+        selama berhari-hari walau kanji yang dipelajarinya terus bertambah. Tiga angka di bawah
+        bergerak di sesi pertama.
+      */}
+      <div className="mt-5 p-4 rounded-xl bg-white border border-garis">
+        <p className="text-sm">Sudah dipelajari: <b>{dipelajari}</b> dari {set.length} kanji</p>
+        <p className="text-sm mt-1">Sudah hafal: <b>{hafal.length}</b></p>
+        <p className="text-sm mt-1 text-redup">
+          {naikMinggu > 0
+            ? `Tujuh hari terakhir: ${naikMinggu} kanji naik tingkat.`
+            : "Tujuh hari terakhir: belum ada kanji yang naik tingkat."}
+        </p>
+      </div>
 
       <div className="space-y-3 mt-6">
         <Btn onClick={() => onMulai("learn")} disabled={adaBelajar === 0}>Lanjutkan belajar</Btn>

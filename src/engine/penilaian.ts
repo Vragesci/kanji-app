@@ -31,12 +31,16 @@ export function applyAnswer(data: AppData, k: string, correct: boolean, t: strin
     s.wrongStreak = 0;
     // setiap jawaban benar dihitung, termasuk sesi ulangan di hari yang sama (5 kali benar → sesi menulis)
     s.count = (s.count || 0) + 1;
+    s.naikPada = t; // untuk ringkasan "naik tingkat minggu ini" di beranda
     s.lastCountDay = t;
     s.vi = (s.vi || 0) + 1; // pertemuan berikutnya pakai kosakata lain
     if (s.count >= 5) s.readyWrite = true;
     s.due = addDays(t, NEXT_GAP[Math.min(Math.max(s.count - 1, 0), 4)]!); // benar ke-1..5 -> 1,1,2,4,7 hari
   } else {
-    s.count = 0; // salah sekali: hitungan kembali ke nol
+    // Salah menurunkan hitungan satu tingkat, bukan mengulang dari nol (diubah 2026-11-02).
+    // Dengan reset penuh, lima jawaban benar harus berturut-turut sementara kata dan jenis
+    // soalnya berganti tiap pertemuan, jadi hitungan di layar praktis tidak pernah bergerak.
+    s.count = Math.max(0, (s.count || 0) - 1);
     s.salahTotal = (s.salahTotal || 0) + 1; // dipakai menentukan Difficulty awal
     s.wrongStreak = (s.wrongStreak || 0) + 1;
     if (s.wrongStreak >= 3) { s.vi = (s.vi || 0) + 1; s.wrongStreak = 0; } // ganti kosakata, bukan cara bertanya
@@ -56,7 +60,7 @@ export function applyWrite(data: AppData, k: string, ok: boolean, t: string): Ap
   const j = jarakHari(S);
   const s: KanjiState = {
     seen: true, vi: 0, count: 0, wrongStreak: 0, ...lama,
-    green: true, readyWrite: false, lapsed: false, lapses: 0,
+    green: true, readyWrite: false, lapsed: false, lapses: 0, naikPada: t,
     S, D, interval: j, lastReview: t, due: addDays(t, j),
   };
   return { ...data, ks: { ...data.ks, [k]: s } };

@@ -52,7 +52,7 @@ export function tandaiSudahTahu(data: AppData, k: string, t: string, urutan = 0)
   const jarak = 30 + (urutan % 61);
   const s: KanjiState = {
     vi: 0, count: 0, wrongStreak: 0, ...lama,
-    seen: true, everCorrect: true, green: true, readyWrite: false, lapsed: false, lapses: 0,
+    seen: true, everCorrect: true, green: true, readyWrite: false, lapsed: false, lapses: 0, naikPada: t,
     S: jarak, D: D0(3), interval: jarak, lastReview: t, due: addDays(t, jarak),
   };
   return { ...data, ks: { ...data.ks, [k]: s } };

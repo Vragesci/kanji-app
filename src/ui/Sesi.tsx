@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { KAMUS, kataTulis, labelTingkat } from "../data/katalog";
 import { applyAnswer, applyWrite } from "../engine/penilaian";
 import { buildSession, sesiPilihan } from "../engine/sesi";
@@ -41,6 +41,8 @@ export function Sesi({ mode, pilihan, data, t: tHariIni, ubah, onKeluar }: Props
   const [hijauBaru, setHijauBaru] = useState<string[]>([]);
   // percobaan pertama tiap kanji di sesi ini: hanya jawaban pertama yang dinilai
   const pertama = useRef<Record<string, boolean>>({});
+  // kanji yang ditandai "sudah tahu": soal ulangannya di sesi ini ikut dilewati
+  const lewati = useRef<Set<string>>(new Set());
 
   const selesaiQuiz = () => {
     if (mode === "tes") {
@@ -72,14 +74,17 @@ export function Sesi({ mode, pilihan, data, t: tHariIni, ubah, onKeluar }: Props
 
   const sudahTahu = () => {
     const k = quiz[idx]!.k;
+    lewati.current.add(k); // kanji yang sama bisa muncul lagi sebagai soal ulangan di sesi ini
     ubah((d) => tandaiSudahTahu(d, k, t, idx));
     setDilewati((n) => n + 1);
     lanjutQuiz();
   };
 
   const lanjutQuiz = () => {
-    if (idx + 1 >= quiz.length) return selesaiQuiz();
-    setIdx(idx + 1);
+    let n = idx + 1;
+    while (n < quiz.length && lewati.current.has(quiz[n]!.k)) n++;
+    if (n >= quiz.length) return selesaiQuiz();
+    setIdx(n);
   };
 
   const selesaiTulis = (ok: boolean) => {
@@ -91,6 +96,21 @@ export function Sesi({ mode, pilihan, data, t: tHariIni, ubah, onKeluar }: Props
   };
 
   const progres = fase === "quiz" ? idx / Math.max(1, quiz.length) : 1;
+
+  // Dibandingkan dengan status kanji saat sesi dimulai, bukan dengan hitungan jawaban benar:
+  // kanji yang sama bisa muncul dua kali dalam satu sesi, dan ulangannya tidak dinilai.
+  const kemajuan = useMemo(() => {
+    let baru = 0;
+    let maju = 0;
+    for (const k of new Set(quiz.map((x) => x.k))) {
+      const a = awal[k];
+      const b = data.ks[k];
+      if (!b) continue;
+      if (!a?.seen) baru++;
+      if ((b.count || 0) > (a?.count || 0) || (b.green && !a?.green)) maju++;
+    }
+    return { baru, maju };
+  }, [data.ks, awal, quiz]);
 
   return (
     <div>
@@ -106,7 +126,7 @@ export function Sesi({ mode, pilihan, data, t: tHariIni, ubah, onKeluar }: Props
         <Soal
           key={`${idx}${quiz[idx]!.k}${quiz[idx]!.type}`}
           item={quiz[idx]!} data={data} onDijawab={dijawab} onLanjut={lanjutQuiz}
-          onSudahTahu={mode !== "tes" && statusOf(awal[quiz[idx]!.k]) === "white" ? sudahTahu : undefined}
+          onSudahTahu={mode !== "tes" && statusOf(awal[quiz[idx]!.k]) === "white" && !(quiz[idx]!.k in pertama.current) ? sudahTahu : undefined}
         />
       )}
 
@@ -131,6 +151,14 @@ export function Sesi({ mode, pilihan, data, t: tHariIni, ubah, onKeluar }: Props
             </div>
           )}
           {dilewati > 0 && <p className="mt-4 text-sm">Ditandai sudah tahu: <b>{dilewati}</b> kanji</p>}
+          {/* kemajuan sesi ini (2026-11-02): angka yang bergerak walau belum ada kanji yang hijau */}
+          {mode !== "tes" && (kemajuan.baru > 0 || kemajuan.maju > 0) && (
+            <p className="mt-4 text-sm">
+              {kemajuan.baru > 0 && <>Kanji baru dikenalkan: <b>{kemajuan.baru}</b></>}
+              {kemajuan.baru > 0 && kemajuan.maju > 0 && " · "}
+              {kemajuan.maju > 0 && <>Naik tingkat: <b>{kemajuan.maju}</b></>}
+            </p>
+          )}
           {acc !== null && (
             <p className="mt-6">Jawaban benar di percobaan pertama: <b>{Math.round(acc * 100)}%</b></p>
           )}

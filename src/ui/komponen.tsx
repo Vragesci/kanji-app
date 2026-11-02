@@ -56,9 +56,12 @@ export function KotakKanji({ k, s, t, ukuran }: { k: string; s: KanjiState | und
   const hurufPeta: Record<Status, string> = {
     white: "text-xl", red: "text-sm", orange: "text-xl", green: "text-3xl font-bold",
   };
-  // Titik kemajuan di peta: berapa kali benar dari 5 sebelum sesi menulis (oranye saja).
-  const benar = st === "orange" && !ukuran ? Math.min(s?.count || 0, 5) : null;
-  const label = `${k}, ${NAMA_STATUS[st]}${benar !== null ? `, benar ${benar} dari 5` : ""}`;
+  // Titik kemajuan di peta (2026-11-02): titik pertama = kanji sudah dikenalkan, lima sisanya
+  // = berapa kali benar dari 5 sebelum sesi menulis. Titik "dikenalkan" sengaja sudah terisi
+  // sejak kanji pertama kali muncul, jadi kemajuan terlihat sejak langkah pertama dan bukan
+  // lima titik kosong. Berlaku untuk merah dan oranye; hijau tidak perlu titik.
+  const benar = (st === "red" || st === "orange") && !ukuran ? Math.min(s?.count || 0, 5) : null;
+  const label = `${k}, ${NAMA_STATUS[st]}${benar !== null ? `, sudah dikenalkan, benar ${benar} dari 5` : ""}`;
   return (
     <Jp as="div" role="img" aria-label={label}
       className={`relative flex items-center justify-center rounded-lg ${gaya[st]} ${ukuran ? "" : `w-full aspect-square ${hurufPeta[st]}`}`}
@@ -66,8 +69,8 @@ export function KotakKanji({ k, s, t, ukuran }: { k: string; s: KanjiState | und
       {k}
       {benar !== null && (
         <span aria-hidden className="absolute bottom-1 inset-x-0 flex justify-center gap-0.5">
-          {[0, 1, 2, 3, 4].map((i) => (
-            <i key={i} className={`block size-1.5 rounded-full ${i < benar ? "bg-white" : "bg-white/35"}`} />
+          {[0, 1, 2, 3, 4, 5].map((i) => (
+            <i key={i} className={`block size-1 rounded-full ${i <= benar ? "bg-white" : "bg-white/35"}`} />
           ))}
         </span>
       )}

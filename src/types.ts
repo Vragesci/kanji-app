@@ -42,6 +42,8 @@ export interface KanjiState {
   count: number;
   wrongStreak: number;
   everCorrect?: boolean;
+  /** tanggal terakhir kanji ini naik satu tingkat (jawaban benar atau lulus sesi menulis) */
+  naikPada?: string;
   lastCountDay?: string;
   readyWrite?: boolean;
   salahTotal?: number;

@@ -4,7 +4,7 @@ import { KOSONG } from "../db/penyimpanan";
 import type { AppData } from "../types";
 import { D0, W, greenStrength, jarakHari, nextD, statusOf } from "./fsrs";
 import { applyAnswer, applyWrite } from "./penilaian";
-import { aktif, buildSession, daftarTulis, sesiPilihan } from "./sesi";
+import { aktif, buildSession, daftarTulis, jenisUntuk, sesiPilihan } from "./sesi";
 import { addDays } from "./tanggal";
 
 const K = "先"; // kanji N5 dengan banyak kosakata
@@ -36,11 +36,21 @@ describe("status & hitungan (metode 2–3)", () => {
     expect(daftarTulis(d)).toContain(K);
   });
 
-  it("salah sekali → hitungan kembali ke nol", () => {
+  it("salah sekali → hitungan turun satu tingkat, bukan kembali ke nol (2026-11-02)", () => {
     let d = baru();
     for (let i = 0; i < 4; i++) d = applyAnswer(d, K, true, hari(i));
     d = applyAnswer(d, K, false, hari(4));
+    expect(d.ks[K]!.count).toBe(3);
+    // salah beruntun tetap bisa menghabiskan hitungan, tapi tidak pernah di bawah nol
+    for (let i = 0; i < 5; i++) d = applyAnswer(d, K, false, hari(5 + i));
     expect(d.ks[K]!.count).toBe(0);
+  });
+
+  it("kanji yang baru naik tingkat ditandai tanggalnya (ringkasan mingguan di beranda)", () => {
+    let d = applyAnswer(baru(), K, true, hari(0));
+    expect(d.ks[K]!.naikPada).toBe(hari(0));
+    d = applyAnswer(d, K, false, hari(1));
+    expect(d.ks[K]!.naikPada).toBe(hari(0)); // jawaban salah bukan kenaikan
   });
 
   it("gagal menulis: kanji tetap menunggu sesi menulis, tidak hijau", () => {
@@ -109,31 +119,51 @@ describe("penjadwalan (FSRS v4.5)", () => {
 });
 
 describe("penyusun sesi (metode 1, 5–7)", () => {
-  it("satu sesi = maksimum 10 soal, tiap kanji sekali", () => {
-    const p = buildSession(baru({ tg: "N1" }), HARI0);
-    expect(p.quiz.length).toBeLessThanOrEqual(10);
-    expect(new Set(p.quiz.map((x) => x.k)).size).toBe(p.quiz.length);
+  it("satu sesi = maksimum 10 soal; kanji berulang hanya saat kanji yang layak kurang dari 10", () => {
+    const banyak = Object.fromEntries(
+      aktif({ tg: "N1" }).slice(0, 20).map((x) => [x.kanji, { seen: true, vi: 0, count: 1, wrongStreak: 0, everCorrect: true, lastSeen: hari(-1), due: HARI0 }]),
+    );
+    const p = buildSession(baru({ tg: "N1", ks: banyak, lastAcc: 0.8 }), HARI0);
+    expect(p.quiz.length).toBe(10);
+    expect(new Set(p.quiz.map((x) => x.k)).size).toBe(10);
   });
 
-  it("beban menyesuaikan ketepatan: <70% tanpa kanji baru, 70–90% dua, >90% tiga", () => {
+  it("sesi pertama murid baru: empat kanji baru, sisanya pengulangan — bukan 10 kanji sekaligus", () => {
+    const p = buildSession(baru({ tg: "N1" }), HARI0);
+    expect(p.quiz.length).toBe(10);
+    expect(new Set(p.quiz.map((x) => x.k)).size).toBe(4);
+    // ulangan memakai kata yang sama, jenis soalnya berganti-ganti, dan bukan soal rakit
+    for (const k of new Set(p.quiz.map((x) => x.k))) {
+      const soal = p.quiz.filter((x) => x.k === k);
+      expect(soal.length).toBeGreaterThan(1);
+      expect(new Set(soal.map((x) => x.kata)).size).toBe(1);
+      expect(soal.slice(1).every((x, i) => x.type !== soal[i]!.type)).toBe(true);
+      expect(soal.slice(1).every((x) => x.type !== "rakit")).toBe(true);
+    }
+  });
+
+  it("beban menyesuaikan ketepatan: <70% tetap satu kanji baru, 70–90% dua, >90% tiga", () => {
     // 12 kanji merah: cukup untuk memenuhi kuota, jadi jatah kanji baru terlihat murni
     const merah = Object.fromEntries(
       aktif({ tg: "N5" }).slice(0, 12).map((x) => [x.kanji, { seen: true, vi: 0, count: 0, wrongStreak: 0, lastSeen: hari(-1), due: HARI0 }]),
     );
     const kanjiBaru = (acc: number | null) =>
-      buildSession(baru({ tg: "N5", ks: merah, lastAcc: acc }), HARI0).quiz.filter((x) => !merah[x.k]).length;
-    expect(kanjiBaru(0.6)).toBe(0);
-    expect(kanjiBaru(null)).toBe(2); // sesi pertama
+      new Set(buildSession(baru({ tg: "N5", ks: merah, lastAcc: acc }), HARI0).quiz.filter((x) => !merah[x.k]).map((x) => x.k)).size;
+    expect(kanjiBaru(0.6)).toBe(1); // dulu 0: murid terkunci pada kanji yang sama
+    expect(kanjiBaru(null)).toBe(4); // sesi pertama
     expect(kanjiBaru(0.8)).toBe(2);
     expect(kanjiBaru(0.95)).toBe(3);
   });
 
-  it("akurasi <70%: sesi memendek daripada mengisi kuota dengan kanji baru", () => {
+  it("akurasi <70%: kuota diisi pengulangan, bukan diisi kanji baru dan bukan sesi pendek", () => {
     const empat = Object.fromEntries(
       aktif({ tg: "N5" }).slice(0, 4).map((x) => [x.kanji, { seen: true, vi: 0, count: 0, wrongStreak: 0, lastSeen: hari(-1), due: HARI0 }]),
     );
-    expect(buildSession(baru({ tg: "N5", ks: empat, lastAcc: 0.5 }), HARI0).quiz.length).toBe(4);
-    expect(buildSession(baru({ tg: "N5", ks: empat, lastAcc: 0.8 }), HARI0).quiz.length).toBe(10);
+    const lemah = buildSession(baru({ tg: "N5", ks: empat, lastAcc: 0.5 }), HARI0);
+    expect(lemah.quiz.length).toBe(10);
+    expect(new Set(lemah.quiz.map((x) => x.k)).size).toBe(5); // 4 kanji lama + 1 kanji baru
+    const kuat = buildSession(baru({ tg: "N5", ks: empat, lastAcc: 0.8 }), HARI0);
+    expect(new Set(kuat.quiz.map((x) => x.k)).size).toBe(10); // 4 lama + 6 baru, tanpa pengulangan
   });
 
   it("sesi ditutup dengan soal yang paling mungkin benar (hitungan tertinggi)", () => {
@@ -149,7 +179,9 @@ describe("penyusun sesi (metode 1, 5–7)", () => {
     const oranyeBesok = { ...hariIni, count: 1, everCorrect: true }; // belum jatuh tempo sampai besok
     const ks = { [a!]: hariIni, [b!]: oranyeBesok, [c!]: { ...oranyeBesok, count: 2 } };
     const p = buildSession(baru({ ks, lastAcc: 0.6 }), HARI0);
-    expect(p.quiz.map((x) => x.k).sort()).toEqual([a, b, c].sort());
+    for (const k of [a, b, c]) expect(p.quiz.map((x) => x.k)).toContain(k);
+    // ketepatan di bawah 70% tetap memberi satu kanji baru (2026-11-02)
+    expect(new Set(p.quiz.map((x) => x.k)).size).toBe(4);
   });
 
   it("sesi kanji pilihan: hanya kanji yang dipilih, maksimum 10, tanpa memandang jadwal", () => {
@@ -162,10 +194,10 @@ describe("penyusun sesi (metode 1, 5–7)", () => {
   });
 
   it("jenis soal bergiliran mengikuti hitungan: arti, bacaan, rakit, lalu ulang", () => {
-    const jenis = [0, 1, 2, 3, 4, 5].map((count) => {
-      const ks = { [K]: { seen: true, vi: 0, count, wrongStreak: 0, everCorrect: true, lastSeen: hari(-1), due: HARI0 } };
-      return buildSession(baru({ ks, lastAcc: 0.6 }), HARI0).quiz[0]!.type;
-    });
+    // diuji langsung pada aturannya: sesi selalu berisi lebih dari satu kanji, dan posisi
+    // kanji di dalam sesi ikut menggeser giliran supaya satu sesi tidak sejenis semua
+    const jenis = [0, 1, 2, 3, 4, 5].map((count) =>
+      jenisUntuk(K, { seen: true, vi: 0, count, wrongStreak: 0, everCorrect: true }, 0));
     expect(jenis).toEqual(["meaning", "reading", "rakit", "meaning", "reading", "rakit"]);
   });
 

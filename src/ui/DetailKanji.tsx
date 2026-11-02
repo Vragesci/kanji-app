@@ -44,8 +44,11 @@ export function DetailKanji({ k, data, onTutup }: { k: string; data: AppData; on
             <Jp as="div" className="text-7xl leading-none font-bold w-24 h-24 flex items-center justify-center rounded-xl bg-kotak shrink-0">{k}</Jp>
             <div className="min-w-0">
               <p className={`font-bold ${WARNA_STATUS[st]}`}>{NAMA_STATUS[st][0]!.toUpperCase() + NAMA_STATUS[st].slice(1)}</p>
-              {st === "orange" && (
-                <p className="text-sm mt-1 text-redup">Benar {Math.min(s?.count || 0, 5)} dari 5{s?.readyWrite ? " · siap latihan tulis" : ""}</p>
+              {(st === "orange" || st === "red") && (
+                <p className="text-sm mt-1 text-redup">
+                  Sudah dikenalkan · benar {Math.min(s?.count || 0, 5)} dari 5
+                  {s?.readyWrite ? " · siap latihan tulis" : ""}
+                </p>
               )}
               {info.level && (
                 <p className="text-sm mt-1 text-redup">
