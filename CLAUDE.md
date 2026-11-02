@@ -135,8 +135,15 @@ menulis, kalimat contoh (Tatoeba), dan audio.
   kata (学□) dan bacaannya ditandai ("Tulis kanji untuk せい (sei)"), supaya jelas yang ditulis hanya satu kanji.
 - Pengecekan tulisan otomatis (2026-10-16, memajukan sebagian tahap 3): tulisan dinilai aplikasi per goresan memakai data
   KanjiVG (`public/goresan/<tingkat>.json`, disiapkan `scripts/goresan.mjs`; CC BY-SA 3.0, atribusi di "Tentang").
-  Diperiksa berurutan: jumlah goresan, arah (goresan panjang saja; titik tidak), bentuk + letak tiap goresan, lalu urutan
-  (penugasan termurah antar-goresan). Toleransi di `BATAS` (src/engine/goresan.ts), dikalibrasi dengan tulisan tiruan.
+  Diperiksa berurutan: jumlah goresan, arah (goresan panjang saja; titik tidak), bentuk + letak + **panjang bentangan**
+  tiap goresan, lalu urutan (penugasan termurah antar-goresan). Toleransi di `BATAS` (src/engine/goresan.ts),
+  dikalibrasi dengan tulisan tiruan.
+  Pemeriksaan panjang ditambahkan 2026-11-02 setelah murid melaporkan tulisan salah dinilai benar: bentuk
+  dibandingkan setelah titik tengah kedua goresan disamakan, jadi goresan separuh panjang hanya meleset sedikit di
+  tiap titik dan tetap lolos (terukur: 33% kanji). Dengan `panjang: 0.18` kebocoran itu tinggal 1% dan tulisan benar
+  tetap diterima 99%. Yang masih lolos dan belum diperbaiki: satu goresan yang bentuk dan panjangnya benar tapi
+  letaknya jauh meleset (toleransi `letak` tidak bisa diperketat tanpa menolak banyak tulisan yang benar —
+  memperketatnya ke 0,21 menolak 5% tulisan benar dan tetap meloloskan 68% goresan salah letak).
   Benar → hijau. Salah → pesan koreksi + goresan bernomor (yang salah merah) untuk dijiplak, kanji diulang lain kali.
   Kalau data goresan belum terunduh (luring), murid menilai sendiri.
 - Nama aplikasi (2026-10-17): tulisan "Ngaji Kanji" memakai huruf Reggae One (SIL OFL), subset Latin saja lewat

@@ -9,17 +9,25 @@ export type Goresan = Titik[];
 /** jumlah titik per goresan saat dibandingkan */
 const N = 24;
 /**
- * Toleransi (satuan: ukuran kanji = 1). Tiap goresan dinilai dari dua hal terpisah:
- * BENTUK (arah dan lengkung, setelah posisinya disamakan) dan LETAK (jarak titik tengah goresan).
+ * Toleransi (satuan: ukuran kanji = 1). Tiap goresan dinilai dari tiga hal terpisah:
+ * BENTUK (arah dan lengkung, setelah posisinya disamakan), LETAK (jarak titik tengah goresan),
+ * dan PANJANG (bentangan ujung ke ujung).
  * Dipisah karena tulisan jari di HP paling sering meleset letaknya, bukan bentuknya.
+ *
+ * `panjang` ditambahkan 2026-11-02: tanpa itu, goresan yang arahnya benar tapi panjangnya
+ * separuh tetap dinilai benar (bentuk dibandingkan setelah titik tengah kedua goresan
+ * disamakan, jadi goresan pendek hanya meleset sedikit di tiap titik). Pengukuran pada data
+ * KanjiVG N5: satu goresan dipendekkan jadi separuh tetap lolos di 75% kanji, dan jadi
+ * seperempat tetap lolos di 38%.
  */
-export const BATAS = { bentuk: 0.12, letak: 0.25, urutan: 0.07 };
+export const BATAS = { bentuk: 0.12, letak: 0.25, panjang: 0.18, urutan: 0.07 };
 
 export type Hasil =
   | { ok: true }
   | { ok: false; jenis: "jumlah"; ditulis: number; seharusnya: number }
   | { ok: false; jenis: "arah"; ke: number }
   | { ok: false; jenis: "urutan"; ke: number; mirip: number }
+  | { ok: false; jenis: "panjang"; ke: number; terlalu: "pendek" | "panjang" }
   | { ok: false; jenis: "bentuk"; ke: number };
 
 /** titik-titik sepanjang satu jalur SVG KanjiVG (koordinat 0–109) */
@@ -77,6 +85,13 @@ const bedaBentuk = (a: Goresan, b: Goresan, balik = false): number => {
   }
   return s / a.length;
 };
+/**
+ * Bentangan goresan: jarak ujung ke ujung, bukan panjang lintasan. Dipilih karena tahan
+ * terhadap getaran jari — lintasan yang bergelombang jadi jauh lebih panjang walau tulisannya
+ * benar, sedangkan bentangannya tetap.
+ */
+const rentang = (g: Goresan): number => Math.hypot(g.at(-1)![0] - g[0]![0], g.at(-1)![1] - g[0]![1]);
+const bedaPanjang = (a: Goresan, b: Goresan): number => rentang(a) - rentang(b);
 const bedaLetak = (a: Goresan, b: Goresan): number => {
   const [ax, ay] = pusat(a);
   const [bx, by] = pusat(b);
@@ -111,12 +126,20 @@ export function nilaiTulisan(murid: Goresan[], jalur: string[], batas = BATAS): 
   if (tulis.length !== jalur.length) return { ok: false, jenis: "jumlah", ditulis: tulis.length, seharusnya: jalur.length };
   const T = normalisasi(jalur.map(sampelTersimpan));
   const U = normalisasi(tulis.map((g) => sampelUlang(g)));
-  const cocok = (u: Goresan, t: Goresan) => bedaBentuk(u, t) <= batas.bentuk && bedaLetak(u, t) <= batas.letak;
+  const cocok = (u: Goresan, t: Goresan) =>
+    bedaBentuk(u, t) <= batas.bentuk && bedaLetak(u, t) <= batas.letak
+    && Math.abs(bedaPanjang(u, t)) <= batas.panjang;
   for (let i = 0; i < U.length; i++) {
     const u = U[i]!;
     if (terbalik(u, T[i]!)) return { ok: false, jenis: "arah", ke: i + 1 };
     if (cocok(u, T[i]!)) continue;
     if (bedaBentuk(u, T[i]!, true) <= batas.bentuk && bedaLetak(u, T[i]!) <= batas.letak) return { ok: false, jenis: "arah", ke: i + 1 };
+    // panjangnya yang meleset, sedangkan arah dan letaknya sudah betul: pesannya dibedakan
+    // supaya murid tahu goresannya kurang panjang, bukan disuruh menebak apa yang salah
+    const selisih = bedaPanjang(u, T[i]!);
+    if (Math.abs(selisih) > batas.panjang && bedaBentuk(u, T[i]!) <= batas.bentuk * 1.5 && bedaLetak(u, T[i]!) <= batas.letak) {
+      return { ok: false, jenis: "panjang", ke: i + 1, terlalu: selisih < 0 ? "pendek" : "panjang" };
+    }
     const j = T.findIndex((t, x) => x !== i && cocok(u, t));
     if (j >= 0) return { ok: false, jenis: "urutan", ke: i + 1, mirip: j + 1 };
     return { ok: false, jenis: "bentuk", ke: i + 1 };
@@ -172,6 +195,8 @@ export function pesanKoreksi(h: Hasil): string {
       return `Goresan ke-${h.ke} arahnya terbalik.`;
     case "urutan":
       return `Urutan goresan belum tepat: goresan ke-${h.ke} yang kamu tulis seharusnya goresan ke-${h.mirip}.`;
+    case "panjang":
+      return `Goresan ke-${h.ke} terlalu ${h.terlalu}. Bandingkan dengan panduan bernomor di bawah.`;
     case "bentuk":
       return `Goresan ke-${h.ke} bentuk atau letaknya belum tepat.`;
   }

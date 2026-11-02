@@ -25,6 +25,11 @@ function tiru(jalur: string[]): Goresan[] {
   });
 }
 const uji = Object.keys(semua).filter((_, i) => i % 5 === 0);
+/** indeks goresan terpanjang: yang paling terasa kalau dipendekkan */
+const terpanjang = (j: string[]): number => {
+  const p = j.map((d) => { const q = sampelJalur(d, 2); return Math.hypot(q[1]![0] - q[0]![0], q[1]![1] - q[0]![1]); });
+  return p.indexOf(Math.max(...p));
+};
 const persen = (f: (k: string) => boolean | null) => {
   const h = uji.map(f).filter((x) => x !== null);
   return h.filter(Boolean).length / h.length;
@@ -59,6 +64,38 @@ describe("pengecekan tulisan per goresan (KanjiVG)", () => {
       g[i] = [...g[i]!].reverse();
       return !nilaiTulisan(g, j).ok;
     })).toBeGreaterThanOrEqual(0.98);
+  });
+
+  // 2026-11-02: dilaporkan murid — tulisan yang goresannya jauh terlalu pendek dinilai benar.
+  // Bentuk dibandingkan setelah titik tengah kedua goresan disamakan, jadi goresan separuh
+  // panjang hanya meleset sedikit di tiap titik. Panjang bentangannya kini ikut diperiksa.
+  it("goresan yang panjangnya separuh ditolak", () => {
+    expect(persen((k) => {
+      const j = semua[k]!;
+      const g = tiru(j);
+      const i = terpanjang(j);
+      g[i] = g[i]!.slice(0, Math.max(2, Math.ceil(g[i]!.length / 2)));
+      return !nilaiTulisan(g, j).ok;
+    })).toBeGreaterThanOrEqual(0.95);
+  });
+
+  it("goresan yang panjangnya seperempat ditolak", () => {
+    expect(persen((k) => {
+      const j = semua[k]!;
+      const g = tiru(j);
+      const i = terpanjang(j);
+      g[i] = g[i]!.slice(0, Math.max(2, Math.ceil(g[i]!.length / 4)));
+      return !nilaiTulisan(g, j).ok;
+    })).toBeGreaterThanOrEqual(0.98);
+  });
+
+  it("goresan yang terlalu pendek diberi tahu sebagai masalah panjang, bukan 'bentuk'", () => {
+    const j = semua["十"]!; // dua goresan panjang, lurus, saling tegak lurus
+    const g = tiru(j);
+    g[0] = g[0]!.slice(0, Math.max(2, Math.ceil(g[0]!.length / 2)));
+    const h = nilaiTulisan(g, j);
+    expect(h).toMatchObject({ ok: false, jenis: "panjang", ke: 1, terlalu: "pendek" });
+    expect(pesanKoreksi(h)).toContain("terlalu pendek");
   });
 
   it("kanji lain dengan jumlah goresan sama ditolak", () => {
