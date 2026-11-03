@@ -53,12 +53,19 @@ describe("status & hitungan (metode 2–3)", () => {
     expect(d.ks[K]!.naikPada).toBe(hari(0)); // jawaban salah bukan kenaikan
   });
 
-  it("gagal menulis: kanji tetap menunggu sesi menulis, tidak hijau", () => {
+  it("gagal menulis: kanji tetap menunggu sesi menulis, tidak hijau, dan kegagalannya dihitung", () => {
     let d = baru();
     for (let i = 0; i < 5; i++) d = applyAnswer(d, K, true, hari(i));
-    const setelah = applyWrite(d, K, false, hari(5));
-    expect(setelah).toBe(d);
-    expect(statusOf(setelah.ks[K])).toBe("orange");
+    d = applyWrite(d, K, false, hari(5));
+    expect(statusOf(d.ks[K])).toBe("orange");
+    expect(d.ks[K]!.readyWrite).toBe(true);
+    expect(d.ks[K]!.gagalTulis).toBe(1);
+    d = applyWrite(d, K, false, hari(6));
+    expect(d.ks[K]!.gagalTulis).toBe(2); // percobaan ke-3 membuka tombol "tulisanku sudah benar"
+    // lulus menulis mengosongkan hitungan itu lagi
+    d = applyWrite(d, K, true, hari(7));
+    expect(statusOf(d.ks[K])).toBe("green");
+    expect(d.ks[K]!.gagalTulis).toBe(0);
   });
 });
 

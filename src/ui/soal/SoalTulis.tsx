@@ -14,7 +14,15 @@ import { muatGoresan, nilaiTulisan, pesanKoreksi, type Goresan, type Hasil } fro
 type Tahap = "tulis" | "benar" | "koreksi" | "nilaiSendiri" | "jiplak";
 const PIKSEL = 560;
 
-export function SoalTulis({ k, v, onSelesai }: { k: string; v: Kosakata; onSelesai: (ok: boolean) => void }) {
+/** berapa kali sesi menulis kanji ini boleh gagal sebelum murid boleh menilai tulisannya sendiri */
+const BATAS_GAGAL = 2;
+
+export function SoalTulis({ k, v, gagal = 0, onSelesai }: {
+  k: string; v: Kosakata;
+  /** berapa kali sesi menulis kanji ini sudah gagal sebelumnya (KanjiState.gagalTulis) */
+  gagal?: number;
+  onSelesai: (ok: boolean) => void;
+}) {
   const kanvas = useRef<HTMLCanvasElement>(null);
   const goresan = useRef<Goresan[]>([]);
   const [jumlah, setJumlah] = useState(0);
@@ -127,9 +135,30 @@ export function SoalTulis({ k, v, onSelesai }: { k: string; v: Kosakata; onSeles
         <div className="mt-4" aria-live="polite">
           <p className={`font-bold ${hasil.ok ? "text-hijau" : "text-merah"}`}>{hasil.ok ? "Benar" : "Belum tepat"}</p>
           <p className="text-sm mt-1">{pesanKoreksi(hasil)}</p>
-          {hasil.ok
-            ? <Btn className="mt-4" onClick={() => onSelesai(true)}>Lanjut</Btn>
-            : <Btn className="mt-4" onClick={() => setTahap("jiplak")}>Jiplak sesuai urutan</Btn>}
+          {hasil.ok ? (
+            <Btn className="mt-4" onClick={() => onSelesai(true)}>Lanjut</Btn>
+          ) : (
+            <>
+              {/*
+                Jalan keluar dari sesi menulis (2026-11-03). Dulu satu-satunya tombol di sini
+                adalah "Jiplak", dan kanji yang tulisannya tidak pernah diterima pengecek goresan
+                tersangkut selamanya: tidak pernah hijau, tidak kembali ke soal pilihan, muncul
+                lagi tiap sesi. Sekarang murid boleh mengulang tulisannya di sesi yang sama, dan
+                pada percobaan ke-3 boleh menilai tulisannya sendiri — pengecek goresan membantu
+                murid, bukan menguncinya.
+              */}
+              <div className="grid grid-cols-2 gap-2 mt-4">
+                <Btn kind="ghost" onClick={() => { hapus(); setHasil(null); setTahap("tulis"); }}>Tulis lagi</Btn>
+                <Btn onClick={() => setTahap("jiplak")}>Jiplak sesuai urutan</Btn>
+              </div>
+              {gagal >= BATAS_GAGAL && (
+                <button type="button" onClick={() => onSelesai(true)}
+                  className="block mx-auto mt-4 text-sm underline text-redup min-h-11">
+                  Menurutku tulisanku sudah benar — tandai hafal
+                </button>
+              )}
+            </>
+          )}
         </div>
       )}
 

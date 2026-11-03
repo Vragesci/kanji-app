@@ -142,6 +142,11 @@ menulis, kalimat contoh (Tatoeba), dan audio.
   urutan Irodori, jadi sebagian kanjinya (mis. 連, 絡) di daftar JLPT tergolong N3. Kode internal tetap "JFT".
 - Sesi menulis (2026-10-16): murid menulis dulu tanpa panduan, lalu mencocokkan dengan kanji yang benar (tampil di
   belakang tulisannya). "Sudah benar" → hijau. "Belum benar" → panduan muncul untuk dijiplak, kanji diulang lain kali.
+  Jalan keluar (2026-11-03): sesudah pengecekan goresan menolak, murid boleh "Tulis lagi" di sesi yang sama, dan pada
+  percobaan ke-3 (`gagalTulis` >= 2 di KanjiState) muncul "Menurutku tulisanku sudah benar — tandai hafal". Tanpa itu,
+  kanji yang tulisannya tidak pernah diterima pengecek tersangkut selamanya: tetap `readyWrite`, tidak pernah hijau, dan
+  tidak kembali ke soal pilihan karena penyusun sesi melewati kanji `readyWrite`. Pengecek goresan membantu murid,
+  bukan menguncinya.
   Soal tulis memakai kanji itu sendiri sebagai kata bila ada (人 → ひと); kalau tidak, kanji target dikosongkan di dalam
   kata (学□) dan bacaannya ditandai ("Tulis kanji untuk せい (sei)"), supaya jelas yang ditulis hanya satu kanji.
 - Pengecekan tulisan otomatis (2026-10-16, memajukan sebagian tahap 3): tulisan dinilai aplikasi per goresan memakai data

@@ -46,6 +46,8 @@ export interface KanjiState {
   naikPada?: string;
   lastCountDay?: string;
   readyWrite?: boolean;
+  /** berapa kali sesi menulis kanji ini belum lolos; dipakai membuka jalan keluar dari sesi tulis */
+  gagalTulis?: number;
   salahTotal?: number;
   due?: string;
   green?: boolean;

@@ -133,7 +133,8 @@ export function Sesi({ mode, pilihan, tes, data, t: tHariIni, ubah, onKeluar }: 
       )}
 
       {fase === "write" && (
-        <SoalTulis key={tulis[wIdx]} k={tulis[wIdx]!} v={KAMUS[kataTulis(tulis[wIdx]!, data.tg || "N5")]!} onSelesai={selesaiTulis} />
+        <SoalTulis key={tulis[wIdx]} k={tulis[wIdx]!} v={KAMUS[kataTulis(tulis[wIdx]!, data.tg || "N5")]!}
+          gagal={data.ks[tulis[wIdx]!]?.gagalTulis || 0} onSelesai={selesaiTulis} />
       )}
 
       {fase === "done" && (

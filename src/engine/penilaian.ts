@@ -50,9 +50,21 @@ export function applyAnswer(data: AppData, k: string, correct: boolean, t: strin
   return { ...data, ks };
 }
 
-/** Hasil sesi menulis. Lulus = kanji hijau dan masuk fase FSRS. */
+/**
+ * Hasil sesi menulis. Lulus = kanji hijau dan masuk fase FSRS.
+ *
+ * Gagal hanya menambah `gagalTulis` (2026-11-03). Dulu gagal tidak mengubah apa pun, sehingga
+ * kanji yang tulisannya tidak pernah diterima pengecek goresan tersangkut selamanya: tetap
+ * `readyWrite`, tidak pernah hijau, dan tidak kembali ke soal pilihan karena penyusun sesi
+ * melewati kanji `readyWrite`. Hitungan ini yang membuka tombol "tulisanku sudah benar" di
+ * percobaan ketiga (lihat SoalTulis), supaya tidak ada murid yang terkunci di satu kanji.
+ */
 export function applyWrite(data: AppData, k: string, ok: boolean, t: string): AppData {
-  if (!ok) return data;
+  if (!ok) {
+    const lama = data.ks[k];
+    if (!lama) return data;
+    return { ...data, ks: { ...data.ks, [k]: { ...lama, gagalTulis: (lama.gagalTulis || 0) + 1 } } };
+  }
   const lama: Partial<KanjiState> = data.ks[k] || {};
   // Kanji yang tadi sering salah mulai dengan Difficulty lebih tinggi, jadi jaraknya lebih rapat.
   const D = clampD(D0(3) + 0.4 * (lama.salahTotal || 0));
@@ -60,7 +72,7 @@ export function applyWrite(data: AppData, k: string, ok: boolean, t: string): Ap
   const j = jarakHari(S);
   const s: KanjiState = {
     seen: true, vi: 0, count: 0, wrongStreak: 0, ...lama,
-    green: true, readyWrite: false, lapsed: false, lapses: 0, naikPada: t,
+    green: true, readyWrite: false, gagalTulis: 0, lapsed: false, lapses: 0, naikPada: t,
     S, D, interval: j, lastReview: t, due: addDays(t, j),
   };
   return { ...data, ks: { ...data.ks, [k]: s } };
