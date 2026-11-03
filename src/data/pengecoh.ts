@@ -201,8 +201,9 @@ function jarakEdit(a: string, b: string): number {
 
 /** Semua bacaan mirip yang bisa dibuat untuk kata ini, dikelompokkan menurut jenis kesalahannya. */
 export function kandidatBacaanMirip(kata: string, v: Kosakata): { tukar: string[]; suara: string[]; panjang: string[]; geminasi: string[]; nyata: string[] } {
-  // akhiran gramatikal (ます, （な）, する) tidak ikut diubah, karena bacaan sepertinya たべまず langsung ketahuan salah
-  const akhiran = ["ます", "（な）", "する"].find((x) => v.kana.endsWith(x)) ?? "";
+  // okurigana dan akhiran gramatikal tidak ikut diubah: bacaan seperti たべまず langsung ketahuan
+  // salah, dan mengubah ekor justru membocorkan jawaban (lihat ekorKata)
+  const akhiran = ekorKata(kata, v) || (["ます", "（な）", "する"].find((x) => v.kana.endsWith(x)) ?? "");
   const bersih = (a: string[]) => [...new Set(a.filter((k) => wajar(k, v.kana) && k.endsWith(akhiran)))];
   const nyata = [
     ...new Set(
@@ -221,13 +222,36 @@ export function kandidatBacaanMirip(kata: string, v: Kosakata): { tukar: string[
 }
 
 /**
+ * Ekor kata: kana yang mengikuti kanji terakhir — 伝える → える, 勉強します → します, 大切（な） → （な）.
+ * Kata tanpa okurigana (天気) tidak punya ekor.
+ */
+export function ekorKata(kata: string, v: Kosakata): string {
+  if (v.kana.endsWith("（な）")) return "（な）";
+  const m = /[一-龯]([ぁ-ん]+)$/.exec(kata);
+  const e = m?.[1] ?? "";
+  return e && v.kana.endsWith(e) && v.kana.length > e.length ? e : "";
+}
+
+/**
  * Tiga bacaan pengecoh. Pada sebagian soal (`peluangMirip`) pengecohnya bacaan mirip, sisanya
  * kana acak dengan panjang sama seperti sebelumnya, supaya soalnya bervariasi.
+ *
+ * Semua pilihan wajib berakhiran sama dengan kata soal (2026-11-03). Dulu okurigana membocorkan
+ * jawaban: 苦労する → くろうする, じょうけん, たいしゅう, もくようび — murid tidak perlu tahu arti
+ * maupun bacaannya, cukup memilih satu-satunya yang berakhiran する. Terukur pada seluruh data:
+ * 201 dari 528 kata berokurigana (38%) bocor seperti itu. Kalau kata nyata yang berakhiran sama
+ * tidak cukup, pengecoh dirakit dari batang kata lain ditambah ekor yang sama (たいしゅう → たいしする).
  */
 export function pengecohBacaan(kata: string, v: Kosakata, n = 3, peluangMirip = 0.6): string[] {
   const dipakai = new Set<string>([v.kana]);
   const hasil: string[] = [];
-  const tambah = (k: string) => { if (!dipakai.has(k) && hasil.length < n) { dipakai.add(k); hasil.push(k); } };
+  const ekor = ekorKata(kata, v);
+  const tambah = (k: string) => {
+    if (dipakai.has(k) || hasil.length >= n) return;
+    if (ekor && (!k.endsWith(ekor) || k.length <= ekor.length)) return;
+    dipakai.add(k);
+    hasil.push(k);
+  };
 
   if (Math.random() < peluangMirip) {
     const c = kandidatBacaanMirip(kata, v);
@@ -247,9 +271,24 @@ export function pengecohBacaan(kata: string, v: Kosakata, n = 3, peluangMirip = 
     for (const a of antrean) for (const k of a) tambah(k);
   }
 
-  // isi sisanya seperti dulu: bacaan kata lain dengan panjang sama, lalu sebarang
+  // isi sisanya: bacaan kata lain dengan panjang sama, lalu sebarang (keduanya tetap wajib seekor)
   const semua = [...new Set(SEMUA_KATA.map((x) => x.v.kana))].filter((k) => !dipakai.has(k));
   for (const k of sample(semua.filter((k) => k.length === v.kana.length), n)) tambah(k);
   for (const k of sample(semua, n)) tambah(k);
+
+  // Kata nyata yang berakhiran sama sering tidak cukup (mis. yang berakhiran ちゃくする hanya segelintir).
+  // Rakit pengecoh: batang kata lain + ekor yang sama, panjangnya disamakan dengan jawaban benar.
+  if (ekor && hasil.length < n) {
+    const batangN = v.kana.length - ekor.length;
+    for (const k of shuffle(semua)) {
+      if (hasil.length >= n) break;
+      if (k.length < batangN) continue;
+      const batang = k.slice(0, batangN);
+      // sambungan tidak boleh janggal: っ atau ー tidak pernah berdiri sebelum okurigana
+      if (!batang || /[っー]$/.test(batang) || batang === v.kana.slice(0, batangN)) continue;
+      const calon = batang + ekor;
+      if (wajar(calon, v.kana)) tambah(calon);
+    }
+  }
   return hasil;
 }

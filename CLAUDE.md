@@ -106,6 +106,11 @@ menulis, kalimat contoh (Tatoeba), dan audio.
   Pilihan jawaban salah diambil dari kosakata yang satu lingkup makna bila ada (mis. 南: utara, timur, barat), bukan acak.
 - Pengecoh soal bacaan (2026-09-21): pada sebagian soal (sekitar 60%) pilihan salah berupa bacaan yang mirip (dakuten, vokal panjang, っ,
   bacaan kanji yang tertukar, atau bacaan kata nyata yang mirip); sisanya kana acak sepanjang sama. Pilihan hanya hiragana, tanpa romaji.
+  Ekor wajib sama (2026-11-03): semua pilihan berakhiran sama dengan kata soal (伝える → semua berakhiran える; 苦労する →
+  semua berakhiran する; 大切（な） → semua berakhiran （な）), lihat `ekorKata`. Dilaporkan pemakai: 苦労する dulu diberi
+  pengecoh じょうけん, たいしゅう, もくようび — murid tidak perlu tahu arti maupun bacaannya, cukup pilih satu-satunya yang
+  berakhiran する. Terukur 201 dari 528 kata berokurigana (38%) bocor begitu; sesudah diperbaiki 0. Kalau kata nyata
+  yang seekor tidak cukup, pengecoh dirakit dari batang kata lain + ekor yang sama (たいしゅう → たいしする).
 - Kosakata (2026-10-16): kosakata tiap kanji diurutkan dari yang termudah (tingkat tertinggi di antara kanji
   penyusunnya dan tingkat kata itu sendiri). Soal mengutamakan kata yang semua kanjinya ada di tingkat pilihan murid;
   kalau tidak ada, dipakai kata termudah yang tersedia (mis. 木 di N5 → 木曜日, bukan 木綿).

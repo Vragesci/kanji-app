@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { KAMUS, SEMUA_KATA } from "./katalog";
-import { KELOMPOK_KATA, kandidatBacaanMirip, kapital, pengecohArti, pengecohBacaan } from "./pengecoh";
+import { KELOMPOK_KATA, ekorKata, kandidatBacaanMirip, kapital, pengecohArti, pengecohBacaan } from "./pengecoh";
 
 const ulang = <T,>(n: number, f: () => T): T[] => Array.from({ length: n }, f);
 
@@ -84,5 +84,39 @@ describe("pengecoh soal bacaan", () => {
   it("akhiran gramatikal ます tidak diubah", () => {
     const c = kandidatBacaanMirip("食べます", KAMUS["食べます"]!);
     for (const k of [...c.suara, ...c.panjang, ...c.geminasi, ...c.tukar]) expect(k.endsWith("ます"), k).toBe(true);
+  });
+
+  // 2026-11-03, dilaporkan pemakai: 苦労する → くろうする, じょうけん, たいしゅう, もくようび.
+  // Murid tidak perlu tahu arti maupun bacaannya, cukup pilih satu-satunya yang berakhiran する.
+  it("okurigana tidak membocorkan jawaban: semua pilihan berakhiran sama", () => {
+    for (const kata of ["苦労する", "伝える", "勉強します", "多い", "同じ", "急に", "大切（な）", "到着する"]) {
+      const v = KAMUS[kata];
+      if (!v) continue;
+      const ekor = ekorKata(kata, v);
+      expect(ekor, kata).not.toBe("");
+      for (const k of pengecohBacaan(kata, v)) {
+        expect(k.endsWith(ekor), `${kata} → ${k}`).toBe(true);
+        expect(k.length, `${kata} → ${k}`).toBeGreaterThan(ekor.length);
+      }
+    }
+  });
+
+  it("seluruh data: tidak ada kata berokurigana yang jawabannya satu-satunya dengan ekor itu", () => {
+    const berekor = SEMUA_KATA.filter(({ kata, v }) => v.arti && ekorKata(kata, v));
+    expect(berekor.length).toBeGreaterThan(400); // pastikan yang diperiksa memang banyak
+    const bocor = berekor.filter(({ kata, v }) => {
+      const ekor = ekorKata(kata, v);
+      return [v.kana, ...pengecohBacaan(kata, v)].filter((o) => o.endsWith(ekor)).length === 1;
+    });
+    expect(bocor.map(({ kata }) => kata)).toEqual([]);
+  });
+
+  it("kata tanpa okurigana tidak terpengaruh dan tetap mendapat 3 pengecoh", () => {
+    for (const kata of ["天気", "学生", "電車"]) {
+      const v = KAMUS[kata];
+      if (!v) continue;
+      expect(ekorKata(kata, v)).toBe("");
+      expect(pengecohBacaan(kata, v)).toHaveLength(3);
+    }
   });
 });
