@@ -1,0 +1,52 @@
+name: Periksa
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  periksa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+          cache: npm
+
+      - run: npm ci
+
+      - name: Tipe
+        run: npm run typecheck
+
+      - name: Linter
+        run: npm run lint
+
+      # Termasuk src/data/mutu-soal.test.ts: membangkitkan soal untuk semua kanji di tiap
+      # tingkat dan gagal kalau jumlah soal bermasalah NAIK dari ambang di berkas itu.
+      - name: Tes unit & mutu soal
+        run: npm run test
+
+      - name: Pasang peramban untuk e2e
+        run: npx playwright install --with-deps chromium
+
+      # Memainkan satu sesi penuh di lebar 390 px sampai layar おつかれさま.
+      - name: Tes e2e
+        run: npm run test:e2e
+
+      - name: Simpan laporan e2e kalau gagal
+        if: failure()
+        uses: actions/upload-artifact@v5
+        with:
+          name: laporan-playwright
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
+
+      - name: Build
+        run: npm run build

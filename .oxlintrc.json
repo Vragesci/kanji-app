@@ -1,0 +1,63 @@
+{
+  // Linter proyek ini oxlint, bukan ESLint + typescript-eslint: typescript-eslint belum mendukung
+  // TypeScript 7 (peer-nya masih "<6.1.0"), sedangkan proyek ini memakai TS 7. oxlint mengurai
+  // TypeScript sendiri, jadi tidak terikat versi kompiler. Ganti ke ESLint kalau suatu saat
+  // typescript-eslint sudah menerima TS 7 dan Anda butuh aturan yang sadar tipe.
+  //
+  // Setelan ini sengaja HIJAU pada kode yang ada sekarang (0 error), supaya pelanggaran BARU
+  // langsung terlihat di CI. Aturan yang dimatikan di bawah dimatikan dengan alasan, bukan
+  // untuk menutupi temuan.
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["react", "typescript", "unicorn", "oxc", "import", "jsx-a11y", "vitest"],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "error",
+    "perf": "warn"
+  },
+  "env": { "browser": true, "es2024": true },
+  "rules": {
+    "react-hooks/rules-of-hooks": "error",
+
+    // Peringatan, bukan error: di repo ini pola `useMemo(() => aktif(data), [data.tg])` disengaja —
+    // `aktif` hanya membaca `data.tg`, tapi linter tidak bisa melihat ke dalam fungsinya, jadi
+    // ketiga pemakaian di Beranda.tsx & PetaKanji.tsx dilaporkan sebagai salah padahal benar.
+    // Kalau kelak argumennya di-destructure dulu sebelum hook, naikkan lagi ke "error".
+    "react-hooks/exhaustive-deps": "warn",
+
+    // JSX transform modern (tsconfig jsx: "react-jsx") tidak butuh React di scope
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-uses-react": "off",
+
+    // Peringatan: daftar pilihan dibuat sekali lewat useState dan tidak pernah diurutkan ulang
+    // sesudah mount, jadi key indeks aman di sini. Tetap ditampilkan supaya tidak ditiru di
+    // daftar yang isinya berubah.
+    "react/no-array-index-key": "warn",
+
+    // Positif palsu di App.tsx: `reg.waiting.postMessage()` adalah ServiceWorker.postMessage,
+    // yang tandatangannya (message, transfer) dan TIDAK punya parameter targetOrigin — itu milik
+    // window.postMessage. Menambahkan self.location.origin justru akan merusak SKIP_WAITING.
+    "unicorn/require-post-message-target-origin": "off",
+
+    // expect(nilai, pesan) sah di Vitest; aturan ini milik Jest
+    "jest/valid-expect": "off",
+    // tes di repo ini sengaja memeriksa di dalam cabang (mis. hanya kalau pengecoh terbentuk)
+    "jest/no-conditional-expect": "off",
+
+    // import CSS & font (@fontsource/reggae-one, index.css) memang tanpa binding
+    "import/no-unassigned-import": "off",
+
+    // gaya penulisan, bukan kesalahan — kode di repo ini sengaja ringkas, dan sebagian
+    // pemakaian sort() memang mengandalkan sort stabil di tempat (lihat PetaKanji.tsx)
+    "unicorn/no-array-sort": "off",
+    "unicorn/no-array-reverse": "off",
+    "unicorn/no-new-array": "off",
+    "unicorn/prefer-string-starts-ends-with": "off",
+    "unicorn/no-useless-fallback-in-spread": "off",
+    "unicorn/consistent-function-scoping": "off",
+    "unicorn/prefer-number-properties": "off",
+    "unicorn/no-null": "off",
+    "oxc/no-map-spread": "off",
+    "oxc/no-accumulating-spread": "off"
+  },
+  "ignorePatterns": ["dist", "dev-dist", "node_modules", "public", "e2e"]
+}
