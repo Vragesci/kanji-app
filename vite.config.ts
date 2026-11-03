@@ -1,4 +1,6 @@
-import { defineConfig } from "vite";
+// defineConfig diambil dari "vitest/config", bukan "vite", supaya blok `test` di bawah
+// ikut bertipe. Plugin dan setelan Vite tidak berubah.
+import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import { VitePWA } from "vite-plugin-pwa";
@@ -39,4 +41,9 @@ export default defineConfig({
       },
     }),
   ],
+  test: {
+    // e2e/ dijalankan Playwright (`npm run test:e2e`), bukan Vitest — tanpa pengecualian ini
+    // Vitest ikut memuat berkas .spec.ts-nya dan gagal dengan "test() was not expected here".
+    exclude: ["e2e/**", "node_modules/**", "dist/**", "dev-dist/**"],
+  },
 });

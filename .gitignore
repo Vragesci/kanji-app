@@ -4,3 +4,7 @@ dev-dist
 *.local
 .DS_Store
 .vercel
+playwright-report
+test-results
+coverage
+/laporan-tingkat.md
