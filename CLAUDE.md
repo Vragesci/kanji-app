@@ -72,10 +72,15 @@ Tanpa akun, tanpa server. Dipasang di Vercel/Netlify, dibagikan sebagai tautan,
 bisa dipasang ke layar utama HP dan jalan luring. Sasaran: diuji ke 4 murid LPK
 dan 1 pemagang di Jepang.
 
-**Tahap 2 — setelah metodenya terbukti dipakai.** Akun + Supabase: riwayat ikut
-antar perangkat, dan pengajar punya papan pantau kelas (kanji apa yang paling
-sering salah di seluruh kelas, siapa yang berhenti belajar). Ini fitur yang tidak
-dimiliki WaniKani maupun Anki, karena keduanya untuk pembelajar mandiri.
+**Tahap 2 — setelah metodenya terbukti dipakai.** Akun + Supabase, dengan satu tujuan
+saja: riwayat belajar ikut antar perangkat, supaya kemajuan murid tidak hilang saat
+ganti HP atau membersihkan data browser. Data belajar sekarang hanya ada di IndexedDB,
+dan IndexedDB terikat ke alamat situs — ganti alamat berarti semua kemajuan hilang.
+
+Papan pantau kelas untuk pengajar **dibatalkan** (2026-11-03): aplikasinya sudah dilepas
+ke umum, bukan lagi hanya untuk murid satu LPK, jadi tidak ada "kelas" yang dipantau.
+Jangan membangun tabel kelas, kolom peran, atau kebijakan yang mengizinkan satu pengguna
+membaca data pengguna lain.
 
 **Tahap 3 — kalau tahap 2 berhasil.** Urutan goresan (data KanjiVG) untuk sesi
 menulis, kalimat contoh (Tatoeba), dan audio.
