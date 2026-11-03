@@ -90,6 +90,10 @@ menulis, kalimat contoh (Tatoeba), dan audio.
 - Jangan menambah fitur yang tidak ada di brief ini tanpa ditanyakan dulu.
 - Jangan mengarang arti kosakata baru. Semua arti berasal dari data; kalau perlu
   tambahan, ambil dari JMdict lalu tandai `perlu_terjemahan`.
+- Arti tidak boleh memuat huruf Jepang (tampil apa adanya sebagai pilihan jawaban, bentuknya langsung
+  berbeda dari pengecoh), dan `kana` tiap kosakata harus sama dengan gabungan `seg`-nya. Diperbaiki
+  2026-11-03: `似顔` (keterangan 似顔絵 dibuang) serta `～曜日`, `～月`, `～日` (kana diberi ～ mengikuti
+  konvensi `～人`).
 - Antarmuka berbahasa Indonesia. Setiap frasa Jepang selalu disertai romaji.
 - Mobile-first. Sebagian besar murid memakai HP Android kelas menengah.
 - Pengecualian yang disetujui (2026-09-20): (1) di soal bacaan, kosakata target tampil tanpa romaji
@@ -111,6 +115,18 @@ menulis, kalimat contoh (Tatoeba), dan audio.
   pengecoh じょうけん, たいしゅう, もくようび — murid tidak perlu tahu arti maupun bacaannya, cukup pilih satu-satunya yang
   berakhiran する. Terukur 201 dari 528 kata berokurigana (38%) bocor begitu; sesudah diperbaiki 0. Kalau kata nyata
   yang seekor tidak cukup, pengecoh dirakit dari batang kata lain + ekor yang sama (たいしゅう → たいしする).
+  Empat perbaikan lanjutan dari audit 2026-11-03:
+  (1) Pilihan dicocokkan menurut **mora**, bukan jumlah huruf — きょう tiga huruf tapi dua mora, jadi pencocokan per
+  huruf membuat jawaban benar satu-satunya yang panjangnya beda saat dibaca sekaligus satu-satunya yang berkana kecil
+  (terukur 4% dan 2% soal → 1% dan 0%).
+  (2) Batang kata yang dipotong tidak boleh memuat ～ atau kurung: perakit ekor sempat menghasilkan pengecoh rusak
+  seperti げんき（（な） dan とくべつ（なする.
+  (3) Bacaan sah dari tulisan yang sama tidak boleh jadi pengecoh (人 ひと vs ～人 にん, 店 みせ vs ～店 てん): `intiKata`
+  menyamakan tulisan yang hanya beda ～ atau akhiran gramatikal, dan `tukarBacaanKanji` dimatikan untuk kata satu kanji
+  tanpa okurigana karena menukar bacaannya justru menghasilkan bacaan yang benar.
+  (4) Arti dianggap bertumpuk kalau berbagi satu **alternatif utuh** di antara tanda / ; atau koma — 割れる "Pecah/retak"
+  dan 壊れる "Rusak/pecah" sama-sama berisi "pecah", jadi dua pilihan sama-sama benar. Berbagi satu kata saja tidak
+  cukup: "musim semi" dan "musim gugur" tetap pengecoh yang baik.
 - Kosakata (2026-10-16): kosakata tiap kanji diurutkan dari yang termudah (tingkat tertinggi di antara kanji
   penyusunnya dan tingkat kata itu sendiri). Soal mengutamakan kata yang semua kanjinya ada di tingkat pilihan murid;
   kalau tidak ada, dipakai kata termudah yang tersedia (mis. 木 di N5 → 木曜日, bukan 木綿).

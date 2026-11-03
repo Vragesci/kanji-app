@@ -55356,8 +55356,8 @@
    "sumber": "Daftar kanji IRODORI (The Japan Foundation), 入門 bab 18"
   },
   "～曜日": {
-   "kana": "ようび",
-   "romaji": "youbi",
+   "kana": "～ようび",
+   "romaji": "～youbi",
    "arti": "Hari (dalam seminggu)",
    "seg": [
     [
@@ -55380,8 +55380,8 @@
    "sumber": "Daftar kanji IRODORI (The Japan Foundation), 入門 bab 9"
   },
   "～月": {
-   "kana": "がつ",
-   "romaji": "gatsu",
+   "kana": "～がつ",
+   "romaji": "～gatsu",
    "arti": "Bulan (penanggalan)",
    "seg": [
     [
@@ -55400,8 +55400,8 @@
    "sumber": "Daftar kanji IRODORI (The Japan Foundation), 入門 bab 12"
   },
   "～日": {
-   "kana": "にち",
-   "romaji": "nichi",
+   "kana": "～にち",
+   "romaji": "～nichi",
    "arti": "Tanggal; hari",
    "seg": [
     [
@@ -66937,7 +66937,7 @@
   "似顔": {
    "kana": "にがお",
    "romaji": "nigao",
-   "arti": "Potret wajah; kemiripan wajah (singkatan dari 似顔絵)",
+   "arti": "Potret wajah; kemiripan wajah",
    "arti_en": "portrait; likeness",
    "seg": [
     [

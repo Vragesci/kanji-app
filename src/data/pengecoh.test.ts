@@ -111,6 +111,63 @@ describe("pengecoh soal bacaan", () => {
     expect(bocor.map(({ kata }) => kata)).toEqual([]);
   });
 
+  // Audit 2026-11-03. Pengecoh yang sebenarnya jawaban benar juga: murid dihukum walau tidak salah.
+  it("bacaan sah dari tulisan yang sama tidak dipakai sebagai pengecoh (人/～人, 店/～店, 種類/～種類)", () => {
+    for (const [kata, terlarang] of [["人", "にん"], ["～人", "ひと"], ["店", "てん"], ["～店", "みせ"], ["～種類", "しゅるい"]] as const) {
+      const v = KAMUS[kata];
+      if (!v) continue;
+      for (let i = 0; i < 20; i++) {
+        for (const o of pengecohBacaan(kata, v)) {
+          expect(o.replace(/[～~]/g, ""), `${kata} → ${o}`).not.toBe(terlarang.replace(/[～~]/g, ""));
+        }
+      }
+    }
+  });
+
+  it("arti yang bertumpuk tidak dipakai sebagai pengecoh, tapi satu lingkup makna tetap boleh", () => {
+    // 割れる "Pecah/retak" dan 壊れる "Rusak/pecah" berbagi alternatif "pecah" — dua jawaban benar
+    for (const [kata, terlarang] of [["割れる", "pecah"], ["検討", "pertimbangan"], ["扱い", "penanganan"]] as const) {
+      const v = KAMUS[kata];
+      if (!v) continue;
+      for (let i = 0; i < 20; i++) {
+        for (const o of pengecohArti(kata, v)) {
+          const alt = o.toLowerCase().split(/[/;,]/).map((x) => x.trim());
+          expect(alt.includes(terlarang), `${kata} → ${o}`).toBe(false);
+        }
+      }
+    }
+    // tetapi 春 masih boleh dipengecoh musim lain, walau sama-sama memuat kata "musim"
+    const musim = pengecohArti("春", KAMUS["春"]!).join(" ").toLowerCase();
+    expect(musim).toContain("musim");
+  });
+
+  it("pengecoh bacaan tidak pernah berbentuk rusak (kurung menggantung)", () => {
+    for (const kata of ["満足（な）", "必要（な）", "入力する", "入院する", "出発する", "卒業する"]) {
+      const v = KAMUS[kata];
+      if (!v) continue;
+      for (let i = 0; i < 20; i++) {
+        for (const o of pengecohBacaan(kata, v)) {
+          expect((o.match(/（/g) || []).length, `${kata} → ${o}`).toBe((o.match(/）/g) || []).length);
+          expect(o, `${kata} → ${o}`).not.toContain("（（");
+        }
+      }
+    }
+  });
+
+  it("pilihan dicocokkan menurut mora, bukan jumlah huruf (きょう = 2 mora)", () => {
+    const m = (k: string) => [...k].filter((c) => !"ゃゅょ".includes(c)).length;
+    let solo = 0;
+    const uji = ["今日", "食事", "病気", "水曜日", "今週", "学校"].filter((k) => KAMUS[k]);
+    for (const kata of uji) {
+      const v = KAMUS[kata]!;
+      for (let i = 0; i < 10; i++) {
+        const o = [v.kana, ...pengecohBacaan(kata, v)];
+        if (o.filter((x) => m(x) === m(v.kana)).length === 1) solo++;
+      }
+    }
+    expect(solo, "jawaban benar tidak boleh jadi satu-satunya dengan jumlah mora itu").toBeLessThanOrEqual(uji.length);
+  });
+
   it("kata tanpa okurigana tidak terpengaruh dan tetap mendapat 3 pengecoh", () => {
     for (const kata of ["天気", "学生", "電車"]) {
       const v = KAMUS[kata];

@@ -53,8 +53,31 @@ export function kelasKata(kata: string, v: Kosakata): Kelas {
   return "benda";
 }
 
-/** dua arti dianggap bertumpuk kalau sama, atau yang satu memuat yang lain ("Ayah" dan "Ayah (sapaan)") */
-const bertumpuk = (a: string, b: string) => a === b || a.includes(b) || b.includes(a);
+/**
+ * Arti dipecah jadi alternatif yang berdiri sendiri: "Kecil, detail/rinci" → {kecil, detail, rinci}.
+ * Keterangan dalam kurung dibuang. Dipakai menilai dua pilihan sama-sama benar atau tidak.
+ */
+const alternatif = (s: string): string[] =>
+  norm(s).replace(/\([^)]*\)/g, " ").split(/[/;,]| atau /).map((x) => x.trim()).filter((x) => x.length >= 3);
+
+/** tanpa spasi dan tanda hubung: "penanggung jawab" dan "penanggungjawab" jadi sama */
+const rapat = (s: string) => norm(s).replace(/[\s-]/g, "");
+
+/**
+ * Dua arti dianggap bertumpuk kalau sama, salah satunya memuat yang lain ("Ayah" dan "Ayah
+ * (sapaan)"), sama setelah spasi diabaikan, atau **berbagi satu alternatif utuh** — 割れる
+ * "Pecah/retak" dan 壊れる "Rusak/pecah" sama-sama berisi "pecah", jadi murid tidak mungkin
+ * membedakannya dan dua pilihan sama-sama benar (temuan audit 2026-11-03).
+ *
+ * Berbagi satu KATA saja tidak cukup: "musim semi" dan "musim gugur" berbagi kata "musim" tapi
+ * tetap dua makna berbeda, dan justru pengecoh yang baik. Yang dibandingkan adalah alternatif
+ * utuh di antara tanda / ; dan koma.
+ */
+const bertumpuk = (a: string, b: string) => {
+  if (a === b || a.includes(b) || b.includes(a) || rapat(a) === rapat(b)) return true;
+  const alt = new Set(alternatif(a));
+  return alternatif(b).some((x) => alt.has(x));
+};
 
 /** Tiga arti pengecoh (bukan arti yang benar), satu lingkup makna bila ada. */
 export function pengecohArti(kata: string, v: Kosakata, n = 3): string[] {
@@ -168,6 +191,12 @@ function ubahGeminasi(k: string): string[] {
 /** kesalahan lazim: bacaan satu kanji tertukar dengan bacaan lain kanji itu, atau dengan kanji yang mirip bentuknya */
 function tukarBacaanKanji(v: Kosakata): string[] {
   if (!v.seg_valid) return [];
+  // Kata satu kanji tanpa okurigana (人, 店, ～人): menukar bacaannya menghasilkan bacaan yang
+  // memang sah untuk kanji itu (人 ひと ↔ にん), jadi murid yang memilihnya dihukum walau tidak
+  // salah. Hanya kata gabungan dan kata berokurigana yang aman ditukar (自転車 じてんしゃ →
+  // じどうしゃ jelas salah). Temuan audit 2026-11-03.
+  const adaOkurigana = v.seg.some(([h, b]) => !b && /[ぁ-ん]/.test(h));
+  if (jumlahKanji(v) < 2 && !adaOkurigana) return [];
   const bentuk = (seg: [string, string][]) => seg.map(([h, b]) => b || h).join("");
   if (bentuk(v.seg as [string, string][]) !== v.kana) return [];
   const hasil: string[] = [];
@@ -222,6 +251,20 @@ export function kandidatBacaanMirip(kata: string, v: Kosakata): { tukar: string[
 }
 
 /**
+ * Inti tulisan kata: tanda ～ dan akhiran gramatikal dibuang, sehingga 人 dan ～人, 店 dan ～店,
+ * 勉強 dan 勉強します, 元気 dan 元気（な） dikenali sebagai tulisan yang sama. Data memuat 28 pasang
+ * seperti itu, dan tanpa ini bacaan yang satu dipakai sebagai pengecoh untuk yang lain.
+ */
+const intiKata = (kata: string) => kata.replace(/[～~]/g, "").replace(/(します|する|（な）)$/, "");
+
+/** kana → semua kata yang memakainya; dipakai menolak pengecoh yang juga bacaan sah kata itu */
+const KATA_DARI_KANA = new Map<string, string[]>();
+for (const { kata, v } of SEMUA_KATA) {
+  const daftar = KATA_DARI_KANA.get(v.kana);
+  if (daftar) daftar.push(kata); else KATA_DARI_KANA.set(v.kana, [kata]);
+}
+
+/**
  * Ekor kata: kana yang mengikuti kanji terakhir — 伝える → える, 勉強します → します, 大切（な） → （な）.
  * Kata tanpa okurigana (天気) tidak punya ekor.
  */
@@ -246,9 +289,15 @@ export function pengecohBacaan(kata: string, v: Kosakata, n = 3, peluangMirip = 
   const dipakai = new Set<string>([v.kana]);
   const hasil: string[] = [];
   const ekor = ekorKata(kata, v);
+  const inti = intiKata(kata);
+  const telanjang = v.kana.replace(/[～~]/g, "");
   const tambah = (k: string) => {
     if (dipakai.has(k) || hasil.length >= n) return;
     if (ekor && (!k.endsWith(ekor) || k.length <= ekor.length)) return;
+    // Pengecoh yang sebenarnya bacaan sah tulisan yang sama (人 ひと vs ～人 にん, 店 みせ vs
+    // ～店 てん): murid yang memilihnya dihukum walau tidak salah. Temuan audit 2026-11-03.
+    if (k.replace(/[～~]/g, "") === telanjang) return;
+    if ((KATA_DARI_KANA.get(k) ?? []).some((w) => intiKata(w) === inti)) return;
     dipakai.add(k);
     hasil.push(k);
   };
@@ -271,8 +320,15 @@ export function pengecohBacaan(kata: string, v: Kosakata, n = 3, peluangMirip = 
     for (const a of antrean) for (const k of a) tambah(k);
   }
 
-  // isi sisanya: bacaan kata lain dengan panjang sama, lalu sebarang (keduanya tetap wajib seekor)
+  // Isi sisanya dengan bacaan kata lain yang jumlah MORA-nya sama, bukan jumlah hurufnya:
+  // きょう tiga huruf tapi dua mora, jadi pencocokan per huruf membuat jawaban benar jadi
+  // satu-satunya yang panjangnya berbeda saat dibaca, sekaligus satu-satunya yang berkana kecil
+  // (temuan audit 2026-11-03). Yang berkana kecil didahulukan bila jawabannya juga berkana kecil.
   const semua = [...new Set(SEMUA_KATA.map((x) => x.v.kana))].filter((k) => !dipakai.has(k));
+  const kecil = (k: string) => /[ゃゅょ]/.test(k);
+  const seMora = semua.filter((k) => mora(k) === mora(v.kana));
+  if (kecil(v.kana)) for (const k of sample(seMora.filter(kecil), n)) tambah(k);
+  for (const k of sample(seMora, n)) tambah(k);
   for (const k of sample(semua.filter((k) => k.length === v.kana.length), n)) tambah(k);
   for (const k of sample(semua, n)) tambah(k);
 
@@ -284,9 +340,14 @@ export function pengecohBacaan(kata: string, v: Kosakata, n = 3, peluangMirip = 
       if (hasil.length >= n) break;
       if (k.length < batangN) continue;
       const batang = k.slice(0, batangN);
-      // sambungan tidak boleh janggal: っ atau ー tidak pernah berdiri sebelum okurigana
-      if (!batang || /[っー]$/.test(batang) || batang === v.kana.slice(0, batangN)) continue;
+      // sambungan tidak boleh janggal: っ atau ー tidak pernah berdiri sebelum okurigana.
+      // Batang juga tidak boleh memuat tanda ～ atau kurung （な）: memotong kata lain di tengah
+      // penanda itu menghasilkan pengecoh rusak seperti げんき（（な） atau とくべつ（なする, yang
+      // langsung bisa dibuang murid tanpa berpikir (ditemukan audit 2026-11-03).
+      if (!batang || /[っー]$/.test(batang) || /[（）～~]/.test(batang)) continue;
+      if (batang === v.kana.slice(0, batangN)) continue;
       const calon = batang + ekor;
+      if (mora(calon) !== mora(v.kana)) continue; // dibaca sama panjang, bukan sekadar sama hurufnya
       if (wajar(calon, v.kana)) tambah(calon);
     }
   }
