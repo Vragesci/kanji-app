@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRegisterSW } from "virtual:pwa-register/react";
 import { addDays, fmt } from "./engine/tanggal";
-import type { ModeSesi } from "./types";
+import type { ModeSesi, Tingkat } from "./types";
 import { useAppData } from "./useAppData";
 import { Beranda } from "./ui/Beranda";
 import { Sesi } from "./ui/Sesi";
@@ -10,7 +10,7 @@ import { Btn } from "./ui/komponen";
 
 export default function App() {
   const { data, ubah, tersimpan } = useAppData();
-  const [sesi, setSesi] = useState<{ mode: ModeSesi; nomor: number; pilihan?: string[] } | null>(null);
+  const [sesi, setSesi] = useState<{ mode: ModeSesi; nomor: number; pilihan?: string[]; tes?: Tingkat } | null>(null);
   const [tentang, setTentang] = useState(false);
   // tanggal lokal hari ini; diperbarui saat aplikasi kembali terlihat dan tiap menit, supaya
   // beranda yang dibiarkan terbuka melewati tengah malam tidak tetap memakai tanggal kemarin
@@ -63,14 +63,14 @@ export default function App() {
       <main className="max-w-md mx-auto px-5 py-6">
         {sesi ? (
           <Sesi
-            key={sesi.nomor} mode={sesi.mode} pilihan={sesi.pilihan} data={data} t={t} ubah={ubah}
+            key={sesi.nomor} mode={sesi.mode} pilihan={sesi.pilihan} tes={sesi.tes} data={data} t={t} ubah={ubah}
             onKeluar={() => setSesi(null)}
           />
         ) : tentang ? (
           <Tentang onKembali={() => setTentang(false)} />
         ) : (
           <Beranda
-            data={data} t={t} ubah={ubah} onMulai={(mode, pilihan) => setSesi({ mode, nomor: Date.now(), pilihan })}
+            data={data} t={t} ubah={ubah} onMulai={(mode, pilihan, tes) => setSesi({ mode, nomor: Date.now(), pilihan, tes })}
             onTentang={() => setTentang(true)}
           />
         )}

@@ -4,7 +4,7 @@ import { applyAnswer, applyWrite } from "../engine/penilaian";
 import { buildSession, sesiPilihan } from "../engine/sesi";
 import { nilaiPenempatan, sesiPenempatan, tandaiSudahTahu, type HasilTingkat, type SoalPenempatan } from "../engine/penempatan";
 import { statusOf } from "../engine/fsrs";
-import type { AppData, ItemSoal, ModeSesi } from "../types";
+import type { AppData, ItemSoal, ModeSesi, Tingkat } from "../types";
 import { Btn, Jp, KotakKanji } from "./komponen";
 import { Soal } from "./soal/Soal";
 import { SoalTulis } from "./soal/SoalTulis";
@@ -15,17 +15,19 @@ interface Props {
   mode: ModeSesi;
   /** kanji pilihan murid (mode "pilih") */
   pilihan?: string[];
+  /** tingkat yang diuji (mode "tes"); satu tes = satu tingkat */
+  tes?: Tingkat;
   data: AppData;
   t: string;
   ubah: (fn: (d: AppData) => AppData) => void;
   onKeluar: () => void;
 }
 
-export function Sesi({ mode, pilihan, data, t: tHariIni, ubah, onKeluar }: Props) {
+export function Sesi({ mode, pilihan, tes, data, t: tHariIni, ubah, onKeluar }: Props) {
   // tanggal dikunci saat sesi dimulai: sesi yang melewati tengah malam tetap satu tanggal
   const [t] = useState(tHariIni);
   const [rencana] = useState(() =>
-    mode === "tes" ? { quiz: sesiPenempatan(data), write: [] as string[] }
+    mode === "tes" ? { quiz: tes ? sesiPenempatan(data, tes) : [], write: [] as string[] }
     : mode === "pilih" ? sesiPilihan(data, pilihan ?? []) : buildSession(data, t));
   // status kanji saat sesi dimulai: tombol "Sudah tahu" hanya untuk kanji yang baru pertama kali muncul
   const [awal] = useState(() => data.ks);

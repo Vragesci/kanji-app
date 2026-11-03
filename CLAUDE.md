@@ -113,11 +113,22 @@ menulis, kalimat contoh (Tatoeba), dan audio.
   paling atas — hijau dulu, lalu oranye, lalu merah — supaya kemajuan murid tidak tertutup ratusan kotak putih.
   Kanji itu tidak digandakan: kelompok IRODORI di bawahnya hanya berisi kanji yang belum dilihat.
 - Soal rakit (2026-10-16): kotak yang salah menampilkan kanji yang tadi dipilih murid ("Pilihanmu: …").
-- Tes penempatan (2026-10-16): murid yang memilih tingkat di atas N5 bisa mengikuti tes sekitar 20 soal arti/bacaan dari
-  kanji yang belum dilihat di tingkat-tingkat bawahnya. Tingkat dengan ketepatan ≥ 80% lulus: semua kanji putihnya langsung
-  hijau, jadwal ulangannya disebar 30–90 hari; kanji yang dijawab salah jadi merah. Tes tidak mengubah lastAcc maupun log.
+- Tes penempatan (2026-10-16, dirombak 2026-11-03): murid yang memilih tingkat di atas N5 bisa menguji **satu tingkat
+  bawah** dengan 20 soal arti/bacaan dari kanji yang belum dilihat di tingkat itu. Ketepatan >= 80% (16 dari 20) lulus:
+  semua kanji putih tingkat itu langsung hijau, jadwal ulangan pertama disebar **7-21 hari** (`JARAK_TES`); kanji yang
+  dijawab salah jadi merah. **Tiap tingkat hanya bisa dites sekali** (`tesSelesai` di AppData) - gagal berarti tingkat itu
+  dipelajari seperti biasa. Tingkat dengan kanji putih < 10 (`MIN_PUTIH`) tidak ditawari. Jumlah kanji yang dipertaruhkan
+  disebut di tombolnya sebelum tes dimulai. Tes tidak mengubah lastAcc maupun log.
+  Alasan rombakan: murid melaporkan "baru 50 soal tapi sudah hafal 680 kanji". Dulu satu tes memborong semua tingkat di
+  bawah pilihan murid dan membagi 20 soal rata (`max(5, 20/jumlah tingkat)`), jadi tingkat N4 yang isinya 311 kanji
+  divonis oleh 6 soal pilihan ganda: memilih "sampai N2" lalu ikut tes 18 soal langsung menandai 689 kanji sebagai hafal,
+  menghabiskan seluruh kanji putih, dan membuat sesi belajar kosong selama 30+ hari. Tesnya juga bisa diulang tanpa batas
+  (terukur 22x berturut-turut), sehingga lolos karena menebak mencapai +-29%. Sesudah rombakan, 680 kanji menuntut 60 soal
+  di tiga tes terpisah.
 - "Sudah tahu" (2026-10-16): pada kanji yang baru pertama kali muncul di sesi, murid bisa mengetuk "Sudah tahu kanji ini —
-  lewati"; kanji itu langsung hijau (jadwal sama seperti tes penempatan) dan tidak dihitung dalam ketepatan sesi.
+  lewati"; kanji itu langsung hijau dan tidak dihitung dalam ketepatan sesi. Jadwal ulangannya tetap 30-90 hari (bawaan
+  `tandaiSudahTahu`), bukan 7-21 hari seperti tes penempatan: taruhannya satu kanji yang diakui murid sendiri, bukan
+  ratusan kanji sekaligus.
 - Peta (2026-10-16, diperluas 2026-11-02): kotak merah dan oranye menampilkan 6 titik — titik pertama
   berarti kanji sudah dikenalkan (terisi sejak kanji pertama kali muncul), lima sisanya = berapa kali
   sudah benar dari 5 sebelum sesi menulis. Dasarnya *endowed progress*: kemajuan yang terlihat sejak

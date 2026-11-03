@@ -75,6 +75,8 @@ export interface AppData {
   log: LogSesi[];
   /** tingkat tertinggi yang aktif; semua tingkat di bawahnya ikut */
   tg: Tingkat;
+  /** tingkat yang tes penempatannya sudah pernah diikuti (lulus atau tidak); tes hanya sekali per tingkat */
+  tesSelesai?: Tingkat[];
 }
 
 export type JenisSoal = "meaning" | "reading" | "rakit";

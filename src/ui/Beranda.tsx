@@ -2,9 +2,9 @@ import { useMemo, useRef, useState } from "react";
 import { TINGKAT, labelTingkat } from "../data/katalog";
 import { statusOf } from "../engine/fsrs";
 import { buildSession, aktif } from "../engine/sesi";
-import { TOTAL_SOAL, tingkatBawah } from "../engine/penempatan";
+import { TOTAL_SOAL, jumlahPutih, tingkatBawah } from "../engine/penempatan";
 import { diff, parse } from "../engine/tanggal";
-import type { AppData, ModeSesi } from "../types";
+import type { AppData, ModeSesi, Tingkat } from "../types";
 import { Btn, NamaAplikasi } from "./komponen";
 import { PetaKanji } from "./PetaKanji";
 import { DetailKanji } from "./DetailKanji";
@@ -21,7 +21,7 @@ function Chip({ aktifnya, onClick, children }: { aktifnya: boolean; onClick: () 
 
 /** Beranda: pengaturan dasar, tombol mulai, dan peta kanji. Tombol mulai di atas peta karena petanya panjang (hingga 1.377 kotak). */
 export function Beranda({ data, t, ubah, onMulai, onTentang }: {
-  data: AppData; t: string; ubah: (fn: (d: AppData) => AppData) => void; onMulai: (m: ModeSesi, pilihan?: string[]) => void; onTentang: () => void;
+  data: AppData; t: string; ubah: (fn: (d: AppData) => AppData) => void; onMulai: (m: ModeSesi, pilihan?: string[], tes?: Tingkat) => void; onTentang: () => void;
 }) {
   const [memilih, setMemilih] = useState(false);
   const [pilihan, setPilihan] = useState<string[]>([]);
@@ -44,7 +44,7 @@ export function Beranda({ data, t, ubah, onMulai, onTentang }: {
   }).length;
   const rencana = useMemo(() => buildSession(data, t), [data, t]);
   const adaBelajar = rencana.quiz.length + rencana.write.length;
-  const bawah = useMemo(() => tingkatBawah(data), [data.tg, data.ks]);
+  const bawah = useMemo(() => tingkatBawah(data), [data.tg, data.ks, data.tesSelesai]);
 
   return (
     <div className={memilih ? "pb-24" : ""}>
@@ -62,14 +62,27 @@ export function Beranda({ data, t, ubah, onMulai, onTentang }: {
       </div>
 
 
+      {/*
+        Tes penempatan per tingkat (2026-11-03). Dulu satu tombol menguji semua tingkat bawah
+        sekaligus dengan 5–6 soal per tingkat, dan 18 soal bisa menandai 689 kanji sebagai hafal.
+        Sekarang murid memilih satu tingkat, 20 soal, dan jumlah kanji yang dipertaruhkan
+        disebutkan sebelum tes dimulai.
+      */}
       {bawah.length > 0 && (
         <div className="mt-4 p-4 rounded-xl bg-white border border-garis">
-          <p className="font-bold text-sm">Sudah menguasai {bawah.map(labelTingkat).join(" dan ")}?</p>
+          <p className="font-bold text-sm">Sudah menguasai tingkat di bawah {labelTingkat(data.tg || "N5")}?</p>
           <p className="text-sm mt-1 text-redup">
-            Ikuti tes penempatan (sekitar {TOTAL_SOAL} soal). Tingkat yang lulus langsung ditandai hafal,
-            jadi tidak perlu mengulang dari awal.
+            Ikuti tes penempatan {TOTAL_SOAL} soal untuk satu tingkat. Kalau lulus (16 benar),
+            semua kanji tingkat itu ditandai hafal dan diulang lagi dalam 1–3 minggu.
+            Tiap tingkat hanya bisa dites <b>sekali</b>.
           </p>
-          <Btn kind="ghost" className="mt-3" onClick={() => onMulai("tes")}>Mulai tes penempatan</Btn>
+          <div className="space-y-2 mt-3">
+            {bawah.map((tg) => (
+              <Btn key={tg} kind="ghost" onClick={() => onMulai("tes", undefined, tg)}>
+                {`Tes ${labelTingkat(tg)} — ${jumlahPutih(data, tg)} kanji dipertaruhkan`}
+              </Btn>
+            ))}
+          </div>
         </div>
       )}
 
