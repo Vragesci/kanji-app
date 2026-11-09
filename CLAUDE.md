@@ -72,6 +72,26 @@ Tanpa akun, tanpa server. Dipasang di Vercel/Netlify, dibagikan sebagai tautan,
 bisa dipasang ke layar utama HP dan jalan luring. Sasaran: diuji ke 4 murid LPK
 dan 1 pemagang di Jepang.
 
+**Tahap 1b — instrumentasi lokal (2026-11-09).** Aplikasi mencatat log belajar per soal
+di IndexedDB, dan murid bisa mengekspornya sebagai satu berkas JSON lewat halaman Tentang.
+Tanpa server, tanpa akun, tetap jalan luring. Tujuannya menjawab tiga hal yang `LogSesi`
+sekarang tidak bisa: soal mana yang paling sering gagal, alasan pengecek goresan menolak
+tulisan murid, dan versi aplikasi mana yang sedang dipakai.
+
+Pengiriman otomatis ke server ditunda ke Tahap 2 (Supabase), menyatu dengan sinkronisasi
+antar perangkat. Log bersifat anonim dan agregat: tidak ada identitas murid, dan tidak ada
+mekanisme yang membuat satu pengguna bisa membaca data pengguna lain (lihat pembatalan
+papan pantau kelas, 2026-11-03).
+
+Rincian yang sudah dikerjakan: tipe `Peristiwa` di `src/types.ts`, pembangunnya di
+`src/engine/peristiwa.ts` (murni, ada tesnya), penyimpanan di object store `peristiwa`
+(IndexedDB versi 2, paling banyak 5.000 baris terakhir), pemanggilan dari `src/ui/Sesi.tsx`
+dan `src/ui/soal/SoalTulis.tsx`, saklar "Bantu tingkatkan aplikasi ini" dan tombol
+"Ekspor data belajar" di `src/ui/Tentang.tsx`. Versi aplikasi diambil dari `package.json`
+lewat `define` di `vite.config.ts` (`src/versi.ts`), ditambah cap waktu build supaya dua
+build dari versi yang sama tetap bisa dibedakan. Mencatat tidak boleh menggagalkan sesi:
+setiap penulisan dibungkus try/catch dan kegagalannya diabaikan.
+
 **Tahap 2 — setelah metodenya terbukti dipakai.** Akun + Supabase, dengan satu tujuan
 saja: riwayat belajar ikut antar perangkat, supaya kemajuan murid tidak hilang saat
 ganti HP atau membersihkan data browser. Data belajar sekarang hanya ada di IndexedDB,

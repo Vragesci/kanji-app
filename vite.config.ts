@@ -2,8 +2,15 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import { VitePWA } from "vite-plugin-pwa";
+import pkg from "./package.json" with { type: "json" };
+
+// Versi untuk log belajar (Tahap 1b): nomor versi package.json + cap waktu build UTC.
+// Nomor versi saja tidak cukup — nomornya jarang dinaikkan, sedangkan yang perlu dijawab
+// adalah "murid ini menjalankan build kapan?" (lihat src/versi.ts).
+const VERSI = `${pkg.version}+${new Date().toISOString().slice(0, 16).replace("T", " ")}Z`;
 
 export default defineConfig({
+  define: { __VERSI__: JSON.stringify(VERSI) },
   plugins: [
     react(),
     tailwindcss(),

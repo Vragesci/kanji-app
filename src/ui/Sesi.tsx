@@ -1,13 +1,15 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { KAMUS, kataTulis, labelTingkat } from "../data/katalog";
 import { applyAnswer, applyWrite } from "../engine/penilaian";
 import { buildSession, sesiPilihan } from "../engine/sesi";
 import { nilaiPenempatan, sesiPenempatan, tandaiSudahTahu, type HasilTingkat, type SoalPenempatan } from "../engine/penempatan";
 import { statusOf } from "../engine/fsrs";
+import { buatPeristiwa, dariHasil, idSesi, type IsiPeristiwa } from "../engine/peristiwa";
+import { catatPeristiwa } from "../db/penyimpanan";
 import type { AppData, ItemSoal, ModeSesi, Tingkat } from "../types";
 import { Btn, Jp, KotakKanji } from "./komponen";
 import { Soal } from "./soal/Soal";
-import { SoalTulis } from "./soal/SoalTulis";
+import { SoalTulis, type PercobaanTulis } from "./soal/SoalTulis";
 
 type Fase = "quiz" | "write" | "done";
 
@@ -46,6 +48,38 @@ export function Sesi({ mode, pilihan, tes, data, t: tHariIni, ubah, onKeluar }: 
   // kanji yang ditandai "sudah tahu": soal ulangannya di sesi ini ikut dilewati
   const lewati = useRef<Set<string>>(new Set());
 
+  // ——— Log belajar per soal (Tahap 1b) ———
+  // Satu baris per jawaban, di samping LogSesi yang tetap memegang beban sesi (lastAcc).
+  // Mencatat tidak boleh menggagalkan sesi: kegagalannya diabaikan diam-diam.
+  const [sid] = useState(idSesi);
+  const percobaan = useRef<Record<string, number>>({});
+  const tampilPada = useRef(Date.now());
+  const sudahJawab = useRef(false);
+  useEffect(() => { tampilPada.current = Date.now(); sudahJawab.current = false; }, [fase, idx, wIdx]);
+
+  const rekam = (isi: Omit<IsiPeristiwa, "sid" | "mode" | "ke">) => {
+    sudahJawab.current = true;
+    if (data.rekam === false) return;
+    const ke = (percobaan.current[isi.kanji] = (percobaan.current[isi.kanji] || 0) + 1);
+    try {
+      void catatPeristiwa(buatPeristiwa({ ...isi, sid, mode, ke })).catch(() => { /* log tidak kritis */ });
+    } catch { /* log tidak kritis */ }
+  };
+  const lamanya = () => Date.now() - tampilPada.current;
+  const kataTulisKini = (k: string) => kataTulis(k, data.tg || "N5");
+
+  /** Keluar di tengah sesi dicatat sebagai "lewat" pada soal yang sedang terbuka. */
+  const keluar = () => {
+    if (!sudahJawab.current) {
+      if (fase === "quiz" && quiz[idx]) {
+        rekam({ kanji: quiz[idx]!.k, kata: quiz[idx]!.kata, jenis: quiz[idx]!.type, hasil: "lewat", ms: lamanya() });
+      } else if (fase === "write" && tulis[wIdx]) {
+        rekam({ kanji: tulis[wIdx]!, kata: kataTulisKini(tulis[wIdx]!), jenis: "tulis", hasil: "lewat", ms: lamanya() });
+      }
+    }
+    onKeluar();
+  };
+
   const selesaiQuiz = () => {
     if (mode === "tes") {
       // tes penempatan tidak memengaruhi beban sesi (lastAcc) maupun log latihan
@@ -69,13 +103,17 @@ export function Sesi({ mode, pilihan, tes, data, t: tHariIni, ubah, onKeluar }: 
 
   const dijawab = (benar: boolean) => {
     const it = quiz[idx]!;
+    // dicatat juga untuk soal ulangan yang tidak dinilai: jawabannya tetap jawaban murid
+    rekam({ kanji: it.k, kata: it.kata, jenis: it.type, hasil: benar ? "benar" : "salah", ms: lamanya() });
     if (it.k in pertama.current) return;
     pertama.current[it.k] = benar;
     if (mode !== "tes") ubah((d) => applyAnswer(d, it.k, benar, t)); // tes penempatan dinilai di akhir
   };
 
   const sudahTahu = () => {
-    const k = quiz[idx]!.k;
+    const it = quiz[idx]!;
+    const k = it.k;
+    rekam({ kanji: k, kata: it.kata, jenis: it.type, hasil: "sudahTahu", ms: lamanya() });
     lewati.current.add(k); // kanji yang sama bisa muncul lagi sebagai soal ulangan di sesi ini
     ubah((d) => tandaiSudahTahu(d, k, t, idx));
     setDilewati((n) => n + 1);
@@ -87,6 +125,21 @@ export function Sesi({ mode, pilihan, tes, data, t: tHariIni, ubah, onKeluar }: 
     while (n < quiz.length && lewati.current.has(quiz[n]!.k)) n++;
     if (n >= quiz.length) return selesaiQuiz();
     setIdx(n);
+  };
+
+  /**
+   * Satu percobaan menulis. Dicatat tiap percobaan, bukan hanya yang terakhir: alasan
+   * pengecek goresan menolak (`tolak`) adalah bagian paling berharga dari log ini —
+   * dari situlah ketahuan toleransi mana di `BATAS` yang perlu dilonggarkan.
+   */
+  const percobaanTulis = (p: PercobaanTulis) => {
+    const k = tulis[wIdx]!;
+    rekam({
+      kanji: k, kata: kataTulisKini(k), jenis: "tulis", hasil: p.hasil, ms: p.ms,
+      ...(p.tolakan ? dariHasil(p.tolakan) : {}),
+      gagal: data.ks[k]?.gagalTulis || 0,
+      manual: p.manual,
+    });
   };
 
   const selesaiTulis = (ok: boolean) => {
@@ -117,7 +170,7 @@ export function Sesi({ mode, pilihan, tes, data, t: tHariIni, ubah, onKeluar }: 
   return (
     <div>
       <div className="flex items-center gap-3">
-        <button type="button" onClick={onKeluar} aria-label="Keluar dari sesi"
+        <button type="button" onClick={keluar} aria-label="Keluar dari sesi"
           className="text-2xl size-11 shrink-0 rounded-full bg-white border border-garis">×</button>
         <div className="flex-1 h-2 rounded-full bg-garis" role="progressbar" aria-label="Kemajuan sesi" aria-valuenow={Math.round(progres * 100)} aria-valuemin={0} aria-valuemax={100}>
           <div className="h-2 rounded-full bg-aksen transition-[width] duration-300" style={{ width: `${progres * 100}%` }} />
@@ -133,8 +186,8 @@ export function Sesi({ mode, pilihan, tes, data, t: tHariIni, ubah, onKeluar }: 
       )}
 
       {fase === "write" && (
-        <SoalTulis key={tulis[wIdx]} k={tulis[wIdx]!} v={KAMUS[kataTulis(tulis[wIdx]!, data.tg || "N5")]!}
-          gagal={data.ks[tulis[wIdx]!]?.gagalTulis || 0} onSelesai={selesaiTulis} />
+        <SoalTulis key={tulis[wIdx]} k={tulis[wIdx]!} v={KAMUS[kataTulisKini(tulis[wIdx]!)]!}
+          gagal={data.ks[tulis[wIdx]!]?.gagalTulis || 0} onSelesai={selesaiTulis} onPercobaan={percobaanTulis} />
       )}
 
       {fase === "done" && (

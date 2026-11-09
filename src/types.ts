@@ -79,6 +79,51 @@ export interface AppData {
   tg: Tingkat;
   /** tingkat yang tes penempatannya sudah pernah diikuti (lulus atau tidak); tes hanya sekali per tingkat */
   tesSelesai?: Tingkat[];
+  /**
+   * Saklar "Bantu tingkatkan aplikasi ini" (Tahap 1b, 2026-11-09). Belum pernah disentuh =
+   * undefined = mencatat; `false` mematikan pencatatan dan menghapus yang sudah tercatat.
+   */
+  rekam?: boolean;
+}
+
+/** Alasan pengecek goresan menolak tulisan; sama dengan `Hasil.jenis` di engine/goresan.ts. */
+export type AlasanTolak = "jumlah" | "arah" | "urutan" | "panjang" | "bentuk";
+
+/**
+ * Satu peristiwa belajar (Tahap 1b, 2026-11-09): satu baris per jawaban, disimpan di
+ * IndexedDB di samping `LogSesi` yang tetap dipakai untuk beban sesi (`lastAcc`).
+ * Anonim: tidak ada identitas murid dan tidak ada teks bebas.
+ */
+export interface Peristiwa {
+  /** ISO waktu lokal */
+  t: string;
+  /** versi aplikasi — ini yang menjawab "murid pakai build lama?" */
+  v: string;
+  /** id sesi, acak per sesi, supaya bisa dilihat murid berhenti di soal mana */
+  sid: string;
+  kanji: string;
+  /** kosakata yang dipakai saat itu */
+  kata?: string;
+  jenis: JenisSoal | "tulis";
+  mode: ModeSesi;
+  hasil: "benar" | "salah" | "lewat" | "sudahTahu" | "akuBenar";
+  /** milidetik dari soal tampil sampai dijawab */
+  ms: number;
+  /** percobaan ke-n untuk kanji ini di sesi ini */
+  ke: number;
+
+  // khusus jenis "tulis"
+  /** alasan pengecek goresan menolak */
+  tolak?: AlasanTolak;
+  /** goresan ke berapa yang ditolak */
+  tolakKe?: number;
+  /** jumlah goresan yang ditulis vs seharusnya (saat tolak === "jumlah") */
+  ditulis?: number;
+  seharusnya?: number;
+  /** nilai gagalTulis dari KanjiState saat itu */
+  gagal?: number;
+  /** true kalau data goresan belum terunduh dan murid menilai sendiri */
+  manual?: boolean;
 }
 
 export type JenisSoal = "meaning" | "reading" | "rakit";

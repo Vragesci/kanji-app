@@ -67,7 +67,7 @@ export default function App() {
             onKeluar={() => setSesi(null)}
           />
         ) : tentang ? (
-          <Tentang onKembali={() => setTentang(false)} />
+          <Tentang data={data} ubah={ubah} onKembali={() => setTentang(false)} />
         ) : (
           <Beranda
             data={data} t={t} ubah={ubah} onMulai={(mode, pilihan, tes) => setSesi({ mode, nomor: Date.now(), pilihan, tes })}

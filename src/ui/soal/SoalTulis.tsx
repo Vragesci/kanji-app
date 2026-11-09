@@ -17,11 +17,27 @@ const PIKSEL = 560;
 /** berapa kali sesi menulis kanji ini boleh gagal sebelum murid boleh menilai tulisannya sendiri */
 const BATAS_GAGAL = 2;
 
-export function SoalTulis({ k, v, gagal = 0, onSelesai }: {
+/** satu percobaan menulis, untuk log belajar (Tahap 1b); `tolakan` dipakai saat pengecek goresan menolak */
+export interface PercobaanTulis {
+  hasil: "benar" | "salah" | "akuBenar";
+  tolakan?: Hasil;
+  /** true kalau data goresan belum terunduh dan murid menilai tulisannya sendiri */
+  manual?: boolean;
+  /** milidetik dari kanvas kosong sampai murid menekan Cek / menilai sendiri */
+  ms: number;
+}
+
+export function SoalTulis({ k, v, gagal = 0, onSelesai, onPercobaan }: {
   k: string; v: Kosakata;
   /** berapa kali sesi menulis kanji ini sudah gagal sebelumnya (KanjiState.gagalTulis) */
   gagal?: number;
   onSelesai: (ok: boolean) => void;
+  /**
+   * Dipanggil sekali per percobaan, termasuk percobaan yang diulang lewat "Tulis lagi" —
+   * di sinilah alasan penolakan pengecek goresan dicatat. "Selesai menjiplak" tidak
+   * memanggilnya lagi: penolakannya sudah tercatat saat koreksi ditampilkan.
+   */
+  onPercobaan?: (p: PercobaanTulis) => void;
 }) {
   const kanvas = useRef<HTMLCanvasElement>(null);
   const goresan = useRef<Goresan[]>([]);
@@ -85,9 +101,14 @@ export function SoalTulis({ k, v, gagal = 0, onSelesai }: {
     setJumlah(goresan.current.length);
   };
 
+  // awal percobaan yang sedang berjalan, untuk `ms` di log belajar; disetel ulang tiap "Tulis lagi"
+  const mulai = useRef(Date.now());
+  const lapor = (p: Omit<PercobaanTulis, "ms">) => onPercobaan?.({ ...p, ms: Date.now() - mulai.current });
+
   const cek = () => {
     if (!jalur) { setTahap("nilaiSendiri"); return; }
     const h = nilaiTulisan(goresan.current, jalur);
+    lapor({ hasil: h.ok ? "benar" : "salah", tolakan: h });
     setHasil(h);
     setTahap(h.ok ? "benar" : "koreksi");
   };
@@ -148,11 +169,11 @@ export function SoalTulis({ k, v, gagal = 0, onSelesai }: {
                 murid, bukan menguncinya.
               */}
               <div className="grid grid-cols-2 gap-2 mt-4">
-                <Btn kind="ghost" onClick={() => { hapus(); setHasil(null); setTahap("tulis"); }}>Tulis lagi</Btn>
+                <Btn kind="ghost" onClick={() => { hapus(); setHasil(null); mulai.current = Date.now(); setTahap("tulis"); }}>Tulis lagi</Btn>
                 <Btn onClick={() => setTahap("jiplak")}>Jiplak sesuai urutan</Btn>
               </div>
               {gagal >= BATAS_GAGAL && (
-                <button type="button" onClick={() => onSelesai(true)}
+                <button type="button" onClick={() => { lapor({ hasil: "akuBenar" }); onSelesai(true); }}
                   className="block mx-auto mt-4 text-sm underline text-redup min-h-11">
                   Menurutku tulisanku sudah benar — tandai hafal
                 </button>
@@ -166,8 +187,8 @@ export function SoalTulis({ k, v, gagal = 0, onSelesai }: {
         <div className="mt-4">
           <p className="text-sm text-center mb-2 text-redup">Data urutan goresan belum terunduh (perlu internet sekali). Bandingkan sendiri: apakah tulisanmu sudah benar?</p>
           <div className="grid grid-cols-2 gap-2">
-            <Btn kind="ghost" onClick={() => setTahap("jiplak")}>Belum benar</Btn>
-            <Btn onClick={() => onSelesai(true)}>Sudah benar</Btn>
+            <Btn kind="ghost" onClick={() => { lapor({ hasil: "salah", manual: true }); setTahap("jiplak"); }}>Belum benar</Btn>
+            <Btn onClick={() => { lapor({ hasil: "akuBenar", manual: true }); onSelesai(true); }}>Sudah benar</Btn>
           </div>
         </div>
       )}
