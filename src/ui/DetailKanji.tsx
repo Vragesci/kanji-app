@@ -3,7 +3,7 @@ import { KAMUS, KMAP, labelTingkat } from "../data/katalog";
 import { bacaanKanji, contohKata, type Bacaan } from "../data/bacaan";
 import { statusOf } from "../engine/fsrs";
 import type { AppData } from "../types";
-import { Jp, NAMA_STATUS } from "./komponen";
+import { Jp, NAMA_STATUS, TombolUcap } from "./komponen";
 
 const WARNA_STATUS = { white: "text-redup", red: "text-merah", orange: "text-oranye", green: "text-hijau" } as const;
 
@@ -85,6 +85,7 @@ export function DetailKanji({ k, data, onTutup }: { k: string; data: AppData; on
                         <p className="text-sm"><Jp>{v.kana}</Jp> <span className="text-redup">({v.romaji})</span></p>
                         <p className="text-sm font-medium">{v.arti}</p>
                       </div>
+                      <TombolUcap kana={v.kana} className="ml-auto" />
                     </li>
                   );
                 })}

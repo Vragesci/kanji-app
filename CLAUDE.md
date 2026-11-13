@@ -243,8 +243,14 @@ menulis, kalimat contoh (Tatoeba), dan audio.
   sesi selesai dengan 70% ke atas). Dibuat dengan Web Audio tanpa berkas audio, ditambah getar pendek.
   Bisa dimatikan lewat tombol di kepala sesi atau halaman Tentang (`suara` di AppData; undefined = menyala).
   (7) Layar hasil punya tombol "Main satu sesi lagi" bila masih ada kanji untuk dilatih.
+  (8) **Pengucapan kosakata** (memajukan sebagian audio Tahap 3): memakai mesin suara bawaan perangkat
+  (Web Speech, `ucapkan` di `src/suara.ts`), tanpa berkas audio. Yang dibacakan **kana dari data**, bukan
+  tulisan kanjinya, supaya bacaannya pasti sama dengan yang diajarkan. Berbunyi otomatis **setelah** murid
+  menjawab (sebelum itu ia membocorkan jawaban soal bacaan, sama seperti romaji) dan lewat tombol pengeras
+  suara di kartu kata serta contoh kata di detail kanji. Tombol tidak tampil di perangkat tanpa suara Jepang.
+  Kalau mutu suara bawaan mengecewakan, langkah berikutnya berkas audio per kosakata (belum diputuskan).
   Sudah disetujui tetapi **belum dibangun**: beranda sebagai peta perjalanan per bab Irodori, halaman koleksi,
-  kartu untuk dibagikan ke media sosial, suara pengucapan tiap kosakata, dan papan peringkat mingguan
+  kartu untuk dibagikan ke media sosial, dan papan peringkat mingguan
   antarmurid dengan gelar (membutuhkan akun dan server Tahap 2; yang boleh terlihat pengguna lain hanya nama
   panggilan dan skor mingguan — ini mengubah sebagian keputusan 2026-11-03). Mockup: kanvas "Ngaji Kanji
   tampilan game". Alamat yang dipilih untuk saat ini: `ngajikanji.vercel.app`.

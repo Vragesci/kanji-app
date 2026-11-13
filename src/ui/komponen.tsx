@@ -1,4 +1,5 @@
-import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode } from "react";
+import { useEffect, useState, type ButtonHTMLAttributes, type HTMLAttributes, type ReactNode } from "react";
+import { adaSuaraJepang, ucapkan } from "../suara";
 import { greenStrength, statusOf, type Status } from "../engine/fsrs";
 import type { KanjiState } from "../types";
 
@@ -75,5 +76,28 @@ export function KotakKanji({ k, s, t, ukuran }: { k: string; s: KanjiState | und
         </span>
       )}
     </Jp>
+  );
+}
+
+/**
+ * Tombol pengeras suara untuk satu kosakata (2026-11-13). Tidak tampil kalau perangkat
+ * tidak punya suara bahasa Jepang, supaya murid tidak menekan tombol yang diam.
+ */
+export function TombolUcap({ kana, className = "" }: { kana: string; className?: string }) {
+  const [ada, setAda] = useState(adaSuaraJepang);
+  useEffect(() => {
+    if (!("speechSynthesis" in window)) return;
+    const cek = () => setAda(adaSuaraJepang());
+    window.speechSynthesis.addEventListener?.("voiceschanged", cek);
+    return () => window.speechSynthesis.removeEventListener?.("voiceschanged", cek);
+  }, []);
+  if (ada === false) return null;
+  return (
+    <button type="button" onClick={() => ucapkan(kana, { paksa: true })} aria-label="Dengarkan pengucapan"
+      className={`size-11 shrink-0 rounded-full bg-merek text-latar flex items-center justify-center shadow-[0_3px_0_#3346C2] active:translate-y-[2px] active:shadow-[0_1px_0_#3346C2] ${className}`}>
+      <svg aria-hidden width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M4 9v6h4l5 4V5L8 9H4z" /><path d="M16.5 8.5a5 5 0 0 1 0 7" /><path d="M19 6a8.5 8.5 0 0 1 0 12" />
+      </svg>
+    </button>
   );
 }

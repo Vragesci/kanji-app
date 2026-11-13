@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { KAMUS } from "../../data/katalog";
 import type { AppData, ItemSoal } from "../../types";
 import { Btn } from "../komponen";
+import { hentikanUcapan, ucapkan } from "../../suara";
 import { KartuKata } from "./KartuKata";
 import { SoalArti } from "./SoalArti";
 import { SoalBacaan } from "./SoalBacaan";
@@ -27,7 +28,13 @@ export function Soal({ item, data, onDijawab, onLanjut, onSudahTahu }: {
     if (hasil !== null) return;
     setHasil(ok);
     onDijawab(ok);
+    // pengucapan baru dibunyikan setelah menjawab (seperti romaji: sebelum itu ia membocorkan
+    // jawaban soal bacaan), dan sedikit ditunda supaya tidak bertabrakan dengan bunyi benar/salah
+    jeda.current = window.setTimeout(() => ucapkan(v.kana), 650);
   };
+
+  const jeda = useRef<number | undefined>(undefined);
+  useEffect(() => () => { window.clearTimeout(jeda.current); hentikanUcapan(); }, []);
 
   return (
     <div className="mt-6">

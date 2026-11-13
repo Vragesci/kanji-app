@@ -65,8 +65,12 @@ export function Tentang({ data, ubah, onKembali }: {
           <h2 className="font-bold text-base">Suara</h2>
           <label className="mt-2 flex items-center gap-3 min-h-11">
             <input type="checkbox" checked={data.suara !== false} onChange={(e) => ubah((d) => ({ ...d, suara: e.target.checked }))} className="size-5 accent-aksen" />
-            <span>Efek suara dan getar saat menjawab</span>
+            <span>Efek suara, getar, dan pengucapan otomatis saat menjawab</span>
           </label>
+          <p className="mt-1 text-redup">
+            Pengucapan kosakata memakai suara bahasa Jepang bawaan HP. Kalau tombol pengeras suara tidak muncul,
+            pasang data suara bahasa Jepang di pengaturan text-to-speech HP.
+          </p>
         </section>
         <CatatanBelajar data={data} ubah={ubah} />
 

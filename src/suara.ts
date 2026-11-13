@@ -53,3 +53,46 @@ export const bunyi = {
     getar([40, 60, 40]);
   },
 };
+
+// ——— Pengucapan kosakata (2026-11-13) ———
+// Memakai mesin suara bawaan perangkat (Web Speech), jadi tanpa berkas audio dan tanpa server.
+// Yang dibacakan adalah kana dari data, bukan tulisan kanjinya, supaya bacaannya pasti sama
+// dengan yang diajarkan (mesin suara bisa memilih bacaan lain untuk kanji yang sama).
+
+/** kana siap dibacakan: tanda ～ dan kurung dibuang (～にん → にん, たいせつ（な） → たいせつな) */
+export const teksUcap = (kana: string): string => kana.replace(/[～（）]/g, "");
+
+const suaraJepang = (): SpeechSynthesisVoice | undefined =>
+  window.speechSynthesis.getVoices().find((v) => v.lang.toLowerCase().replace("_", "-").startsWith("ja"));
+
+/** false = perangkat tidak punya suara Jepang; undefined = daftar suara belum dimuat (dicoba saja) */
+export function adaSuaraJepang(): boolean | undefined {
+  try {
+    if (typeof window === "undefined" || !("speechSynthesis" in window)) return false;
+    if (window.speechSynthesis.getVoices().length === 0) return undefined;
+    return !!suaraJepang();
+  } catch { return false; }
+}
+
+/**
+ * Bacakan satu kosakata. Pemanggilan otomatis mengikuti saklar suara; tombol pengeras suara
+ * memakai `paksa` karena itu permintaan langsung murid.
+ */
+export function ucapkan(kana: string, opsi?: { paksa?: boolean }): void {
+  if (!nyala && !opsi?.paksa) return;
+  try {
+    if (adaSuaraJepang() === false) return;
+    const s = window.speechSynthesis;
+    s.cancel();
+    const u = new SpeechSynthesisUtterance(teksUcap(kana));
+    u.lang = "ja-JP";
+    u.rate = 0.9;
+    const v = suaraJepang();
+    if (v) u.voice = v;
+    s.speak(u);
+  } catch { /* suara tidak kritis */ }
+}
+
+export function hentikanUcapan(): void {
+  try { window.speechSynthesis?.cancel(); } catch { /* tidak kritis */ }
+}
