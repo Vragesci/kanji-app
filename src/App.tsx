@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRegisterSW } from "virtual:pwa-register/react";
+import { Analytics } from "@vercel/analytics/react";
 import { addDays, fmt } from "./engine/tanggal";
 import type { ModeSesi, Tingkat } from "./types";
 import { useAppData } from "./useAppData";
@@ -80,6 +81,8 @@ export default function App() {
           />
         )}
       </main>
+      {/* penghitung pengunjung anonim (2026-11-13); gagal memuat saat luring tidak memengaruhi aplikasi */}
+      <Analytics />
     </div>
   );
 }

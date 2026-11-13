@@ -62,6 +62,14 @@ export function Tentang({ data, ubah, onKembali }: {
         </section>
 
         <section>
+          <h2 className="font-bold text-base">Hitungan pengunjung</h2>
+          <p className="mt-2">
+            Situs ini menghitung jumlah kunjungan secara anonim lewat Vercel Web Analytics: halaman yang dibuka, negara,
+            dan jenis perangkat. Tanpa cookie, tanpa nama, dan tidak terkait dengan kemajuan belajarmu, yang tetap
+            tersimpan di HP-mu saja.
+          </p>
+        </section>
+        <section>
           <h2 className="font-bold text-base">Suara</h2>
           <label className="mt-2 flex items-center gap-3 min-h-11">
             <input type="checkbox" checked={data.suara !== false} onChange={(e) => ubah((d) => ({ ...d, suara: e.target.checked }))} className="size-5 accent-aksen" />

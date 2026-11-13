@@ -254,3 +254,7 @@ menulis, kalimat contoh (Tatoeba), dan audio.
   antarmurid dengan gelar (membutuhkan akun dan server Tahap 2; yang boleh terlihat pengguna lain hanya nama
   panggilan dan skor mingguan — ini mengubah sebagian keputusan 2026-11-03). Mockup: kanvas "Ngaji Kanji
   tampilan game". Alamat yang dipilih untuk saat ini: `ngajikanji.vercel.app`.
+- Hitungan pengunjung (2026-11-13, disetujui pemilik): Vercel Web Analytics (`@vercel/analytics`, komponen
+  `<Analytics />` di `src/App.tsx`) untuk menjawab "berapa orang yang memakai aplikasi ini". Anonim dan agregat,
+  tanpa cookie; tidak mengirim kemajuan belajar maupun log `Peristiwa`, yang tetap hanya di perangkat.
+  Dijelaskan ke murid di halaman Tentang. Perlu dinyalakan sekali di dasbor Vercel (tab Analytics).

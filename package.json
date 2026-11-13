@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@fontsource/reggae-one": "^5.3.1",
+    "@vercel/analytics": "^2.0.1",
     "idb": "^8.0.3",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
