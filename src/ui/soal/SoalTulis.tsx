@@ -62,7 +62,7 @@ export function SoalTulis({ k, v, gagal = 0, onSelesai, onPercobaan }: {
     ctx.lineWidth = 14;
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
-    ctx.strokeStyle = "#1D2330";
+    ctx.strokeStyle = "#F3F5FF";
     for (const g of goresan.current) {
       ctx.beginPath();
       g.forEach(([x, y], i) => (i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)));
@@ -124,7 +124,7 @@ export function SoalTulis({ k, v, gagal = 0, onSelesai, onPercobaan }: {
       </p>
       <Petunjuk k={k} v={v} terbuka={tahap !== "tulis"} />
 
-      <div className="relative mx-auto mt-4 rounded-2xl bg-white border border-garis w-full max-w-70 aspect-square overflow-hidden [container-type:inline-size]">
+      <div className="relative mx-auto mt-4 rounded-2xl bg-kartu border border-garis w-full max-w-70 aspect-square overflow-hidden [container-type:inline-size]">
         {/* garis silang tengah sebagai patokan proporsi */}
         <div className="absolute left-1/2 inset-y-0 w-px bg-garis pointer-events-none" />
         <div className="absolute top-1/2 inset-x-0 h-px bg-garis pointer-events-none" />

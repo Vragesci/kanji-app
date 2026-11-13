@@ -25,10 +25,10 @@ export function Btn({
   kind = "primary", className = "", ...rest
 }: { kind?: "primary" | "ghost"; children: ReactNode } & ButtonHTMLAttributes<HTMLButtonElement>) {
   const gaya = kind === "primary"
-    ? "bg-aksen text-white"
-    : "bg-white text-tinta border border-garis";
+    ? "bg-aksen text-latar font-extrabold shadow-[0_5px_0_#B98A14] active:translate-y-[3px] active:shadow-[0_2px_0_#B98A14] disabled:shadow-none mb-1.5"
+    : "bg-kartu text-tinta border-2 border-garis";
   return (
-    <button type="button" className={`w-full min-h-12 py-3 px-4 rounded-xl text-base font-medium disabled:opacity-40 ${gaya} ${className}`} {...rest} />
+    <button type="button" className={`w-full min-h-13 py-3 px-4 rounded-2xl text-base font-bold disabled:opacity-40 ${gaya} ${className}`} {...rest} />
   );
 }
 
@@ -46,10 +46,10 @@ export const NAMA_STATUS: Record<Status, string> = {
 export function KotakKanji({ k, s, t, ukuran }: { k: string; s: KanjiState | undefined; t: string; ukuran?: number }) {
   const st = statusOf(s);
   const gaya: Record<Status, string> = {
-    white: "bg-white text-tinta border border-garis",
-    red: "bg-merah text-white border border-merah",
-    orange: "bg-oranye text-white border border-oranye",
-    green: "bg-hijau text-white border border-hijau",
+    white: "bg-kartu text-tinta border border-garis",
+    red: "bg-merah text-latar border border-merah",
+    orange: "bg-oranye text-latar border border-oranye",
+    green: "bg-hijau text-latar border border-hijau",
   };
   const opacity = st === "green" ? 0.35 + Math.max(0.35, greenStrength(s!, t)) * 0.65 : undefined;
   // Untuk murid buta warna: semakin hafal, semakin besar hurufnya (merah kecil, oranye sedang, hijau besar).
@@ -70,7 +70,7 @@ export function KotakKanji({ k, s, t, ukuran }: { k: string; s: KanjiState | und
       {benar !== null && (
         <span aria-hidden className="absolute bottom-1 inset-x-0 flex justify-center gap-0.5">
           {[0, 1, 2, 3, 4, 5].map((i) => (
-            <i key={i} className={`block size-1 rounded-full ${i <= benar ? "bg-white" : "bg-white/35"}`} />
+            <i key={i} className={`block size-1 rounded-full ${i <= benar ? "bg-latar" : "bg-latar/35"}`} />
           ))}
         </span>
       )}

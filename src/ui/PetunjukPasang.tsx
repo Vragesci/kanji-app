@@ -22,7 +22,7 @@ export function BannerPasang() {
   if (ditutup || sudahTerpasang() || (p === "lain" && !bisaLangsung)) return null;
 
   return (
-    <section aria-label="Pasang di layar utama" className="mt-5 p-4 rounded-xl bg-white border border-garis text-sm">
+    <section aria-label="Pasang di layar utama" className="mt-5 p-4 rounded-xl bg-kartu border border-garis text-sm">
       <p className="font-bold">Pasang di layar utama</p>
       {p === "ios" ? (
         <>

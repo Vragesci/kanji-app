@@ -17,7 +17,7 @@ const KELOMPOK: { kunci: string; judul: string; romaji?: string; jp?: boolean }[
 ];
 
 const LEGENDA = [
-  { kelas: "bg-white border border-garis", teks: "Belum dilihat" },
+  { kelas: "bg-kartu border border-garis", teks: "Belum dilihat" },
   { kelas: "bg-merah", teks: "Belum hafal (huruf kecil)" },
   { kelas: "bg-oranye", teks: "Sedang proses (huruf sedang)" },
   { kelas: "bg-hijau", teks: "Hafal (huruf besar; pudar = perlu diulang)" },
@@ -94,7 +94,7 @@ export function PetaKanji({ data, t, pilihan, onPilih, onBuka }: {
                   <button key={x.kanji} type="button" aria-pressed={dipilih} aria-label={`Pilih ${x.kanji}`} onClick={() => onPilih(x.kanji)}
                     className={`relative rounded-lg ${dipilih ? "outline-4 outline-offset-1 outline-aksen" : ""}`}>
                     {kotak}
-                    {dipilih && <span aria-hidden className="absolute -top-1 -right-1 size-5 rounded-full bg-aksen text-white text-xs flex items-center justify-center">✓</span>}
+                    {dipilih && <span aria-hidden className="absolute -top-1 -right-1 size-5 rounded-full bg-aksen text-latar text-xs flex items-center justify-center">✓</span>}
                   </button>
                 );
               })}

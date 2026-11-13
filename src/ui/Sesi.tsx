@@ -8,6 +8,8 @@ import { buatPeristiwa, dariHasil, idSesi, type IsiPeristiwa } from "../engine/p
 import { catatPeristiwa } from "../db/penyimpanan";
 import type { AppData, ItemSoal, ModeSesi, Tingkat } from "../types";
 import { Btn, Jp, KotakKanji } from "./komponen";
+import { bunyi } from "../suara";
+import { bintang, jumlahHafal, pangkatDari } from "../engine/permainan";
 import { Soal } from "./soal/Soal";
 import { SoalTulis, type PercobaanTulis } from "./soal/SoalTulis";
 
@@ -23,9 +25,11 @@ interface Props {
   t: string;
   ubah: (fn: (d: AppData) => AppData) => void;
   onKeluar: () => void;
+  /** mulai sesi belajar baru dari layar hasil */
+  onLagi: () => void;
 }
 
-export function Sesi({ mode, pilihan, tes, data, t: tHariIni, ubah, onKeluar }: Props) {
+export function Sesi({ mode, pilihan, tes, data, t: tHariIni, ubah, onKeluar, onLagi }: Props) {
   // tanggal dikunci saat sesi dimulai: sesi yang melewati tengah malam tetap satu tanggal
   const [t] = useState(tHariIni);
   const [rencana] = useState(() =>
@@ -47,6 +51,10 @@ export function Sesi({ mode, pilihan, tes, data, t: tHariIni, ubah, onKeluar }: 
   const pertama = useRef<Record<string, boolean>>({});
   // kanji yang ditandai "sudah tahu": soal ulangannya di sesi ini ikut dilewati
   const lewati = useRef<Set<string>>(new Set());
+  // ——— Tampilan game (2026-11-13): kombo dan warna per soal. Hanya tampilan dan bunyi; tidak ikut menilai. ———
+  const [kombo, setKombo] = useState(0);
+  const komboTerbaik = useRef(0);
+  const [hasilSoal, setHasilSoal] = useState<Record<number, boolean>>({});
 
   // ——— Log belajar per soal (Tahap 1b) ———
   // Satu baris per jawaban, di samping LogSesi yang tetap memegang beban sesi (lastAcc).
@@ -105,6 +113,16 @@ export function Sesi({ mode, pilihan, tes, data, t: tHariIni, ubah, onKeluar }: 
     const it = quiz[idx]!;
     // dicatat juga untuk soal ulangan yang tidak dinilai: jawabannya tetap jawaban murid
     rekam({ kanji: it.k, kata: it.kata, jenis: it.type, hasil: benar ? "benar" : "salah", ms: lamanya() });
+    setHasilSoal((h) => ({ ...h, [idx]: benar }));
+    if (benar) {
+      const n = kombo + 1;
+      setKombo(n);
+      komboTerbaik.current = Math.max(komboTerbaik.current, n);
+      if (n >= 3) bunyi.kombo(); else bunyi.benar();
+    } else {
+      setKombo(0);
+      bunyi.salah();
+    }
     if (it.k in pertama.current) return;
     pertama.current[it.k] = benar;
     if (mode !== "tes") ubah((d) => applyAnswer(d, it.k, benar, t)); // tes penempatan dinilai di akhir
@@ -145,12 +163,30 @@ export function Sesi({ mode, pilihan, tes, data, t: tHariIni, ubah, onKeluar }: 
   const selesaiTulis = (ok: boolean) => {
     const k = tulis[wIdx]!;
     ubah((d) => applyWrite(d, k, ok, t));
-    if (ok) setHijauBaru((h) => [...h, k]);
+    if (ok) { setHijauBaru((h) => [...h, k]); bunyi.naik(); }
     if (wIdx + 1 >= tulis.length) setFase("done");
     else setWIdx(wIdx + 1);
   };
 
   const progres = fase === "quiz" ? idx / Math.max(1, quiz.length) : 1;
+
+  // bunyi penutup untuk sesi yang berakhir baik; dilewati kalau sesi menulis baru saja membunyikannya
+  useEffect(() => {
+    if (fase === "done" && mode !== "tes" && acc !== null && acc >= 0.7 && hijauBaru.length === 0) bunyi.naik();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fase]);
+
+  const suaraNyala = data.suara !== false;
+  const dinilai = Object.values(pertama.current);
+  const nBenar = dinilai.filter(Boolean).length;
+  const nBintang = acc === null ? 0 : bintang(acc);
+  const hafal = useMemo(() => jumlahHafal(data), [data.ks]);
+  const pos = pangkatDari(hafal);
+  const bisaLagi = useMemo(() => {
+    if (fase !== "done" || mode === "tes") return false;
+    const b = buildSession(data, t);
+    return b.quiz.length + b.write.length > 0;
+  }, [fase, mode, data, t]);
 
   // Dibandingkan dengan status kanji saat sesi dimulai, bukan dengan hitungan jawaban benar:
   // kanji yang sama bisa muncul dua kali dalam satu sesi, dan ulangannya tidak dinilai.
@@ -171,11 +207,36 @@ export function Sesi({ mode, pilihan, tes, data, t: tHariIni, ubah, onKeluar }: 
     <div>
       <div className="flex items-center gap-3">
         <button type="button" onClick={keluar} aria-label="Keluar dari sesi"
-          className="text-2xl size-11 shrink-0 rounded-full bg-white border border-garis">×</button>
-        <div className="flex-1 h-2 rounded-full bg-garis" role="progressbar" aria-label="Kemajuan sesi" aria-valuenow={Math.round(progres * 100)} aria-valuemin={0} aria-valuemax={100}>
-          <div className="h-2 rounded-full bg-aksen transition-[width] duration-300" style={{ width: `${progres * 100}%` }} />
-        </div>
+          className="text-2xl size-11 shrink-0 rounded-full bg-kartu border border-garis">×</button>
+        {fase === "quiz" ? (
+          <div className="flex-1 flex gap-1" role="progressbar" aria-label="Kemajuan sesi" aria-valuenow={Math.round(progres * 100)} aria-valuemin={0} aria-valuemax={100}>
+            {quiz.map((_, i) => (
+              <i key={i} className={`block h-2.5 flex-1 rounded-full ${i in hasilSoal ? (hasilSoal[i] ? "bg-hijau" : "bg-merah") : i === idx ? "bg-aksen" : "bg-garis"}`} />
+            ))}
+          </div>
+        ) : (
+          <div className="flex-1 h-2.5 rounded-full bg-garis" role="progressbar" aria-label="Kemajuan sesi" aria-valuenow={Math.round(progres * 100)} aria-valuemin={0} aria-valuemax={100}>
+            <div className="h-2.5 rounded-full bg-aksen transition-[width] duration-300" style={{ width: `${progres * 100}%` }} />
+          </div>
+        )}
+        {fase === "quiz" && <span className="text-sm font-bold tabular-nums">{idx + 1}/{quiz.length}</span>}
+        <button type="button" onClick={() => ubah((d) => ({ ...d, suara: d.suara === false }))}
+          aria-label={suaraNyala ? "Matikan suara" : "Nyalakan suara"} aria-pressed={suaraNyala}
+          className={`size-11 shrink-0 rounded-full bg-kartu border border-garis flex items-center justify-center ${suaraNyala ? "text-aksen" : "text-redup"}`}>
+          <svg aria-hidden width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M4 9v6h4l5 4V5L8 9H4z" />
+            {suaraNyala ? <><path d="M16.5 8.5a5 5 0 0 1 0 7" /><path d="M19 6a8.5 8.5 0 0 1 0 12" /></> : <path d="M17 9l5 6M22 9l-5 6" />}
+          </svg>
+        </button>
       </div>
+
+      {fase === "quiz" && (
+        <div className="h-9 mt-3 flex justify-center" aria-live="polite">
+          {kombo >= 2 && (
+            <p key={kombo} className="letup px-4 py-1 rounded-full bg-aksen text-latar font-extrabold shadow-[0_4px_0_#B98A14]">Kombo ×{kombo}</p>
+          )}
+        </div>
+      )}
 
       {fase === "quiz" && (
         <Soal
@@ -197,7 +258,7 @@ export function Sesi({ mode, pilihan, tes, data, t: tHariIni, ubah, onKeluar }: 
           {hasilTes && (
             <div className="mt-6 space-y-2 text-left">
               {hasilTes.map((h) => (
-                <p key={h.tingkat} className="p-3 rounded-xl bg-white border border-garis text-sm">
+                <p key={h.tingkat} className="p-3 rounded-xl bg-kartu border border-garis text-sm">
                   <b>{labelTingkat(h.tingkat)}</b>: benar {h.benar} dari {h.total} —{" "}
                   {h.lulus
                     ? <span className="text-hijau font-bold">lulus, {h.ditandai} kanji ditandai hafal</span>
@@ -208,27 +269,72 @@ export function Sesi({ mode, pilihan, tes, data, t: tHariIni, ubah, onKeluar }: 
           )}
           {dilewati > 0 && <p className="mt-4 text-sm">Ditandai sudah tahu: <b>{dilewati}</b> kanji</p>}
           {/* kemajuan sesi ini (2026-11-02): angka yang bergerak walau belum ada kanji yang hijau */}
-          {mode !== "tes" && (kemajuan.baru > 0 || kemajuan.maju > 0) && (
+          {mode !== "tes" && acc === null && (kemajuan.baru > 0 || kemajuan.maju > 0) && (
             <p className="mt-4 text-sm">
               {kemajuan.baru > 0 && <>Kanji baru dikenalkan: <b>{kemajuan.baru}</b></>}
               {kemajuan.baru > 0 && kemajuan.maju > 0 && " · "}
               {kemajuan.maju > 0 && <>Naik tingkat: <b>{kemajuan.maju}</b></>}
             </p>
           )}
-          {acc !== null && (
-            <p className="mt-6">Jawaban benar di percobaan pertama: <b>{Math.round(acc * 100)}%</b></p>
+          {acc !== null && mode !== "tes" && (
+            <>
+              <div className="mt-5 flex items-end justify-center gap-2" role="img" aria-label={`${nBintang} dari 3 bintang`}>
+                {[1, 2, 3].map((i) => <Bintang key={i} isi={i <= nBintang} besar={i === 2} tunda={i * 0.12} />)}
+              </div>
+              <p className="mt-3"><b className="text-2xl text-aksen">{nBenar}</b> dari {dinilai.length} benar di percobaan pertama</p>
+              {nBintang < 3 && (
+                <p className="text-xs text-redup mt-1">{nBintang === 1 ? "Bintang kedua: 70% benar" : "Bintang ketiga: lebih dari 90% benar"}</p>
+              )}
+              <div className="mt-5 grid grid-cols-3 gap-2">
+                <Petak angka={`×${komboTerbaik.current}`} label="Kombo terbaik" />
+                <Petak angka={kemajuan.maju} label="Naik tingkat" />
+                <Petak angka={kemajuan.baru} label="Kanji baru" />
+              </div>
+            </>
           )}
           {hijauBaru.length > 0 && (
-            <div className="mt-5">
-              <p className="text-sm">Kanji yang kini hafal:</p>
-              <div className="flex flex-wrap justify-center gap-2 mt-2">
-                {hijauBaru.map((k) => <KotakKanji key={k} k={k} s={data.ks[k]} t={t} />)}
+            <div className="mt-5 p-4 rounded-2xl bg-kartu border-2 border-aksen">
+              <p className="text-xs font-extrabold tracking-wide text-aksen">KANJI BARU DIKUASAI</p>
+              <div className="flex flex-wrap justify-center gap-2 mt-3">
+                {hijauBaru.map((k) => <KotakKanji key={k} k={k} s={data.ks[k]} t={t} ukuran={64} />)}
               </div>
             </div>
           )}
-          <Btn className="mt-8" onClick={onKeluar}>Kembali ke beranda</Btn>
+          {mode !== "tes" && (
+            <div className="mt-5 p-4 rounded-2xl bg-kartu text-left">
+              <div className="flex justify-between items-baseline text-sm">
+                <span><Jp className="font-extrabold text-aksen">{pos.kini.jp}</Jp> {pos.kini.romaji}</span>
+                {pos.berikut && <span className="text-redup"><Jp className="font-bold text-tinta">{pos.berikut.jp}</Jp> {pos.berikut.romaji}</span>}
+              </div>
+              <div className="mt-2 h-3 rounded-full bg-latar"><div className="h-3 rounded-full bg-aksen" style={{ width: `${Math.max(3, pos.porsi * 100)}%` }} /></div>
+              <p className="text-xs text-redup mt-2">
+                {pos.berikut ? `${hafal} kanji hafal · ${pos.kurang} lagi untuk naik pangkat` : `${hafal} kanji hafal · pangkat tertinggi`}
+              </p>
+            </div>
+          )}
+          {bisaLagi && <Btn className="mt-8" onClick={onLagi}>Main satu sesi lagi</Btn>}
+          <Btn kind={bisaLagi ? "ghost" : "primary"} className={bisaLagi ? "mt-3" : "mt-8"} onClick={onKeluar}>Kembali ke beranda</Btn>
         </div>
       )}
+    </div>
+  );
+}
+
+function Bintang({ isi, besar, tunda }: { isi: boolean; besar: boolean; tunda: number }) {
+  const u = besar ? 76 : 60;
+  return (
+    <svg aria-hidden width={u} height={u} viewBox="0 0 24 24" className={isi ? "letup" : ""} style={isi ? { animationDelay: `${tunda}s` } : undefined}
+      fill={isi ? "#FFC83D" : "none"} stroke={isi ? "#B98A14" : "#5A66B5"} strokeWidth={isi ? 1.2 : 1.6} strokeLinejoin="round">
+      <path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9L12 2.5z" />
+    </svg>
+  );
+}
+
+function Petak({ angka, label }: { angka: string | number; label: string }) {
+  return (
+    <div className="rounded-2xl bg-kartu py-3 px-1">
+      <p className="text-2xl font-extrabold">{angka}</p>
+      <p className="text-xs text-redup">{label}</p>
     </div>
   );
 }

@@ -34,13 +34,13 @@ export function DetailKanji({ k, data, onTutup }: { k: string; data: AppData; on
         className="relative w-full max-w-md max-h-[88dvh] overflow-y-auto rounded-t-3xl bg-latar shadow-2xl pb-[max(1.5rem,env(safe-area-inset-bottom))]">
         <div className="sticky top-0 z-10 flex justify-between items-center px-5 pt-3 pb-2 bg-latar">
           <span aria-hidden className="mx-auto absolute left-1/2 -translate-x-1/2 top-2 h-1.5 w-10 rounded-full bg-garis" />
-          <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-white border border-garis mt-2">{labelTingkat(info.tingkat)}</span>
+          <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-kartu border border-garis mt-2">{labelTingkat(info.tingkat)}</span>
           <button ref={tutup} type="button" onClick={onTutup} aria-label="Tutup"
-            className="size-11 rounded-full bg-white border border-garis text-xl mt-2">×</button>
+            className="size-11 rounded-full bg-kartu border border-garis text-xl mt-2">×</button>
         </div>
 
         <div className="px-5 space-y-5">
-          <div className="flex items-center gap-4 p-4 rounded-2xl bg-white border border-garis">
+          <div className="flex items-center gap-4 p-4 rounded-2xl bg-kartu border border-garis">
             <Jp as="div" className="text-7xl leading-none font-bold w-24 h-24 flex items-center justify-center rounded-xl bg-kotak shrink-0">{k}</Jp>
             <div className="min-w-0">
               <p className={`font-bold ${WARNA_STATUS[st]}`}>{NAMA_STATUS[st][0]!.toUpperCase() + NAMA_STATUS[st].slice(1)}</p>
@@ -75,7 +75,7 @@ export function DetailKanji({ k, data, onTutup }: { k: string; data: AppData; on
             {contoh.kata.length === 0 ? (
               <p className="text-sm mt-2 text-redup">Belum ada contoh kata untuk kanji ini.</p>
             ) : (
-              <ul className="mt-2 rounded-2xl bg-white border border-garis divide-y divide-garis">
+              <ul className="mt-2 rounded-2xl bg-kartu border border-garis divide-y divide-garis">
                 {contoh.kata.map((w) => {
                   const v = KAMUS[w]!;
                   return (
@@ -106,7 +106,7 @@ function BarisBacaan({ judul, sub, isi }: { judul: string; sub: string; isi: Bac
       ) : (
         <div className="flex flex-wrap gap-2 mt-2">
           {isi.map((b) => (
-            <span key={b.tampil} className={`px-3 py-2 rounded-xl border ${b.dipakai ? "bg-white border-garis" : "bg-kotak border-transparent"}`}>
+            <span key={b.tampil} className={`px-3 py-2 rounded-xl border ${b.dipakai ? "bg-kartu border-garis" : "bg-kotak border-transparent"}`}>
               <Jp className="text-lg font-bold">{b.akar}</Jp>
               {b.okuri && <Jp className="text-lg text-redup">{b.okuri}</Jp>}
               <span className="text-sm text-redup ml-1.5">{b.romaji}</span>

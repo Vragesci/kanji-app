@@ -12,7 +12,7 @@ export function Pilihan<T>({ opsi, benar, hasil, onPilih, tampil }: {
   return (
     <div className="space-y-2 mt-6">
       {opsi.map((o, i) => {
-        let gaya = "border-garis bg-white";
+        let gaya = "border-garis bg-kartu";
         if (hasil !== null) {
           if (o === benar) gaya = "border-hijau bg-benar";
           else if (o === dipilih) gaya = "border-merah bg-salah";

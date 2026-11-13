@@ -4,8 +4,9 @@ import { statusOf } from "../engine/fsrs";
 import { buildSession, aktif } from "../engine/sesi";
 import { TOTAL_SOAL, jumlahPutih, tingkatBawah } from "../engine/penempatan";
 import { diff, parse } from "../engine/tanggal";
+import { PANGKAT, jumlahHafal, pangkatDari, rantai } from "../engine/permainan";
 import type { AppData, ModeSesi, Tingkat } from "../types";
-import { Btn, NamaAplikasi } from "./komponen";
+import { Btn, Jp, NamaAplikasi } from "./komponen";
 import { PetaKanji } from "./PetaKanji";
 import { DetailKanji } from "./DetailKanji";
 import { BannerPasang } from "./PetunjukPasang";
@@ -13,7 +14,7 @@ import { BannerPasang } from "./PetunjukPasang";
 function Chip({ aktifnya, onClick, children }: { aktifnya: boolean; onClick: () => void; children: string }) {
   return (
     <button type="button" onClick={onClick} aria-pressed={aktifnya}
-      className={`px-3 min-h-11 rounded-full text-xs border ${aktifnya ? "border-aksen bg-aksen text-white" : "border-garis bg-white text-redup"}`}>
+      className={`px-3 min-h-11 rounded-full text-xs border ${aktifnya ? "border-aksen bg-aksen text-latar" : "border-garis bg-kartu text-redup"}`}>
       {children}
     </button>
   );
@@ -45,13 +46,45 @@ export function Beranda({ data, t, ubah, onMulai, onTentang }: {
   const rencana = useMemo(() => buildSession(data, t), [data, t]);
   const adaBelajar = rencana.quiz.length + rencana.write.length;
   const bawah = useMemo(() => tingkatBawah(data), [data.tg, data.ks, data.tesSelesai]);
+  // tampilan game (2026-11-13): pangkat dihitung dari seluruh kanji hijau, rantai dari riwayat sesi
+  const totalHafal = useMemo(() => jumlahHafal(data), [data.ks]);
+  const pos = pangkatDari(totalHafal);
+  const beruntun = useMemo(() => rantai(data.log, t), [data.log, t]);
 
   return (
     <div className={memilih ? "pb-24" : ""}>
-      <NamaAplikasi className="text-[1.75rem]" />
+      <div className="flex items-center justify-between gap-3">
+        <NamaAplikasi className="text-[1.75rem]" />
+        {beruntun > 0 && (
+          <p className="shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-kartu border-2 border-garis text-sm font-bold">
+            <svg aria-hidden width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFC83D" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 3c1 3 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3 0-6 1-9z" />
+            </svg>
+            {beruntun} hari beruntun
+          </p>
+        )}
+      </div>
       <p className="text-sm mt-1 text-redup">
         {parse(t).toLocaleDateString("id-ID", { weekday: "long", day: "numeric", month: "long" })}
       </p>
+
+      <section aria-label="Pangkat" className="mt-4 p-4 rounded-2xl bg-kartu border-2 border-garis">
+        <div className="flex items-baseline justify-between gap-2">
+          <p className="flex items-baseline gap-2">
+            <Jp className="text-2xl font-extrabold text-aksen">{pos.kini.jp}</Jp>
+            <span className="text-sm text-redup">{pos.kini.romaji} · {pos.kini.arti}</span>
+          </p>
+          <p className="text-xs text-redup shrink-0">Pangkat {pos.nomor} dari {PANGKAT.length}</p>
+        </div>
+        <div className="mt-2 h-3 rounded-full bg-latar" role="progressbar" aria-label="Kemajuan pangkat" aria-valuenow={Math.round(pos.porsi * 100)} aria-valuemin={0} aria-valuemax={100}>
+          <div className="h-3 rounded-full bg-aksen" style={{ width: `${Math.max(3, pos.porsi * 100)}%` }} />
+        </div>
+        <p className="text-xs text-redup mt-2">
+          {pos.berikut
+            ? <>{totalHafal} dari {pos.berikut.mulai} kanji hafal menuju <Jp className="font-bold text-tinta">{pos.berikut.jp}</Jp> ({pos.berikut.romaji})</>
+            : <>{totalHafal} kanji hafal · pangkat tertinggi</>}
+        </p>
+      </section>
 
       <BannerPasang />
 
@@ -69,7 +102,7 @@ export function Beranda({ data, t, ubah, onMulai, onTentang }: {
         disebutkan sebelum tes dimulai.
       */}
       {bawah.length > 0 && (
-        <div className="mt-4 p-4 rounded-xl bg-white border border-garis">
+        <div className="mt-4 p-4 rounded-xl bg-kartu border border-garis">
           <p className="font-bold text-sm">Sudah menguasai tingkat di bawah {labelTingkat(data.tg || "N5")}?</p>
           <p className="text-sm mt-1 text-redup">
             Ikuti tes penempatan {TOTAL_SOAL} soal untuk satu tingkat. Kalau lulus (16 benar),
@@ -92,7 +125,7 @@ export function Beranda({ data, t, ubah, onMulai, onTentang }: {
         selama berhari-hari walau kanji yang dipelajarinya terus bertambah. Tiga angka di bawah
         bergerak di sesi pertama.
       */}
-      <div className="mt-5 p-4 rounded-xl bg-white border border-garis">
+      <div className="mt-5 p-4 rounded-xl bg-kartu border border-garis">
         <p className="text-sm">Sudah dipelajari: <b>{dipelajari}</b> dari {set.length} kanji</p>
         <p className="text-sm mt-1">Sudah hafal: <b>{hafal.length}</b></p>
         <p className="text-sm mt-1 text-redup">
@@ -123,7 +156,7 @@ export function Beranda({ data, t, ubah, onMulai, onTentang }: {
         Tentang aplikasi dan sumber materi
       </button>
       {memilih && (
-        <div className="fixed inset-x-0 bottom-0 z-10 bg-white border-t border-garis pb-[env(safe-area-inset-bottom)]">
+        <div className="fixed inset-x-0 bottom-0 z-10 bg-kartu border-t border-garis pb-[env(safe-area-inset-bottom)]">
           <div className="max-w-md mx-auto px-5 py-3 flex items-center gap-3">
             <Btn kind="ghost" className="!w-auto" onClick={selesaiMemilih}>Batal</Btn>
             <Btn disabled={pilihan.length === 0} onClick={() => { onMulai("pilih", pilihan); selesaiMemilih(); }}>

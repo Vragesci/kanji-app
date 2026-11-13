@@ -84,6 +84,8 @@ export interface AppData {
    * undefined = mencatat; `false` mematikan pencatatan dan menghapus yang sudah tercatat.
    */
   rekam?: boolean;
+  /** Efek suara dan getar (2026-11-13). Belum pernah disentuh = undefined = menyala. */
+  suara?: boolean;
 }
 
 /** Alasan pengecek goresan menolak tulisan; sama dengan `Hasil.jenis` di engine/goresan.ts. */

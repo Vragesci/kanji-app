@@ -225,3 +225,26 @@ menulis, kalimat contoh (Tatoeba), dan audio.
 - Atribusi wajib di halaman "Tentang": materi tingkat JFT dari IRODORI
   (The Japan Foundation); bacaan, komponen kanji, dan sebagian kosakata dari
   JMdict/KANJIDIC2/KRADFILE (EDRDG, CC BY-SA 4.0).
+- Tampilan game "gaya A" (2026-11-13, disetujui pemilik): seluruh aplikasi memakai tema malam biru (`latar`
+  #151A3D, `kartu` #212861) dengan aksen emas (`aksen` #FFC83D) dan tombol utama tebal berbayang. Token warna
+  di `src/index.css` diganti nilainya, bukan namanya; permukaan kartu memakai token baru `kartu` (dulu `bg-white`),
+  dan teks di atas warna status memakai `text-latar` (dulu `text-white`). Huruf tetap huruf sistem.
+  Yang ditambahkan hanya lapisan tampilan dan bunyi; metode, penilaian, dan jadwal tidak berubah:
+  (1) **Kombo** di sesi: hitungan jawaban benar beruntun, tampil mulai ×2; salah mengembalikannya ke nol.
+  (2) **Batang kemajuan per soal**: tiap soal satu ruas, hijau/merah sesuai jawabannya.
+  (3) **Bintang** di akhir sesi (`bintang` di `src/engine/permainan.ts`), ambangnya sama dengan ambang beban
+  sesi butir 6: di bawah 70% satu, 70–90% dua, di atas 90% tiga. Tes penempatan tidak diberi bintang.
+  (4) **Pangkat** tujuh jenjang (見習い minarai → 新人 shinjin → 先輩 senpai → 班長 hanchou → 職長 shokuchou →
+  工場長 koujouchou → 社長 shachou) dari jumlah kanji hijau di semua tingkat; batas pangkat 3–7 = jumlah kanji
+  sampai akhir N5, N4, N3, N2, N1, dihitung dari data (`PANGKAT`, `pangkatDari`).
+  (5) **Rantai harian** dari `LogSesi` (`rantai`): hari berturut-turut yang punya sesi; hari ini yang belum
+  dimainkan tidak memutus rantai sampai harinya lewat.
+  (6) **Efek suara otomatis** (`src/suara.ts`): benar, salah, kombo (mulai ×3), dan naik (kanji baru hafal atau
+  sesi selesai dengan 70% ke atas). Dibuat dengan Web Audio tanpa berkas audio, ditambah getar pendek.
+  Bisa dimatikan lewat tombol di kepala sesi atau halaman Tentang (`suara` di AppData; undefined = menyala).
+  (7) Layar hasil punya tombol "Main satu sesi lagi" bila masih ada kanji untuk dilatih.
+  Sudah disetujui tetapi **belum dibangun**: beranda sebagai peta perjalanan per bab Irodori, halaman koleksi,
+  kartu untuk dibagikan ke media sosial, suara pengucapan tiap kosakata, dan papan peringkat mingguan
+  antarmurid dengan gelar (membutuhkan akun dan server Tahap 2; yang boleh terlihat pengguna lain hanya nama
+  panggilan dan skor mingguan — ini mengubah sebagian keputusan 2026-11-03). Mockup: kanvas "Ngaji Kanji
+  tampilan game". Alamat yang dipilih untuk saat ini: `ngajikanji.vercel.app`.

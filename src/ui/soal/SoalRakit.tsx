@@ -64,7 +64,7 @@ export function SoalRakit({ target, v, data, hasil, onJawab }: {
                   as="div"
                   className={`flex items-center justify-center rounded-xl border-2 ${
                     i === cur ? "border-solid border-aksen" : "border-dashed border-garis"
-                  } ${i in terisi ? "bg-white" : "bg-kotak"} ${slotSalah.includes(i) ? "text-merah" : "text-tinta"}`}
+                  } ${i in terisi ? "bg-kartu" : "bg-kotak"} ${slotSalah.includes(i) ? "text-merah" : "text-tinta"}`}
                   style={{ width: ukuran, height: ukuran, fontSize: ukuran * 0.66 }}
                 >
                   {terisi[i] || ""}
@@ -91,7 +91,7 @@ export function SoalRakit({ target, v, data, hasil, onJawab }: {
       {cur !== undefined && hasil === null && (
         <div className="grid grid-cols-3 gap-2 mt-6">
           {opsiSlot[cur]!.map((ch) => (
-            <button key={ch} type="button" onClick={() => pilih(ch)} className="min-h-16 py-3 rounded-xl bg-white border border-garis">
+            <button key={ch} type="button" onClick={() => pilih(ch)} className="min-h-16 py-3 rounded-xl bg-kartu border border-garis">
               <Jp className="text-4xl">{ch}</Jp>
             </button>
           ))}

@@ -22,7 +22,7 @@ export function Tentang({ data, ubah, onKembali }: {
     <div>
       <div className="flex items-center gap-3">
         <button type="button" onClick={onKembali} aria-label="Kembali ke beranda"
-          className="text-2xl size-11 shrink-0 rounded-full bg-white border border-garis">←</button>
+          className="text-2xl size-11 shrink-0 rounded-full bg-kartu border border-garis">←</button>
         <h1 className="text-2xl font-bold">Tentang</h1>
       </div>
 
@@ -61,6 +61,13 @@ export function Tentang({ data, ubah, onKembali }: {
           </ul>
         </section>
 
+        <section>
+          <h2 className="font-bold text-base">Suara</h2>
+          <label className="mt-2 flex items-center gap-3 min-h-11">
+            <input type="checkbox" checked={data.suara !== false} onChange={(e) => ubah((d) => ({ ...d, suara: e.target.checked }))} className="size-5 accent-aksen" />
+            <span>Efek suara dan getar saat menjawab</span>
+          </label>
+        </section>
         <CatatanBelajar data={data} ubah={ubah} />
 
         <section>

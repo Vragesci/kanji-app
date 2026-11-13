@@ -1,20 +1,22 @@
 @import "tailwindcss";
 
 @theme {
-  --color-latar: #F5F7F9;
-  --color-tinta: #1D2330;
-  --color-redup: #5F6878;
-  --color-garis: #DCE1E8;
-  --color-aksen: #1F4E79;
-  --color-merah: #C0392B;
-  --color-oranye: #B85C00;
-  --color-hijau: #1F7A46;
-  --color-benar: #E6F3EC;
-  --color-salah: #F8E5E3;
-  --color-kotak: #EEF1F5;
-  --color-panduan: #B4BDCA;
+  --color-latar: #151A3D;
+  /* permukaan kartu di atas latar (tampilan game, 2026-11-13) */
+  --color-kartu: #212861;
+  --color-tinta: #F3F5FF;
+  --color-redup: #C3CAF2;
+  --color-garis: #2F3A85;
+  --color-aksen: #FFC83D;
+  --color-merah: #FF8A8A;
+  --color-oranye: #FFB057;
+  --color-hijau: #3DDC97;
+  --color-benar: #173F3A;
+  --color-salah: #4A1F2A;
+  --color-kotak: #1B2150;
+  --color-panduan: #5A66B5;
   /* biru logo (lingkaran 字) */
-  --color-merek: #3346C2;
+  --color-merek: #7C8DFF;
   /* Font sistem: tanpa unduhan, jalan luring. Teks Jepang diberi lang="ja" supaya
      Android memilih bentuk glif Jepang, bukan Tionghoa. */
   /* Reggae One (SIL OFL): khusus tulisan nama "Ngaji Kanji" */
@@ -28,5 +30,13 @@ body {
   color: var(--color-tinta);
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   -webkit-tap-highlight-color: transparent;
+  color-scheme: dark;
 }
 button:focus-visible { outline: 2px solid var(--color-aksen); outline-offset: 2px; }
+
+/* Tampilan game (2026-11-13): gerak kecil untuk kombo dan bintang; dimatikan bila murid meminta gerak dikurangi. */
+@keyframes letup { 0% { transform: scale(0.6) rotate(-8deg); opacity: 0; } 60% { transform: scale(1.15) rotate(-2deg); opacity: 1; } 100% { transform: scale(1) rotate(-2deg); } }
+@keyframes goyang { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+.letup { animation: letup 0.35s ease-out both; }
+.goyang { animation: goyang 0.25s ease-in-out; }
+@media (prefers-reduced-motion: reduce) { .letup, .goyang { animation: none; } }

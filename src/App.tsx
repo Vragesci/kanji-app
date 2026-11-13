@@ -7,6 +7,7 @@ import { Beranda } from "./ui/Beranda";
 import { Sesi } from "./ui/Sesi";
 import { Tentang } from "./ui/Tentang";
 import { Btn } from "./ui/komponen";
+import { aturSuara } from "./suara";
 
 export default function App() {
   const { data, ubah, tersimpan } = useAppData();
@@ -44,6 +45,9 @@ export default function App() {
     }, 2000);
   };
 
+  const suaraNyala = data?.suara !== false;
+  useEffect(() => { aturSuara(suaraNyala); }, [suaraNyala]);
+
   if (!data) return <div className="p-6 text-sm text-redup">Memuat…</div>;
   const t = addDays(hari, data.offset);
 
@@ -65,6 +69,7 @@ export default function App() {
           <Sesi
             key={sesi.nomor} mode={sesi.mode} pilihan={sesi.pilihan} tes={sesi.tes} data={data} t={t} ubah={ubah}
             onKeluar={() => setSesi(null)}
+            onLagi={() => setSesi({ mode: "learn", nomor: Date.now() })}
           />
         ) : tentang ? (
           <Tentang data={data} ubah={ubah} onKembali={() => setTentang(false)} />
